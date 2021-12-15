@@ -1,0 +1,11 @@
+
+void read(float*), write(float), exit();
+
+void main() {
+  float b;
+
+	read(&b); write(b);
+	write(1.1);
+	write(110000.0);
+	exit();
+}

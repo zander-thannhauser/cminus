@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance function_call_expression_inheritance;

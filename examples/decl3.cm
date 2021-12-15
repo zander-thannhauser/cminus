@@ -1,0 +1,38 @@
+/*This file tests the following error that can occur in
+declarations.
+
+[1] Variable declared but not referenced.
+
+Note: There are multiple ways in which each of the
+above errors is tested in this file */
+
+
+   char c; /* error-variable declared but never referenced */
+    int b;
+
+	char C(int a)
+	{
+        char  b ;
+	return b; /*error-parameter a declared but not used */
+	} /*I'm not sure the above constitutes an error -- jr*/
+
+	int E()
+	{
+	int a[2],b1[2],c[2],d[2],e[2]; /*only e referenced*/
+	int f,g,h,i; /*all of these are referenced*/
+	while (h<100)
+      i=i+1;
+
+    return 0;
+	}
+
+	void D(int a)
+	{
+        char  b;
+	  a=b; /*error no return statement */
+	}
+
+void main()
+{
+b=100 ;
+}

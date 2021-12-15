@@ -1,0 +1,1 @@
+int struct_declarator_declarator_and_bitfield();

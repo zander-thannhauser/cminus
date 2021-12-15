@@ -1,0 +1,32 @@
+/*This file tests the following error:
+
+[1] Procedure call invoking a function
+
+[2] A function call that invokes a procedure
+
+Note: There are multiple ways in which the 
+above error is tested in this file */
+
+
+ float b;
+
+
+void A(int b) {
+   return 1;  /* error-A is assigned a value like
+	         a function but its been declared	
+	         as a procedure */
+}
+   
+int B(int a[20]) {
+     int c;
+     a[A(1)] = c; /* error-A is not a function and hence, does
+			 not return a value */
+     B(a);  /* error-B is declared as function but
+		      used as a procedure */
+	      /* error, no return statment */
+}
+
+void main() {
+b=200;
+A(100);
+}

@@ -1,0 +1,1 @@
+int init_declarator_declarator_and_initializer_callback();

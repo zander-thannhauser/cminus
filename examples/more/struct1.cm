@@ -1,0 +1,16 @@
+
+struct x {
+	int a;
+	double b;
+} a[10];
+
+int main()
+{
+	struct x x, y;
+	
+	x.a = 2;
+	x.b = 4;
+	
+	write(x.a, x.b);
+}
+

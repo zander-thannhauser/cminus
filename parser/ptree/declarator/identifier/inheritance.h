@@ -1,0 +1,4 @@
+
+struct declarator_inheritance;
+
+extern struct declarator_inheritance identifier_declarator_inheritance;

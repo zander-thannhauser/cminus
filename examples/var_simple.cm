@@ -1,0 +1,10 @@
+
+void read(int*);
+
+int   a;
+char  c;
+float f;
+
+void main() {
+	read(&a);
+}

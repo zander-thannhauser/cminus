@@ -1,0 +1,40 @@
+/*This file tests the following error:
+
+[1] Mismatch between actual parameters at a call site
+    and the definition of the called procedure
+
+Note: There are multiple ways in which the
+above error is tested in this file */
+
+
+ char b[2];
+char B(int a);
+void C(int a, int b, int c, int d, float e, float f, float g);
+
+  void A(int a) {
+	   int x;
+
+     x = A(B(100)); /* Function B is of type Character but parameter to A is of type integer */
+	}
+
+	char B(int a) {
+      int d;
+	    d = C(1,1,1,1,1,1,1); /*last 3 args wrong type */
+	    return B(B(d)); /* B(d) returns a character-but parameter is of type integer */
+	}
+
+	void C(int a, int b, int c, int d, float e, float f, float g) {
+	 a=b+c+d;
+	 e=f+g;
+	 g = C(1,1,1,1,1.1,1.1,1.1);
+	}
+
+void main() {
+ int a;
+
+  a = C(1,2,3,4.0,5.0,6.0); /*calling with 6 args instead of 7*/
+  a = C(1,2,3,4,5.0,6.0,7.0,'a'); /*calling with 8 args instead of 7*/
+  a = C(1,2,3,4,5,6,7); /*last 3 args of wrong type*/
+  a = C(1,2,3,4,5.0,6.0,b[1]); /*last arg of wrong type*/
+  b[1] = B(b[2]); /* error-Parameter to B is of type integer but b[2] is of type character, 2 is out of bounds */
+}

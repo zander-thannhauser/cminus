@@ -1,0 +1,1 @@
+extern struct statement_inheritance expression_statement_inheritance;

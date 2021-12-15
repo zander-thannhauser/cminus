@@ -1,0 +1,33 @@
+
+
+void read(int*), write(char*);
+
+int x, y;
+float a[10];
+
+
+int junk(int a,int b)
+{
+	a=b;
+	if (a) { read(&a); } else { read(&a); }
+	while (b) write(&a);
+	return b;
+}
+
+void stuff (int a, char b) {
+	int temp;
+	temp = a;
+	a = b;
+	b = temp;/* error, cannot assign a char an int value */
+}
+
+
+void main() {
+	read(x);
+	write("HELLO_comp412");
+	{
+		y = 1+2+3*4;
+	}
+	/* I hope you're still with me  */
+	stuff(junk(x,y),'Q');
+}

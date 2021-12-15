@@ -1,0 +1,13 @@
+
+void write(int);
+
+int c;
+
+void b() {
+
+    write(4);
+}
+
+void main() {
+  b();
+}

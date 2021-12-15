@@ -1,0 +1,1 @@
+extern struct statement_inheritance if_statement_inheritance;

@@ -1,0 +1,12 @@
+
+int a, b;
+
+int c(int x)
+{
+	return x * 2;
+}
+
+void main()
+{
+	a = b + c(1) * b - c(2) * (a + b);
+}

@@ -1,0 +1,38 @@
+/*This file tests the following error:
+
+[1] Variables referenced but not declared
+
+Note: There are multiple ways in which the
+above error is tested in this file */
+
+char B(int a)
+{
+	char b;
+	int c, w[100];
+	
+	a = c;
+	b = B(B(C)); /* C referenced  but not declared */
+	c = c + w[a]; /* okay */
+	c = c + w[b2] + 10101; /* b2 not declared */
+	
+	if (dummy)
+	{
+		c = 0; /* dummy not declared */
+	}
+	
+	while (dummy2) 
+	{
+		c = 0; /* dummy2 not delcared */
+	}
+	
+	write(dummy4); /* dummy4 not declared */
+	c = 100 * (102 + 103 + c + w[1] * 5 + d) + 4; /* d not declared */
+	b = B(1 + 2 + 3 + 4 + e + 5 + 6); /* e not declared */
+	
+	return z[1]; /* error-z referenced but not declared */
+}
+
+void main()
+{
+	b = c; /*b & c referenced but not declared (in this scope) */
+}

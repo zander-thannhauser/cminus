@@ -1,0 +1,11 @@
+
+void write(int);
+
+void x(int y)
+{
+	y = y;
+}
+
+void main() {
+	write(x(1));
+}

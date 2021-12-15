@@ -1,0 +1,22 @@
+/*This file tests the following error:
+
+[1] Incorrect number of dimensions in a variable reference
+
+Note: There are multiple ways in which the
+above error is tested in this file */
+
+
+ float b;
+  int   e[2];
+
+	int B(int a[20])
+	{
+        int    c;
+	a[20] = c[1]; /* error-c is not an array */
+	return B(a) ;
+	}
+
+void main()
+{
+b=e; /* error-e is an array */
+}

@@ -1,0 +1,10 @@
+int c ;
+
+void b(float x)
+  {
+    x=1.0;
+  }
+
+void main() {
+  b(1);
+}

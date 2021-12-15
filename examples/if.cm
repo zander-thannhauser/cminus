@@ -1,0 +1,15 @@
+
+void read(int*), write(int), print(char*), exit();
+
+void main() {
+ int a;
+
+    print("enter a:");
+    read(&a);
+    if (a < 0) { 
+		write(1);
+    } else {
+		write(0);
+    }
+	exit();
+}

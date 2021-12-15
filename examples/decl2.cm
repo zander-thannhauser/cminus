@@ -1,0 +1,51 @@
+/*This file tests the following error that can occur in
+declarations.
+
+[1] Variable declared multiple times within same scope.
+
+*/
+
+  int  a; /*error-variable is declared globally as well
+	         as being assigned as the name of a procedure */
+  float  b; /*error-variable declared as global twice-see
+	       declaration below */
+  char d[2];
+  int  b;
+
+
+	int a(int b) /* error-a declared as procedure
+			            as well as global */
+	{
+	   b=1;
+     return 0;
+	}
+
+	int A (int a, int b)
+	{
+        a=b;
+        return 0;
+	}
+
+	void A() /* error-A declared as function as well
+			       as a procedure above */
+	{
+	 b=200; /*global b is being used here */
+	 	/* error, no return statement */
+	}
+
+	void B(int a)
+	{
+        int  a; /*error-a declared twice in same scope-
+			    as a parameter and as a local variable */
+	}
+
+	void C(int a, float a)/*error-
+		 a declared as parameter twice-two declarations
+		 in same scope */
+	{
+	}
+
+void main()
+{
+  d[2]=200;
+}

@@ -1,0 +1,11 @@
+
+struct {
+	union {
+		int a;
+		struct b {};
+	} b, *c;
+} main()
+{
+	x = 3;
+}
+

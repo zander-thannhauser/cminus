@@ -1,0 +1,16 @@
+
+extern int printf(const char*, ...);
+
+int main()
+{
+	printf("schar: '%c'\n", 'c');
+	printf("sshort: %hi\n", 42);
+	printf("sinteger: %i\n", 42);
+	printf("slong: %li\n", 42L);
+	printf("ulong: %lu\n", 42UL);
+	printf("float: %f\n", 3.14);
+	printf("double: %lf\n", 3.14);
+	
+	return 0;
+}
+

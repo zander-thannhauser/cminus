@@ -1,0 +1,9 @@
+int c;
+
+void b(int x,int y,float z) {
+    z = x+y;
+}
+
+void main() {
+  b(1,1,2.0);
+}

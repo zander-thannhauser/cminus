@@ -1,0 +1,24 @@
+/* Pseudo-code for the swap routine */
+
+void write(int), read(int*);
+
+int i,j;
+
+void swap(int x,int y)
+{
+	int temp;
+	temp=x;
+	x=y;
+	y=temp;
+	write(y);
+	write(x);
+}
+
+void main()
+{
+	int a;
+	read(&i);
+	read(&j);
+	a = swap(i,j);
+	write(i);
+}

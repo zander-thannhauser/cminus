@@ -1,0 +1,12 @@
+
+extern int puts(const char*);
+
+int main(int argc, char* const* argv)
+{
+	int x;
+	x = 2;
+	x = x + 3;
+	puts("hello, world!");
+	return x;
+}
+

@@ -1,0 +1,83 @@
+/** $awkdoc$ ********************************************************
+
+A version of quicksort for testing recursion: reads and sorts
+19 CHARACTERs.
+
+** $endawk$ ********************************************************/
+
+void write(int), read(int*), puts(char*), exit();
+
+char  A[21];
+void  readarray()
+{
+  int  i;
+  puts ("A?");
+  i = 1;
+  while (i < 20)
+    {
+      write (i);
+      read (&A[i]);
+      i = i + 1;
+    }
+}
+void  writearray()
+{
+  int  i;
+  puts ("A:");
+  i = 0;
+  while (i <= 20)
+    {
+      write (A[i]);
+      i = i + 1;
+    }
+}
+int partition(char B[21], int p, int r)
+{
+  int i, j;
+  char x, t;
+  x = B[p];
+  i = p - 1;
+  j = r + 1;
+  while (1)
+    {
+      j = j-1;
+      while (A[j] > x)
+        {
+          j = j-1;
+        }
+      i = i+1;
+      while (A[i] < x)
+        {
+          i = i+1;
+        }
+      if (i < j) {
+            t = A[i];
+            A[i] = A[j];
+            A[j] = t;
+      }
+      else {
+          return j;
+        }
+    }
+}
+int quicksort(char Z[21],int p, int r )
+{
+  int q, r;
+  if (p < r)
+      {
+        q = partition(Z,p,r);
+        r = quicksort(Z,p,q);
+        r = quicksort(Z,q+1,r);
+      }
+  return 0;
+}
+
+void main()
+{
+  int a;
+
+  A[0] = ' '; A[20] = '~';
+  readarray();
+  a = quicksort(A,1,19);
+  writearray();
+}

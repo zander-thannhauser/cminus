@@ -1,0 +1,15 @@
+
+void read(float*), print(char*), write(int), exit();
+
+void main() {
+ float a;
+
+	print("enter a:");
+    read(&a);
+	if (a < 0.0) { 
+		write(1);
+	} else {
+		write(0);
+	}
+	exit();
+}

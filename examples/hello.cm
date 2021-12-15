@@ -1,0 +1,7 @@
+
+void write(char*), exit();
+
+void main() {
+	write("Hello world!");
+	exit();
+}

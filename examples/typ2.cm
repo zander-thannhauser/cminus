@@ -1,0 +1,27 @@
+/*********************************************************
+This file test all types of expressions.
+*********************************************************/
+
+ int i,j,k,l,m;
+  float a,b,c,d;
+  char C1,C2;
+
+
+void main() {
+
+     i = C1 + j;
+     a = C1 + b;
+     a = b + C1;
+     i = j + C1;
+     j = C1 + C2;
+     i = C1 || i;
+     j = C2 || b;
+     i = i || C1;
+     j = b || C2;
+     i = i < C1;
+     i = b < C2;
+     i = C1 < i;
+     i = C1 < b;
+     C1 = i;
+     C2 = b;
+}

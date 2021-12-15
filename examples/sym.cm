@@ -1,0 +1,18 @@
+
+void read(int*);
+
+int a;
+
+void decls(int a) {
+	int x;
+	a = 0;
+}
+
+void foo(int a, int b) {
+	int y;
+	a = y + b;
+}
+
+void main() {
+	read(&a);
+}

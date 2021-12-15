@@ -1,0 +1,32 @@
+
+void print(char*), read(int*), write(int), exit();
+
+void main() {
+	int a,b;
+	
+	print("enter a:"); read(&a);
+	print("enter b:"); read(&b);
+	
+	if (b > a) { 
+		if (a > 0) {
+		    print("a = ");
+			write(a);
+		}
+		else {
+		    print("b = ");
+			write(b);
+		}
+	}
+	else {
+		if (a < 0) {
+		    print("a = ");
+			write(a);
+	    }
+		else {
+		    print("b = ");
+			write(b);
+		}
+	}
+	
+	exit();
+}

@@ -1,0 +1,29 @@
+
+void read(int*);
+void write(int);
+
+int x, y, temp;
+
+int fact(int a)
+{
+	if (a < 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return (fact(a - 1) * a);
+	}
+}
+
+void main()
+{
+	read(&x);
+	read(&y);
+	
+	temp = y + fact(5) - fact(x);
+	
+	write(temp);
+	write(x);
+	write(y);
+}

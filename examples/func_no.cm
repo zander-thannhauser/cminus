@@ -1,0 +1,10 @@
+int c;
+
+int b()
+  {
+    return 4;
+  }
+
+void main() {
+  c = b();
+}

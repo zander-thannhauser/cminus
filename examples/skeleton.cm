@@ -1,0 +1,10 @@
+/* Pseudo-code for the swap routine*/ 
+
+void read(int*), write(int);
+
+int x;
+
+void main() {
+  read(&x);
+  write(x);
+}

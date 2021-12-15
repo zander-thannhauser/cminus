@@ -1,0 +1,20 @@
+
+void write(float);
+void exit();
+
+int decls()
+{
+	return 7;
+}
+
+float foo()
+{
+	return 7.3;
+}
+
+void main()
+{
+	write(decls());
+	write(foo());
+	exit();
+}

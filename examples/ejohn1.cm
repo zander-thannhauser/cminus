@@ -1,0 +1,51 @@
+/*
+Very bad fibinocci number finder: useful to test a lot of recursion.
+Use small numbers.
+
+Eric Johnson,  ejohn
+*/
+
+void write(int);
+void read(int*);
+void exit();
+
+int globalCount, input, i, loop ;
+
+int fib1 (int x) {
+	globalCount = globalCount + 1;
+	if ((x == 1) || (x == 0)) {
+		return (1);
+	} else {
+		return fib1 (x - 1) + fib1 (x - 2);
+	}
+}
+
+void main()
+{
+	write ("Enter number of fib numbers to find:");
+	read (&i);
+	loop = 1;
+	while (loop <= i)
+	{
+		globalCount = 0;
+		write ("");
+		write ("Enter fib number to find:");
+		read (&input);
+		input = fib1 (input);
+		write ("Result:");
+		write (input);
+		write ("Number of fib1s executed:");
+		write (globalCount);
+		loop = loop + 1;
+	}
+	write ("Bye");
+}
+
+
+
+
+
+
+
+
+

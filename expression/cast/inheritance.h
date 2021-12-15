@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance cast_expression_inheritance;

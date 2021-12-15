@@ -1,0 +1,2 @@
+
+extern struct statement_inheritance while_statement_inheritance;

@@ -1,0 +1,8 @@
+
+int main()
+{
+	typedef int x;
+	x y = (x) 2.3;
+	write(y);
+}
+

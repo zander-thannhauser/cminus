@@ -1,0 +1,15 @@
+  int a ;
+  char a ;
+
+void X()
+{
+   int a ;
+     write(1);
+}
+
+void main()
+{
+   X();
+
+  exit;
+}

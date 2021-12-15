@@ -1,0 +1,22 @@
+
+void write(int);
+void exit();
+
+void main ()
+{
+	int a[10];
+	int i;
+	
+	3[a] = 4;
+	write(a[3]);
+	
+	i = 3;
+	a[i] = 7;
+	write(a[i]);
+	
+	i = i + 2;
+	a[i] = 22;
+	write(a[5]);
+	
+	exit();
+}
