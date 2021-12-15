@@ -14,6 +14,10 @@
 #define ASMREG(reg) \
 	&(struct asm_location) { .kind = al_register, ._register = reg}
 
+// refer to data in float register
+#define ASMFREG(reg) \
+	&(struct asm_location) { .kind = al_float_register, ._fregister = reg}
+
 // refer to data refered to by the address in register
 #define ASMDEF(reg) \
 	&(struct asm_location) { .kind = al_deref_register, ._register = reg}
@@ -31,6 +35,7 @@
 	&(struct asm_location) { .kind = al_offsets, .offset = off}
 
 #include "../enums/intregs.h"
+#include "../enums/floatregs.h"
 
 struct asm_location
 {
@@ -41,6 +46,7 @@ struct asm_location
 		al_offsets,
 		al_literal,
 		al_register,
+		al_float_register,
 		al_deref_register,
 	} kind;
 	
@@ -50,7 +56,18 @@ struct asm_location
 		size_t string_id;
 		ssize_t offset;
 		uint64_t literal;
+		
 		enum integer_register_id _register;
+		enum float_register_id _fregister;
 	};
 };
+
+
+
+
+
+
+
+
+
 

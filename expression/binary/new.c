@@ -32,24 +32,14 @@ int new_binary_expression(
 	
 	if (true
 		&& left->kind == ek_literal
-		&& right->kind == ek_literal)
+		&& right->kind == ek_literal
+		&& ltype->kind == tk_integer)
 	{
-		
-		TODO; // integer or float types?
-		
-		#if 0
-		dpv(kind);
-		// literals are always primitives
-		
-		assert(binary_constfolders[kind]);
-		
 		error = binary_constfolders[kind](
 			(struct literal_expression**) new,
 			(struct literal_expression*) left,
 			(struct literal_expression*) right,
 			types);
-		#endif
-		
 	}
 	else
 	{

@@ -16,11 +16,15 @@
 #include <asm/writer/write.h>
 
 #include <asm/writer/write/mov.h>
+#include <asm/writer/write/movf.h>
 #include <asm/writer/write/sub.h>
+#include <asm/writer/write/add.h>
 #include <asm/writer/write/push.h>
 #include <asm/writer/write/pop.h>
 
 #include <type/integer/struct.h>
+
+#include <type/float/struct.h>
 
 #include <scope/variable.h>
 
@@ -73,7 +77,8 @@ int function_definition_write_asm(
 	ssize_t regoff = -8;
 	struct variable_link* vlink;
 	enum integer_register_id iparam = first_parameter;
-/*	enum float_register_id fparam = first__parameter;*/
+	enum float_register_id fparam = first_fparameter;
+	
 	for (vlink = this->parameters->head; vlink; vlink = vlink->next)
 	{
 		struct variable* const variable = vlink->element;
@@ -93,30 +98,28 @@ int function_definition_write_asm(
 				break;
 			}
 			
+			enum float_kind fkind;
+			
 			case tk_float:
 			{
-				TODO;
-				#if 0
-				struct float_type* const ftype = (typeof(ftype)) type;
-				enum float_kind fkind;
+				fkind = ((struct float_type*) type)->kind;
 				
-				if (fparam <= sixth_parameter)
+				if (fparam <= first_fparameter + number_of_float_parameters)
 				{
 					asm_writer_write_movf(writer,
-						ASMREG(fparam), fkind,
+						ASMFREG(fparam), fkind,
 						ASMOFF(variable->offset), fkind);
 					
 					fparam++;
 				}
 				else
 				{
-					asm_writer_write_movf(writer,
+					asm_writer_write_mov(writer,
 						ASMOFF(regoff), fkind,
 						ASMOFF(variable->offset), fkind);
 					
 					regoff += 8;
 				}
-				#endif
 				break;
 			}
 			
@@ -130,7 +133,7 @@ int function_definition_write_asm(
 				ikind = ((struct integer_type*) type)->kind;
 				after_ikind:
 				
-				if (iparam <= sixth_parameter)
+				if (iparam <= first_parameter + number_of_integer_parameters)
 				{
 					asm_writer_write_mov(writer,
 						ASMREG(iparam), ikind,
@@ -170,8 +173,15 @@ int function_definition_write_asm(
 		asm_writer_unindent(writer);
 	}
 	
+	asm_writer_write(writer, "%s_return:", this->name);
+	
+	asm_writer_comment(writer, "deallocate stack space:");
+	asm_writer_write_add(writer,
+		ASMLIT(this->frame_size),
+		ASMREG(stackptr),
+		ik_unsigned_long);
+	
 	asm_writer_comment(writer, "load old stack info:");
-/*	asm_writer_write_pop(writer, baseptr);*/
 	asm_writer_write(writer, "leave");
 	asm_writer_write(writer, "ret");
 	

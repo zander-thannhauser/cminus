@@ -20,7 +20,7 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 	
 	dpv(super->line);
 	
-	asm_writer_comment(writer, "line %lu: %E;\n", super->line, this->expression);
+	asm_writer_comment(writer, "line %lu: %E;", super->line, this->expression);
 	
 	asm_writer_indent(writer);
 	

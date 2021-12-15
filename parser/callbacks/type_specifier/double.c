@@ -9,6 +9,6 @@
 
 struct type* type_specifier_double_callback(struct types* types)
 {
-	TODO; // return (struct type*) tinc(types->double_type);
+	return (struct type*) tinc(types->floats[fk_double]);
 }
 

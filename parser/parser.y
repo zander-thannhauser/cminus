@@ -34,7 +34,7 @@
 %parse-param {struct types *types}
 %parse-param {struct asm_writer* asm_writer}
 %parse-param {unsigned *line}
-%parse-param {size_t *string_counter}
+%parse-param {size_t *section_counter}
 
 %lex-param {struct scope *scope}
 %lex-param {unsigned *line}
@@ -57,6 +57,9 @@
 
 %code top {
 	#include <memory/tfree.h>
+	
+	struct type* rettype;
+	char* funcname;
 }
 
 %union {
@@ -375,7 +378,7 @@ primary_expression
 		if ((*error = primary_expression_double_callback(&$$, types, $1)))
 			YYABORT;
 	} | STRING_LITERAL {
-		if ((*error = primary_expression_string_callback(&$$, $1.data, $1.strlen, types, string_counter, asm_writer)))
+		if ((*error = primary_expression_string_callback(&$$, $1.data, $1.strlen, types, section_counter, asm_writer)))
 			YYABORT;
 	} | '(' expression ')' {
 		if ((*error = primary_expression_parentheses_callback(&$$, $2)))
@@ -1067,10 +1070,10 @@ jump_statement
 		if ((*error = jump_statement_break_callback(&$$)))
 			YYABORT;
 	} | RETURN <line> {$$ = *line; } ';' {
-		if ((*error = jump_statement_return_callback(&$$, $2, NULL)))
+		if ((*error = jump_statement_return_callback(&$$, $2, NULL, NULL, NULL, funcname)))
 			YYABORT;
 	} | RETURN <line> {$$ = *line; } expression ';' {
-		if ((*error = jump_statement_return_callback(&$$, $2, $3)))
+		if ((*error = jump_statement_return_callback(&$$, $2, rettype, $3, types, funcname)))
 			YYABORT;
 	};
 
@@ -1096,7 +1099,7 @@ external_declaration
 
 function_definition
 	: declaration_specifiers declarator <function_definition>{
-		if ((*error = function_definition_prebody(&$$, $1, $2, scope)))
+		if ((*error = function_definition_prebody(&$$, $1, $2, scope, &rettype, &funcname)))
 			YYABORT;
 	} compound_statement {
 		if ((*error = function_definition_postbody($3, scope)))

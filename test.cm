@@ -1,12 +1,22 @@
 
-extern int puts(const char*);
+int printf(const char*, ...);
 
-int main(int argc, char* const* argv)
+double fmod(double, double);
+
+double add(double a, double b)
 {
-	int x;
-	x = 2;
-	x = x + 3;
-	puts("hello, world!");
-	return x;
+	printf("a = %f\n", a);
+	return a + b;
+}
+
+int main()
+{
+	double d;
+	
+	d = add(3.4, 2.0);
+	
+	printf("%f\n", d); 
+	
+	return 0;
 }
 

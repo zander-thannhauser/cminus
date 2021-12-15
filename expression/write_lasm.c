@@ -19,7 +19,7 @@ int expression_write_lasm(struct expression* this, struct asm_writer* writer)
 	
 	error = (this->inheritance->write_lasm)(this, writer);
 	
-	asm_writer_comment(writer, "&(%E)\n", this);
+	asm_writer_comment(writer, "&(%E)", this);
 	
 	EXIT;
 	return error;

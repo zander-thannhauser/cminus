@@ -24,6 +24,8 @@ int expression_ll_append(
 	
 	if (!error)
 	{
+		this->n++;
+		
 		link->element = tinc(element);
 		
 		link->prev = link->next = NULL;

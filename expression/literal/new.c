@@ -123,6 +123,7 @@ int new_literal_expression_as_signed_int(
 	if (!error)
 	{
 		this->value._signed_int = sintlit;
+		this->is_integer_result = true;
 		
 		*new = (struct expression*) this;
 	}
@@ -200,6 +201,7 @@ int new_literal_expression_as_float(
 	
 	if (!error)
 	{
+		this->is_integer_result = false;
 		this->value._float = floatlit;
 		
 		*new = (struct expression*) this;
@@ -218,8 +220,6 @@ int new_literal_expression_as_double(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
@@ -231,12 +231,11 @@ int new_literal_expression_as_double(
 	
 	if (!error)
 	{
-		this->kind = pk_double;
+		this->is_integer_result = false;
 		this->value._double = doublelit;
 		
 		*new = (struct expression*) this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

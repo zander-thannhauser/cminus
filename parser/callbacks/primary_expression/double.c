@@ -15,15 +15,12 @@ int primary_expression_double_callback(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	dpv(doublelit);
 	
 	error = new_literal_expression_as_double(
 		(struct expression**) retval,
-		types->primitives[pk_double],
+		types->floats[fk_double],
 		doublelit);
-	#endif
 	
 	EXIT;
 	return error;

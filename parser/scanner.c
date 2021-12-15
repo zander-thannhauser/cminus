@@ -2515,16 +2515,23 @@ static int process_character_literal()
 
 static int process_float_literal()
 {
-	int retval = FLOAT_LITERAL;
+	int retval = DOUBLE_LITERAL;
 	int error = 0;
 	char* m;
 	ENTER;
 	
 	errno = 0, yylval.doublelit = strtod(yytext, &m);
 	
-	if (errno || *m)
+	if (errno || (*m != '\0' && *m != 'f'))
+	{
 		fprintf(stderr, "%s: strtold(\"%s\"): %m\n", argv0, yytext),
 		error = e_bad_input_file;
+	}
+	else if (*m == 'f')
+	{
+		retval = FLOAT_LITERAL;
+		yylval.floatlit = yylval.doublelit;
+	}
 	
 	if (error)
 	{

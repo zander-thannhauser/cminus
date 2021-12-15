@@ -9,4 +9,6 @@ int function_definition_prebody(
 	struct function_definition** out,
 	struct declaration_specifiers* specifiers,
 	struct declarator* declarator,
-	struct scope* scope);
+	struct scope* scope,
+	struct type** retval,
+	char** name);

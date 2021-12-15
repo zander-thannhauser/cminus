@@ -1,6 +1,6 @@
 
-#ifndef ENUM_REGISTER_ID
-#define ENUM_REGISTER_ID
+#ifndef ENUM_IREGISTER_ID
+#define ENUM_IREGISTER_ID
 
 enum integer_register_id
 {
@@ -24,5 +24,7 @@ enum integer_register_id
 	
 	number_of_integer_registers,
 };
+
+#define number_of_integer_parameters (6)
 
 #endif

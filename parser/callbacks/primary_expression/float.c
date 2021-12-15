@@ -17,7 +17,7 @@ int primary_expression_float_callback(
 	
 	dpv(floatlit);
 	
-	error = new_literal_expression_as_float(
+	error = new_literal_expression_as_double(
 		(struct expression**) retval,
 		types->floats[fk_float],
 		floatlit);

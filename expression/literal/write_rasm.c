@@ -2,6 +2,7 @@
 #include <debug.h>
 
 #include <type/integer/struct.h>
+#include <type/float/struct.h>
 
 #include <asm/location/struct.h>
 
@@ -46,24 +47,44 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 		asm_writer_write_mov(writer,
 			ASMLIT(literal), ik_unsigned_long,
 			ASMREG(working_1), ik_unsigned_long);
-			
-		asm_writer_write_push(writer, working_1);
 	}
 	else
 	{
-		TODO;
-		#if 0
 		struct float_type* ftype = (typeof(ftype)) type;
 		
 		switch (ftype->kind)
 		{
-			case fk_float: fprintf(stream, "%g", this->value._float); break;
-			case fk_double: fprintf(stream, "%lg", this->value._double); break;
+			case fk_float:
+			{
+				ddprintf("fk_float\n");
+				
+				uint32_t temp = *((typeof(temp)*) &this->value._float);
+				
+				asm_writer_write_mov(writer,
+					ASMLIT(temp), ik_unsigned_int,
+					ASMREG(working_1), ik_unsigned_int);
+				
+				break;
+			}
+			
+			case fk_double:
+			{
+				ddprintf("fk_double\n");
+				
+				uint64_t temp = *((typeof(temp)*) &this->value._double);
+				
+				asm_writer_write_mov(writer,
+					ASMLIT(temp), ik_unsigned_long,
+					ASMREG(working_1), ik_unsigned_long);
+				
+				break;
+			}
 			
 			case number_of_float_kinds: abort();
 		}
-		#endif
 	}
+	
+	asm_writer_write_push(writer, working_1);
 	
 	EXIT;
 	return error;

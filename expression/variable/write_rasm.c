@@ -6,12 +6,16 @@
 /*#include <asm/tables/intregs.h>*/
 /*#include <asm/tables/pktors.h>*/
 
+
 #include <asm/location/struct.h>
+
 #include <asm/writer/comment.h>
 #include <asm/writer/write/mov.h>
+#include <asm/writer/write/movf.h>
 #include <asm/writer/write/push.h>
 
 #include <type/integer/struct.h>
+#include <type/float/struct.h>
 
 #include <scope/variable.h>
 
@@ -40,7 +44,15 @@ int variable_expression_write_rasm(
 			
 			case tk_array: TODO; break;
 			
-			case tk_float: TODO; break;
+			case tk_float:
+			{
+				struct float_type* ftype = (typeof(ftype)) type;
+				
+				asm_writer_write_movf(writer,
+					ASMOFF(variable->offset), ftype->kind,
+					ASMREG(working_1), ftype->kind);
+				break;
+			}
 			
 			case tk_integer:
 			{

@@ -15,6 +15,9 @@ int function_definition_postbody(
 	int error = 0;
 	ENTER;
 	
+	if (scope->frame_size % 16)
+		scope->frame_size += 16 - scope->frame_size % 16;
+	
 	funcdef->frame_size = scope->frame_size;
 	
 	// pop parameter scope:

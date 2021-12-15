@@ -5,6 +5,7 @@
 /*#include <asm/tables/intregs.h>*/
 /*#include <asm/tables/pktors.h>*/
 
+#include <type/float/struct.h>
 #include <type/integer/struct.h>
 
 #include <asm/writer/indent.h>
@@ -17,6 +18,8 @@
 #include <asm/writer/write/pop.h>
 #include <asm/writer/write/add.h>
 #include <asm/writer/write/mov.h>
+#include <asm/writer/write/addf.h>
+#include <asm/writer/write/movf.h>
 
 /*#include <type/primitive/struct.h>*/
 
@@ -26,7 +29,9 @@
 #include "struct.h"
 #include "write_rasm.h"
 
-static int both_as_rvalues(struct binary_expression* const this, struct asm_writer* writer)
+static int both_as_rvalues(
+	struct binary_expression* const this,
+	struct asm_writer* writer)
 {
 	int error = 0;
 	ENTER;
@@ -99,7 +104,24 @@ int binary_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			}
 			else
 			{
-				TODO;
+				struct float_type* ftype = (typeof(ftype)) super->type;
+				
+				asm_writer_write_movf(writer,
+					ASMREG(working_1), ftype->kind,
+					ASMFREG(working_f1), ftype->kind);
+				
+				asm_writer_write_movf(writer,
+					ASMREG(working_2), ftype->kind,
+					ASMFREG(working_f2), ftype->kind);
+				
+				asm_writer_write_addf(writer,
+					ASMFREG(working_f1),
+					ASMFREG(working_f2),
+					ftype->kind);
+				
+				asm_writer_write_movf(writer,
+					ASMFREG(working_f2), ftype->kind,
+					ASMREG(working_2), ftype->kind);
 			}
 			
 			asm_writer_write_push(writer, working_2);
@@ -126,7 +148,13 @@ int binary_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			}
 			else
 			{
-				TODO;
+				struct float_type* ftype = (typeof(ftype)) super->type;
+				
+				asm_writer_write_movf(writer,
+					ASMREG(working_2), ftype->kind,
+					ASMDEF(working_1), ftype->kind);
+				
+				asm_writer_write_push(writer, working_2);
 			}
 			
 			break;

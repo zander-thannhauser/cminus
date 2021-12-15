@@ -1,10 +1,10 @@
 
-#if 0
 #include <debug.h>
 
-#include <types/struct.h>
+#include <type/integer/struct.h>
+/*#include <type/float/struct.h>*/
 
-#include <type/primitive/kind.h>
+#include <types/struct.h>
 
 #include <expression/literal/struct.h>
 #include <expression/literal/new.h>
@@ -25,12 +25,12 @@ typedef unsigned int   unsigned_int;
 typedef unsigned long  unsigned_long;
 
 #define C(type, operation) \
-	case (pk_##type): { \
+	case (ik_##type): { \
 		type x = l->value._##type, y = r->value._##type; \
 		dpv(x); dpv(y); \
 		error = new_literal_expression_as_##type(\
 			(struct expression**) out, \
-			types->primitives[pk_##type], (operation)); \
+			types->integers[ik_##type], (operation)); \
 		break; \
 	}
 
@@ -40,12 +40,10 @@ typedef unsigned long  unsigned_long;
 	C(signed_int, o)   C(unsigned_int, o) \
 	C(signed_long, o)  C(unsigned_long, o) \
 	
-/*	C(float, o)        C(double, o)*/
-
 #define A(funcname, operation)\
 	static int funcname(exp** out, exp* l, exp* r, struct types* types) { \
 		int error = 0; \
-		switch (l->kind) { \
+		switch (((struct integer_type*) l->super.type)->kind) { \
 			B(operation) \
 			default: TODO; \
 		}\
@@ -81,4 +79,3 @@ int (*binary_constfolders[N])(exp**, exp*, exp*, struct types*) = {
 
 
 
-#endif

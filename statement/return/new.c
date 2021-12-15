@@ -12,10 +12,14 @@
 int new_return_statement(
 	struct return_statement** new,
 	unsigned line,
+	bool is_integer_result,
+	char* funcname,
 	struct expression* return_value)
 {
 	int error = 0;
 	ENTER;
+	
+	dpvb(is_integer_result);
 	
 	struct return_statement* this = NULL;
 	
@@ -28,6 +32,9 @@ int new_return_statement(
 	
 	if (!error)
 	{
+		this->is_integer_result = is_integer_result;
+		
+		this->funcname = funcname;
 		this->return_value = tinc(return_value);
 		
 		*new = this;

@@ -5,6 +5,7 @@
 #include <debug.h>
 
 #include "../tables/intregs.h"
+#include "../tables/floatregs.h"
 
 #include "struct.h"
 #include "write.h"
@@ -19,7 +20,7 @@ char* write_asm_location(
 	switch (this->kind)
 	{
 		case al_global:
-			sprintf(buffer, "%s@GOTPCREL(%%rip)", this->global);
+			sprintf(buffer, "%s@PLT", this->global);
 			break;
 		
 		case al_string:
@@ -41,6 +42,17 @@ char* write_asm_location(
 		case al_register:
 		{
 			const char* regname = intregs[this->_register][rsize];
+			
+			dpvs(regname);
+			assert(regname);
+			
+			sprintf(buffer, "%s", regname);
+			break;
+		}
+		
+		case al_float_register:
+		{
+			const char* regname = floatregs[this->_fregister];
 			
 			dpvs(regname);
 			assert(regname);

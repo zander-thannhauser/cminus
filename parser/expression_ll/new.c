@@ -21,6 +21,7 @@ int new_expression_ll(
 	
 	if (!error)
 	{
+		this->n = 0;
 		this->head = this->tail = NULL;
 		
 		*new = this;

@@ -33,7 +33,9 @@ int function_definition_prebody(
 	struct function_definition** out,
 	struct declaration_specifiers* specifiers,
 	struct declarator* declarator,
-	struct scope* scope)
+	struct scope* scope,
+	struct type** retval,
+	char** name)
 {
 	int error = 0;
 	ENTER;
@@ -71,6 +73,12 @@ int function_definition_prebody(
 		fprintf(stderr, "%s: function return types cannot be of type "
 			"array!\n", argv0);
 		error = e_bad_input_file;
+	}
+	
+	if (!error)
+	{
+		*name = identifier;
+		*retval = ftype->return_type;
 	}
 	
 	// function definitions come with a free prototype:

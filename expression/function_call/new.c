@@ -9,6 +9,8 @@
 #include <memory/tinc.h>
 #include <memory/tfree.h>
 
+#include <types/struct.h>
+
 #include <type/struct.h>
 #include <type/function/struct.h>
 
@@ -69,9 +71,23 @@ int new_function_call_expression(
 	}
 	else if (parameters->ellipsis)
 	{
-		// while loop appending the rest
+		// while loop appending the rest:
 		for (; !error && alink; alink = alink->next)
-			error = expression_ll_append(casted_args, alink->element);
+		{
+			// there's any floats: cast them to double:
+			if (alink->element->type->kind == tk_float)
+			{
+				struct expression* ce = NULL;
+				
+				error = 0
+					?: new_cast_expression(&ce, types->floats[fk_double], alink->element, types)
+					?: expression_ll_append(casted_args, ce);
+				
+				tfree(ce);
+			}
+			else
+				error = expression_ll_append(casted_args, alink->element);
+		}
 	}
 	else if (!!plink < !!alink)
 	{

@@ -3,7 +3,11 @@
 
 /*#include <asm/tables/pktors.h>*/
 
-/*#include <type/primitive/struct.h>*/
+#include <type/float/struct.h>
+
+#include <asm/location/struct.h>
+
+#include <asm/writer/write/movf.h>
 
 #include <expression/write_rasm.h>
 
@@ -16,14 +20,36 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 	struct cast_expression* const this = (typeof(this)) super;
 	struct type* const bt = this->inner->type;
 	struct type* const at = this->type;
-	struct primitive_type* const pbt = (typeof(pbt)) bt;
-	struct primitive_type* const pat = (typeof(pat)) at;
 	ENTER;
 	
-	TODO;
-	#if 0
 	error = expression_write_rasm(this->inner, writer);
 	
+	if (bt->kind == tk_integer && at->kind == tk_integer)
+	{
+	/*	struct primitive_type* const pbt = (typeof(pbt)) bt;*/
+	/*	struct primitive_type* const pat = (typeof(pat)) at;*/
+		// use asm_writer_write_mov();
+		TODO;
+	}
+	else if (bt->kind == tk_float && at->kind == tk_float)
+	{
+		struct float_type* const fbt = (typeof(fbt)) bt;
+		struct float_type* const fat = (typeof(fat)) at;
+		
+		asm_writer_write_movf(writer,
+			ASMOFFS(0), fbt->kind,
+			ASMFREG(working_1), fat->kind);
+		
+		asm_writer_write_movf(writer,
+			ASMFREG(working_1), fat->kind,
+			ASMOFFS(0), fat->kind);
+	}
+	else
+	{
+		error = 1;
+		TODO;
+	}
+	#if 0
 	// checked in 'new()':
 	assert(at->kind == tk_primitive || at->kind == tk_pointer);
 	assert(bt->kind == tk_primitive || bt->kind == tk_pointer);

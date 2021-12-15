@@ -7,6 +7,8 @@
 
 #include <type/integer/struct.h>
 
+#include <type/float/struct.h>
+
 #include <types/struct.h>
 
 #include <expression/struct.h>
@@ -32,6 +34,19 @@ int additive_expression_add_callback(
 		struct expression *cast_left = NULL, *cast_right = NULL;
 		struct integer_type *lit = (typeof(lit)) ltype, *rit = (typeof(rit)) rtype;
 		struct type* result_type = types->integers[max(lit->kind, rit->kind)];
+		
+		error = 0
+			?: new_cast_expression(&cast_left, result_type, left, types)
+			?: new_cast_expression(&cast_right, result_type, right, types)
+			?: new_binary_expression(retval, bek_add, cast_left, cast_right, types);
+		
+		tfree(cast_left), tfree(cast_right);
+	}
+	else if (ltype->kind == tk_float && rtype->kind == tk_float)
+	{
+		struct expression *cast_left = NULL, *cast_right = NULL;
+		struct float_type *lit = (typeof(lit)) ltype, *rit = (typeof(rit)) rtype;
+		struct type* result_type = types->floats[max(lit->kind, rit->kind)];
 		
 		error = 0
 			?: new_cast_expression(&cast_left, result_type, left, types)

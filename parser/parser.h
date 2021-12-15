@@ -137,7 +137,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 62 "parser/parser.y"
+#line 65 "parser/parser.y"
 
 	bool boolean;
 	
@@ -204,6 +204,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter);
+int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter);
 
 #endif /* !YY_YY_PARSER_PARSER_H_INCLUDED  */

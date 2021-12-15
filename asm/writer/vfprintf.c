@@ -20,19 +20,6 @@ enum length_modifier {
 	lm_char, lm_short, lm_int, lm_long, lm_long_long,
 	lm_long_double, lm_intmax, lm_size, lm_ptrdiff};
 
-static const char* length_modifiers[] = 
-{
-	[lm_char] = "hh",
-	[lm_short] = "h",
-	[lm_int] = "",
-	[lm_long] = "l",
-	[lm_long_long] = "ll",
-	[lm_long_double] = "L",
-	[lm_intmax] = "j",
-	[lm_size] = "z",
-	[lm_ptrdiff] = "t",
-};
-
 int asm_writer_vfprintf(
 	struct asm_writer* this,
 	const char* fmt,
@@ -80,8 +67,6 @@ int asm_writer_vfprintf(
 				}
 				else if (*fmt == '*')
 				{
-					int int_field_width;
-					
 					fmt++;
 					field_width.is_set = true,
 					field_width.val = va_arg(vargs, int);
@@ -196,7 +181,6 @@ int asm_writer_vfprintf(
 					{
 						uintmax_t value;
 						char format_string[100];
-						size_t len;
 						
 						sprintf(format_string,
 							"%%%.*s%.*s%.*s%.*s%.*s*.*j%c",
@@ -393,8 +377,6 @@ int asm_writer_vfprintf(
 						// small that the number of bytes written exceeds it
 						// before the end of the array is reached.
 					{
-						char format_string[100];
-						
 						fprintf(stream, "%*.*s", 
 							field_width.is_set ? field_width.val : 0,
 							digits_of_precision.is_set ? digits_of_precision.val : -1,
@@ -496,10 +478,7 @@ int asm_writer_vfprintf(
 					case L'%':
 						// A '%' is written. No argument is converted.
 					{
-						TODO;
-						#if 0
-						error = array_push_n(output, L"%");
-						#endif
+						putc('%', stream);
 						break;
 					}
 					

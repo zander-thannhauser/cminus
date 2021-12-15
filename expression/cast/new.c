@@ -8,6 +8,7 @@
 
 #include <memory/tinc.h>
 
+#include <type/struct.h>
 /*#include <type/primitive/struct.h>*/
 #include <type/is_equal.h>
 
@@ -27,8 +28,6 @@ int new_cast_expression(
 	int error = 0;
 	ENTER;
 	
-	// support floats:
-	
 	struct type* const before = inner->type;
 	
 	if (type_is_equal(after, before))
@@ -36,8 +35,31 @@ int new_cast_expression(
 		// no cast necessary
 		*new = tinc(inner);
 	}
+	else if (
+		false
+		|| (before->kind == tk_integer && after->kind == tk_integer)
+		|| (before->kind == tk_float && after->kind == tk_float))
+	{
+		struct cast_expression* this = NULL;
+		
+		error = new_expression(
+			(struct expression**) &this,
+			ek_cast,
+			&cast_expression_inheritance,
+			after,
+			sizeof(*this));
+		
+		if (!error)
+		{
+			this->type = tinc(after);
+			this->inner = tinc(inner);
+			
+			*new = (struct expression*) this;
+		}
+	}
 	else
 	{
+		error = 1;
 		TODO;
 	}
 	
@@ -69,22 +91,6 @@ int new_cast_expression(
 	{
 		// gareenteed to be primitive or pointer?
 		
-		struct cast_expression* this = NULL;
-		
-		error = new_expression(
-			(struct expression**) &this,
-			ek_cast,
-			&cast_expression_inheritance,
-			after,
-			sizeof(*this));
-		
-		if (!error)
-		{
-			this->type = tinc(after);
-			this->inner = tinc(inner);
-			
-			*new = (struct expression*) this;
-		}
 	}
 	#endif
 	

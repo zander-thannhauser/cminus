@@ -8,5 +8,6 @@ struct expression_link
 struct expression_ll
 {
 	struct expression_link* head, *tail;
+	size_t n;
 };
 

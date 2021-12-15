@@ -3,11 +3,15 @@
 
 /*#include <asm/tables/instrs.h>*/
 /*#include <asm/tables/intregs.h>*/
+
+#include <asm/location/struct.h>
+
 #include <asm/writer/comment.h>
 #include <asm/writer/indent.h>
 #include <asm/writer/unindent.h>
 #include <asm/writer/write.h>
 
+#include <asm/writer/write/mov.h>
 #include <asm/writer/write/pop.h>
 
 #include <expression/write_rasm.h>
@@ -37,13 +41,20 @@ int return_statement_write_asm(struct statement* super, struct asm_writer* write
 		if (!error)
 		{
 			asm_writer_comment(writer, "pop return value into return register:");
-			asm_writer_write_pop(writer, retval);
+			if (this->is_integer_result)
+				asm_writer_write_pop(writer, retval);
+			else
+			{
+				asm_writer_write_pop(writer, working_1);
+				
+				asm_writer_write_mov(writer,
+					ASMREG(working_1), ik_unsigned_long,
+					ASMFREG(fretval), ik_unsigned_long);
+			}
 		}
 	}
 	
-	asm_writer_comment(writer, "restore old stack info, return:");
-	asm_writer_write(writer, "leave");
-	asm_writer_write(writer, "ret");
+	asm_writer_write(writer, "jmp %s_return", this->funcname);
 	
 	EXIT;
 	return error;

@@ -66,8 +66,11 @@
 #line 58 "parser/parser.y"
 
 	#include <memory/tfree.h>
+	
+	struct type* rettype;
+	char* funcname;
 
-#line 71 "parser/parser.c"
+#line 74 "parser/parser.c"
 
 
 
@@ -129,7 +132,7 @@ extern int yydebug;
 	#include <expression/binary/kind.h>
 	#include <expression/unary/kind.h>
 
-#line 133 "parser/parser.c"
+#line 136 "parser/parser.c"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -206,7 +209,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 62 "parser/parser.y"
+#line 65 "parser/parser.y"
 
 	bool boolean;
 	
@@ -262,7 +265,7 @@ union YYSTYPE
 	enum unary_expression_kind unary_expression_kind;
 	enum binary_expression_kind binary_expression_kind;
 
-#line 266 "parser/parser.c"
+#line 269 "parser/parser.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -273,12 +276,12 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter);
+int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter);
 
 #endif /* !YY_YY_PARSER_PARSER_H_INCLUDED  */
 
 /* Second part of user prologue.  */
-#line 133 "parser/parser.y"
+#line 136 "parser/parser.y"
 
 
 #include <stdio.h>
@@ -435,7 +438,7 @@ struct scope;
 int yylex(struct scope *scope, unsigned* line);
 
 
-#line 439 "parser/parser.c"
+#line 442 "parser/parser.c"
 
 
 #ifdef short
@@ -803,29 +806,29 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   356,   356,   359,   362,   365,   368,   371,   374,   377,
-     380,   386,   388,   391,   394,   397,   400,   403,   406,   412,
-     415,   421,   423,   426,   429,   432,   435,   441,   442,   443,
-     444,   445,   446,   450,   452,   458,   460,   463,   466,   472,
-     474,   477,   483,   485,   488,   494,   496,   499,   502,   505,
-     511,   513,   516,   522,   524,   530,   532,   538,   540,   546,
-     548,   554,   556,   562,   564,   570,   572,   578,   579,   580,
-     581,   582,   583,   584,   585,   586,   587,   588,   592,   594,
-     600,   605,   609,   617,   620,   623,   626,   629,   632,   638,
-     641,   647,   650,   657,   658,   659,   660,   661,   666,   667,
-     668,   669,   670,   671,   672,   673,   674,   675,   676,   677,
-     682,   685,   688,   694,   695,   700,   702,   709,   716,   719,
-     722,   726,   734,   737,   745,   748,   752,   759,   762,   765,
-     771,   774,   780,   783,   790,   791,   795,   798,   803,   806,
-     808,   811,   815,   819,   824,   830,   833,   836,   839,   845,
-     848,   854,   856,   861,   864,   870,   873,   876,   882,   885,
-     891,   894,   900,   903,   905,   911,   913,   916,   919,   922,
-     925,   928,   931,   934,   940,   943,   946,   952,   955,   961,
-     962,   963,   964,   965,   966,   970,   973,   976,   982,   984,
-     989,   991,   996,  1000,   996,  1009,  1011,  1016,  1019,  1025,
-    1027,  1027,  1033,  1036,  1039,  1045,  1048,  1051,  1054,  1060,
-    1063,  1066,  1069,  1069,  1072,  1072,  1077,  1082,  1084,  1089,
-    1092,  1098,  1101,  1098,  1108
+       0,   359,   359,   362,   365,   368,   371,   374,   377,   380,
+     383,   389,   391,   394,   397,   400,   403,   406,   409,   415,
+     418,   424,   426,   429,   432,   435,   438,   444,   445,   446,
+     447,   448,   449,   453,   455,   461,   463,   466,   469,   475,
+     477,   480,   486,   488,   491,   497,   499,   502,   505,   508,
+     514,   516,   519,   525,   527,   533,   535,   541,   543,   549,
+     551,   557,   559,   565,   567,   573,   575,   581,   582,   583,
+     584,   585,   586,   587,   588,   589,   590,   591,   595,   597,
+     603,   608,   612,   620,   623,   626,   629,   632,   635,   641,
+     644,   650,   653,   660,   661,   662,   663,   664,   669,   670,
+     671,   672,   673,   674,   675,   676,   677,   678,   679,   680,
+     685,   688,   691,   697,   698,   703,   705,   712,   719,   722,
+     725,   729,   737,   740,   748,   751,   755,   762,   765,   768,
+     774,   777,   783,   786,   793,   794,   798,   801,   806,   809,
+     811,   814,   818,   822,   827,   833,   836,   839,   842,   848,
+     851,   857,   859,   864,   867,   873,   876,   879,   885,   888,
+     894,   897,   903,   906,   908,   914,   916,   919,   922,   925,
+     928,   931,   934,   937,   943,   946,   949,   955,   958,   964,
+     965,   966,   967,   968,   969,   973,   976,   979,   985,   987,
+     992,   994,   999,  1003,   999,  1012,  1014,  1019,  1022,  1028,
+    1030,  1030,  1036,  1039,  1042,  1048,  1051,  1054,  1057,  1063,
+    1066,  1069,  1072,  1072,  1075,  1075,  1080,  1085,  1087,  1092,
+    1095,  1101,  1104,  1101,  1111
 };
 #endif
 
@@ -1348,7 +1351,7 @@ static const yytype_int8 yyr2[] =
       }                                                           \
     else                                                          \
       {                                                           \
-        yyerror (error, scope, types, asm_writer, line, string_counter, YY_("syntax error: cannot back up")); \
+        yyerror (error, scope, types, asm_writer, line, section_counter, YY_("syntax error: cannot back up")); \
         YYERROR;                                                  \
       }                                                           \
   while (0)
@@ -1385,7 +1388,7 @@ do {                                                                      \
     {                                                                     \
       YYFPRINTF (stderr, "%s ", Title);                                   \
       yy_symbol_print (stderr,                                            \
-                  Type, Value, error, scope, types, asm_writer, line, string_counter); \
+                  Type, Value, error, scope, types, asm_writer, line, section_counter); \
       YYFPRINTF (stderr, "\n");                                           \
     }                                                                     \
 } while (0)
@@ -1396,7 +1399,7 @@ do {                                                                      \
 `-----------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter)
+yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter)
 {
   FILE *yyoutput = yyo;
   YYUSE (yyoutput);
@@ -1405,7 +1408,7 @@ yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, in
   YYUSE (types);
   YYUSE (asm_writer);
   YYUSE (line);
-  YYUSE (string_counter);
+  YYUSE (section_counter);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
@@ -1423,12 +1426,12 @@ yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, in
 `---------------------------*/
 
 static void
-yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter)
+yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter)
 {
   YYFPRINTF (yyo, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyo, yytype, yyvaluep, error, scope, types, asm_writer, line, string_counter);
+  yy_symbol_value_print (yyo, yytype, yyvaluep, error, scope, types, asm_writer, line, section_counter);
   YYFPRINTF (yyo, ")");
 }
 
@@ -1461,7 +1464,7 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter)
+yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter)
 {
   int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -1475,7 +1478,7 @@ yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule, int *error, stru
       yy_symbol_print (stderr,
                        yystos[+yyssp[yyi + 1 - yynrhs]],
                        &yyvsp[(yyi + 1) - (yynrhs)]
-                                              , error, scope, types, asm_writer, line, string_counter);
+                                              , error, scope, types, asm_writer, line, section_counter);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -1483,7 +1486,7 @@ yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp, int yyrule, int *error, stru
 # define YY_REDUCE_PRINT(Rule)          \
 do {                                    \
   if (yydebug)                          \
-    yy_reduce_print (yyssp, yyvsp, Rule, error, scope, types, asm_writer, line, string_counter); \
+    yy_reduce_print (yyssp, yyvsp, Rule, error, scope, types, asm_writer, line, section_counter); \
 } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1751,7 +1754,7 @@ yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
 `-----------------------------------------------*/
 
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter)
 {
   YYUSE (yyvaluep);
   YYUSE (error);
@@ -1759,7 +1762,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, int *error, struct
   YYUSE (types);
   YYUSE (asm_writer);
   YYUSE (line);
-  YYUSE (string_counter);
+  YYUSE (section_counter);
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
@@ -1768,465 +1771,465 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, int *error, struct
   switch (yytype)
     {
     case 3: /* IDENTIFIER  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).identifier)); }
-#line 1774 "parser/parser.c"
+#line 1777 "parser/parser.c"
         break;
 
     case 4: /* SINT_LITERAL  */
-#line 120 "parser/parser.y"
+#line 123 "parser/parser.y"
             {  }
-#line 1780 "parser/parser.c"
+#line 1783 "parser/parser.c"
         break;
 
     case 5: /* UINT_LITERAL  */
-#line 121 "parser/parser.y"
+#line 124 "parser/parser.y"
             {  }
-#line 1786 "parser/parser.c"
+#line 1789 "parser/parser.c"
         break;
 
     case 6: /* SLONG_LITERAL  */
-#line 122 "parser/parser.y"
+#line 125 "parser/parser.y"
             {  }
-#line 1792 "parser/parser.c"
+#line 1795 "parser/parser.c"
         break;
 
     case 7: /* ULONG_LITERAL  */
-#line 123 "parser/parser.y"
+#line 126 "parser/parser.y"
             {  }
-#line 1798 "parser/parser.c"
+#line 1801 "parser/parser.c"
         break;
 
     case 8: /* FLOAT_LITERAL  */
-#line 124 "parser/parser.y"
+#line 127 "parser/parser.y"
             {  }
-#line 1804 "parser/parser.c"
+#line 1807 "parser/parser.c"
         break;
 
     case 9: /* DOUBLE_LITERAL  */
-#line 125 "parser/parser.y"
+#line 128 "parser/parser.y"
             {  }
-#line 1810 "parser/parser.c"
+#line 1813 "parser/parser.c"
         break;
 
     case 10: /* STRING_LITERAL  */
-#line 119 "parser/parser.y"
+#line 122 "parser/parser.y"
             { tfree(((*yyvaluep).string).data); }
-#line 1816 "parser/parser.c"
+#line 1819 "parser/parser.c"
         break;
 
     case 11: /* TYPE_NAME  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type)); }
-#line 1822 "parser/parser.c"
+#line 1825 "parser/parser.c"
         break;
 
     case 92: /* primary_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1828 "parser/parser.c"
+#line 1831 "parser/parser.c"
         break;
 
     case 93: /* postfix_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1834 "parser/parser.c"
+#line 1837 "parser/parser.c"
         break;
 
     case 94: /* argument_expression_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression_ll)); }
-#line 1840 "parser/parser.c"
+#line 1843 "parser/parser.c"
         break;
 
     case 95: /* unary_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1846 "parser/parser.c"
+#line 1849 "parser/parser.c"
         break;
 
     case 96: /* unary_operator  */
-#line 130 "parser/parser.y"
+#line 133 "parser/parser.y"
             {  }
-#line 1852 "parser/parser.c"
+#line 1855 "parser/parser.c"
         break;
 
     case 97: /* cast_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1858 "parser/parser.c"
+#line 1861 "parser/parser.c"
         break;
 
     case 98: /* multiplicative_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1864 "parser/parser.c"
+#line 1867 "parser/parser.c"
         break;
 
     case 99: /* additive_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1870 "parser/parser.c"
+#line 1873 "parser/parser.c"
         break;
 
     case 100: /* shift_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1876 "parser/parser.c"
+#line 1879 "parser/parser.c"
         break;
 
     case 101: /* relational_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1882 "parser/parser.c"
+#line 1885 "parser/parser.c"
         break;
 
     case 102: /* equality_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1888 "parser/parser.c"
+#line 1891 "parser/parser.c"
         break;
 
     case 103: /* and_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1894 "parser/parser.c"
+#line 1897 "parser/parser.c"
         break;
 
     case 104: /* exclusive_or_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1900 "parser/parser.c"
+#line 1903 "parser/parser.c"
         break;
 
     case 105: /* inclusive_or_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1906 "parser/parser.c"
+#line 1909 "parser/parser.c"
         break;
 
     case 106: /* logical_and_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1912 "parser/parser.c"
+#line 1915 "parser/parser.c"
         break;
 
     case 107: /* logical_or_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1918 "parser/parser.c"
+#line 1921 "parser/parser.c"
         break;
 
     case 108: /* conditional_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1924 "parser/parser.c"
+#line 1927 "parser/parser.c"
         break;
 
     case 109: /* assignment_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1930 "parser/parser.c"
+#line 1933 "parser/parser.c"
         break;
 
     case 110: /* assignment_operator  */
-#line 131 "parser/parser.y"
+#line 134 "parser/parser.y"
             {  }
-#line 1936 "parser/parser.c"
+#line 1939 "parser/parser.c"
         break;
 
     case 111: /* expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1942 "parser/parser.c"
+#line 1945 "parser/parser.c"
         break;
 
     case 112: /* constant_expression  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).expression)); }
-#line 1948 "parser/parser.c"
+#line 1951 "parser/parser.c"
         break;
 
     case 113: /* declaration  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement_ll)); }
-#line 1954 "parser/parser.c"
+#line 1957 "parser/parser.c"
         break;
 
     case 114: /* declaration_specifiers  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).declaration_specifiers)); }
-#line 1960 "parser/parser.c"
+#line 1963 "parser/parser.c"
         break;
 
     case 115: /* init_declarator_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).init_declarator_ll)); }
-#line 1966 "parser/parser.c"
+#line 1969 "parser/parser.c"
         break;
 
     case 116: /* init_declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).init_declarator)); }
-#line 1972 "parser/parser.c"
+#line 1975 "parser/parser.c"
         break;
 
     case 117: /* storage_class_specifier  */
-#line 128 "parser/parser.y"
+#line 131 "parser/parser.y"
             {  }
-#line 1978 "parser/parser.c"
+#line 1981 "parser/parser.c"
         break;
 
     case 118: /* type_specifier  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type)); }
-#line 1984 "parser/parser.c"
+#line 1987 "parser/parser.c"
         break;
 
     case 119: /* struct_or_union_specifier  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type)); }
-#line 1990 "parser/parser.c"
+#line 1993 "parser/parser.c"
         break;
 
     case 120: /* struct_or_union  */
-#line 126 "parser/parser.y"
+#line 129 "parser/parser.y"
             {  }
-#line 1996 "parser/parser.c"
+#line 1999 "parser/parser.c"
         break;
 
     case 121: /* struct_declaration_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).struct_field_ll)); }
-#line 2002 "parser/parser.c"
+#line 2005 "parser/parser.c"
         break;
 
     case 122: /* struct_declaration  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).struct_field_ll)); }
-#line 2008 "parser/parser.c"
+#line 2011 "parser/parser.c"
         break;
 
     case 123: /* specifier_qualifier_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).specifier_qualifiers)); }
-#line 2014 "parser/parser.c"
+#line 2017 "parser/parser.c"
         break;
 
     case 124: /* struct_declarator_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).struct_declarator_ll)); }
-#line 2020 "parser/parser.c"
+#line 2023 "parser/parser.c"
         break;
 
     case 125: /* struct_declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).struct_declarator)); }
-#line 2026 "parser/parser.c"
+#line 2029 "parser/parser.c"
         break;
 
     case 126: /* enum_specifier  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type)); }
-#line 2032 "parser/parser.c"
+#line 2035 "parser/parser.c"
         break;
 
     case 127: /* enumerator_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).enumerator)); }
-#line 2038 "parser/parser.c"
+#line 2041 "parser/parser.c"
         break;
 
     case 128: /* enumerator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).enumerator_entry)); }
-#line 2044 "parser/parser.c"
+#line 2047 "parser/parser.c"
         break;
 
     case 129: /* type_qualifier  */
-#line 129 "parser/parser.y"
+#line 132 "parser/parser.y"
             {  }
-#line 2050 "parser/parser.c"
+#line 2053 "parser/parser.c"
         break;
 
     case 130: /* declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).declarator)); }
-#line 2056 "parser/parser.c"
+#line 2059 "parser/parser.c"
         break;
 
     case 131: /* direct_declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).declarator)); }
-#line 2062 "parser/parser.c"
+#line 2065 "parser/parser.c"
         break;
 
     case 132: /* pointer  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).pointer)); }
-#line 2068 "parser/parser.c"
+#line 2071 "parser/parser.c"
         break;
 
     case 133: /* type_qualifier_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type_qualifier_list)); }
-#line 2074 "parser/parser.c"
+#line 2077 "parser/parser.c"
         break;
 
     case 134: /* parameter_type_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).parameter_ll)); }
-#line 2080 "parser/parser.c"
+#line 2083 "parser/parser.c"
         break;
 
     case 135: /* parameter_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).parameter_ll)); }
-#line 2086 "parser/parser.c"
+#line 2089 "parser/parser.c"
         break;
 
     case 136: /* parameter_declaration  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).parameter)); }
-#line 2092 "parser/parser.c"
+#line 2095 "parser/parser.c"
         break;
 
     case 137: /* identifier_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).identifier_ll)); }
-#line 2098 "parser/parser.c"
+#line 2101 "parser/parser.c"
         break;
 
     case 138: /* type_name  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).type)); }
-#line 2104 "parser/parser.c"
+#line 2107 "parser/parser.c"
         break;
 
     case 139: /* abstract_declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).declarator)); }
-#line 2110 "parser/parser.c"
+#line 2113 "parser/parser.c"
         break;
 
     case 140: /* direct_abstract_declarator  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).declarator)); }
-#line 2116 "parser/parser.c"
+#line 2119 "parser/parser.c"
         break;
 
     case 141: /* initializer  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).initializer)); }
-#line 2122 "parser/parser.c"
+#line 2125 "parser/parser.c"
         break;
 
     case 142: /* initializer_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).initializer)); }
-#line 2128 "parser/parser.c"
+#line 2131 "parser/parser.c"
         break;
 
     case 143: /* statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2134 "parser/parser.c"
+#line 2137 "parser/parser.c"
         break;
 
     case 144: /* labeled_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2140 "parser/parser.c"
+#line 2143 "parser/parser.c"
         break;
 
     case 145: /* optional_declaration_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement_ll)); }
-#line 2146 "parser/parser.c"
+#line 2149 "parser/parser.c"
         break;
 
     case 146: /* optional_statement_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement_ll)); }
-#line 2152 "parser/parser.c"
+#line 2155 "parser/parser.c"
         break;
 
     case 147: /* compound_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).compound_statement)); }
-#line 2158 "parser/parser.c"
+#line 2161 "parser/parser.c"
         break;
 
     case 148: /* @1  */
-#line 127 "parser/parser.y"
+#line 130 "parser/parser.y"
             {  }
-#line 2164 "parser/parser.c"
+#line 2167 "parser/parser.c"
         break;
 
     case 150: /* declaration_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement_ll)); }
-#line 2170 "parser/parser.c"
+#line 2173 "parser/parser.c"
         break;
 
     case 151: /* statement_list  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement_ll)); }
-#line 2176 "parser/parser.c"
+#line 2179 "parser/parser.c"
         break;
 
     case 152: /* expression_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2182 "parser/parser.c"
+#line 2185 "parser/parser.c"
         break;
 
     case 153: /* @3  */
-#line 127 "parser/parser.y"
+#line 130 "parser/parser.y"
             {  }
-#line 2188 "parser/parser.c"
+#line 2191 "parser/parser.c"
         break;
 
     case 154: /* selection_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2194 "parser/parser.c"
+#line 2197 "parser/parser.c"
         break;
 
     case 155: /* iteration_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2200 "parser/parser.c"
+#line 2203 "parser/parser.c"
         break;
 
     case 156: /* jump_statement  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).statement)); }
-#line 2206 "parser/parser.c"
+#line 2209 "parser/parser.c"
         break;
 
     case 157: /* @4  */
-#line 127 "parser/parser.y"
+#line 130 "parser/parser.y"
             {  }
-#line 2212 "parser/parser.c"
+#line 2215 "parser/parser.c"
         break;
 
     case 158: /* @5  */
-#line 127 "parser/parser.y"
+#line 130 "parser/parser.y"
             {  }
-#line 2218 "parser/parser.c"
+#line 2221 "parser/parser.c"
         break;
 
     case 162: /* function_definition  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).function_definition)); }
-#line 2224 "parser/parser.c"
+#line 2227 "parser/parser.c"
         break;
 
     case 163: /* @6  */
-#line 118 "parser/parser.y"
+#line 121 "parser/parser.y"
             { tfree(((*yyvaluep).function_definition)); }
-#line 2230 "parser/parser.c"
+#line 2233 "parser/parser.c"
         break;
 
       default:
@@ -2252,7 +2255,7 @@ int yynerrs;
 `----------*/
 
 int
-yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *string_counter)
+yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter)
 {
     yy_state_fast_t yystate;
     /* Number of tokens to shift before error messages enabled.  */
@@ -2494,1853 +2497,1853 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 356 "parser/parser.y"
+#line 359 "parser/parser.y"
                      {
 		if ((*error = primary_expression_identifier_callback(&(yyval.expression), scope, (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 2503 "parser/parser.c"
+#line 2506 "parser/parser.c"
     break;
 
   case 3:
-#line 359 "parser/parser.y"
+#line 362 "parser/parser.y"
                          {
 		if ((*error = primary_expression_sinteger_callback(&(yyval.expression), types, (yyvsp[0].sintegerlit))))
 			YYABORT;
 	}
-#line 2512 "parser/parser.c"
+#line 2515 "parser/parser.c"
     break;
 
   case 4:
-#line 362 "parser/parser.y"
+#line 365 "parser/parser.y"
                          {
 		if ((*error = primary_expression_uinteger_callback(&(yyval.expression), types, (yyvsp[0].uintegerlit))))
 			YYABORT;
 	}
-#line 2521 "parser/parser.c"
+#line 2524 "parser/parser.c"
     break;
 
   case 5:
-#line 365 "parser/parser.y"
+#line 368 "parser/parser.y"
                           {
 		if ((*error = primary_expression_slong_callback(&(yyval.expression), types, (yyvsp[0].slonglit))))
 			YYABORT;
 	}
-#line 2530 "parser/parser.c"
+#line 2533 "parser/parser.c"
     break;
 
   case 6:
-#line 368 "parser/parser.y"
+#line 371 "parser/parser.y"
                           {
 		if ((*error = primary_expression_ulong_callback(&(yyval.expression), types, (yyvsp[0].ulonglit))))
 			YYABORT;
 	}
-#line 2539 "parser/parser.c"
+#line 2542 "parser/parser.c"
     break;
 
   case 7:
-#line 371 "parser/parser.y"
+#line 374 "parser/parser.y"
                           {
 		if ((*error = primary_expression_float_callback(&(yyval.expression), types, (yyvsp[0].floatlit))))
 			YYABORT;
 	}
-#line 2548 "parser/parser.c"
+#line 2551 "parser/parser.c"
     break;
 
   case 8:
-#line 374 "parser/parser.y"
+#line 377 "parser/parser.y"
                            {
 		if ((*error = primary_expression_double_callback(&(yyval.expression), types, (yyvsp[0].doublelit))))
 			YYABORT;
 	}
-#line 2557 "parser/parser.c"
+#line 2560 "parser/parser.c"
     break;
 
   case 9:
-#line 377 "parser/parser.y"
+#line 380 "parser/parser.y"
                            {
-		if ((*error = primary_expression_string_callback(&(yyval.expression), (yyvsp[0].string).data, (yyvsp[0].string).strlen, types, string_counter, asm_writer)))
+		if ((*error = primary_expression_string_callback(&(yyval.expression), (yyvsp[0].string).data, (yyvsp[0].string).strlen, types, section_counter, asm_writer)))
 			YYABORT;
 	}
-#line 2566 "parser/parser.c"
+#line 2569 "parser/parser.c"
     break;
 
   case 10:
-#line 380 "parser/parser.y"
+#line 383 "parser/parser.y"
                                {
 		if ((*error = primary_expression_parentheses_callback(&(yyval.expression), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 2575 "parser/parser.c"
+#line 2578 "parser/parser.c"
     break;
 
   case 11:
-#line 386 "parser/parser.y"
+#line 389 "parser/parser.y"
                              {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2583 "parser/parser.c"
+#line 2586 "parser/parser.c"
     break;
 
   case 12:
-#line 388 "parser/parser.y"
+#line 391 "parser/parser.y"
                                                   {
 		if ((*error = postfix_expression_array_index_callback(&(yyval.expression), (yyvsp[-3].expression), (yyvsp[-1].expression), types)))
 			YYABORT;
 	}
-#line 2592 "parser/parser.c"
+#line 2595 "parser/parser.c"
     break;
 
   case 13:
-#line 391 "parser/parser.y"
+#line 394 "parser/parser.y"
                                        {
 		if ((*error = postfix_expression_empty_function_call_callback(&(yyval.expression), (yyvsp[-2].expression), types)))
 			YYABORT;
 	}
-#line 2601 "parser/parser.c"
+#line 2604 "parser/parser.c"
     break;
 
   case 14:
-#line 394 "parser/parser.y"
+#line 397 "parser/parser.y"
                                                                 {
 		if ((*error = postfix_expression_function_call_callback(&(yyval.expression), (yyvsp[-3].expression), (yyvsp[-1].expression_ll), types)))
 			YYABORT;
 	}
-#line 2610 "parser/parser.c"
+#line 2613 "parser/parser.c"
     break;
 
   case 15:
-#line 397 "parser/parser.y"
+#line 400 "parser/parser.y"
                                               {
 		if ((*error = postfix_expression_field_access_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 2619 "parser/parser.c"
+#line 2622 "parser/parser.c"
     break;
 
   case 16:
-#line 400 "parser/parser.y"
+#line 403 "parser/parser.y"
                                                  {
 		if ((*error = postfix_expression_arrow_access_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 2628 "parser/parser.c"
+#line 2631 "parser/parser.c"
     break;
 
   case 17:
-#line 403 "parser/parser.y"
+#line 406 "parser/parser.y"
                                       {
 		if ((*error = postfix_expression_increment_callback(&(yyval.expression), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 2637 "parser/parser.c"
+#line 2640 "parser/parser.c"
     break;
 
   case 18:
-#line 406 "parser/parser.y"
+#line 409 "parser/parser.y"
                                       {
 		if ((*error = postfix_expression_decrement_callback(&(yyval.expression), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 2646 "parser/parser.c"
+#line 2649 "parser/parser.c"
     break;
 
   case 19:
-#line 412 "parser/parser.y"
+#line 415 "parser/parser.y"
                                 {
 		if ((*error = argument_expression_list_head_callback(&(yyval.expression_ll), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2655 "parser/parser.c"
+#line 2658 "parser/parser.c"
     break;
 
   case 20:
-#line 415 "parser/parser.y"
+#line 418 "parser/parser.y"
                                                                {
 		if ((*error = argument_expression_list_append_callback(&(yyval.expression_ll), (yyvsp[-2].expression_ll), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2664 "parser/parser.c"
+#line 2667 "parser/parser.c"
     break;
 
   case 21:
-#line 421 "parser/parser.y"
+#line 424 "parser/parser.y"
                              {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2672 "parser/parser.c"
+#line 2675 "parser/parser.c"
     break;
 
   case 22:
-#line 423 "parser/parser.y"
+#line 426 "parser/parser.y"
                                     {
 		if ((*error = unary_expression_increment_callback(&(yyval.expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2681 "parser/parser.c"
+#line 2684 "parser/parser.c"
     break;
 
   case 23:
-#line 426 "parser/parser.y"
+#line 429 "parser/parser.y"
                                     {
 		if ((*error = unary_expression_decrement_callback(&(yyval.expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2690 "parser/parser.c"
+#line 2693 "parser/parser.c"
     break;
 
   case 24:
-#line 429 "parser/parser.y"
+#line 432 "parser/parser.y"
                                            {
 		if ((*error = unary_expression_operator(&(yyval.expression), (yyvsp[-1].unary_expression_kind), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2699 "parser/parser.c"
+#line 2702 "parser/parser.c"
     break;
 
   case 25:
-#line 432 "parser/parser.y"
+#line 435 "parser/parser.y"
                                     {
 		if ((*error = unary_expression_sizeof_expression_callback(&(yyval.expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2708 "parser/parser.c"
+#line 2711 "parser/parser.c"
     break;
 
   case 26:
-#line 435 "parser/parser.y"
+#line 438 "parser/parser.y"
                                      {
 		if ((*error = unary_expression_sizeof_type_callback(&(yyval.expression), (yyvsp[-1].type), types)))
 			YYABORT;
 	}
-#line 2717 "parser/parser.c"
+#line 2720 "parser/parser.c"
     break;
 
   case 27:
-#line 441 "parser/parser.y"
+#line 444 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_address_of; }
-#line 2723 "parser/parser.c"
+#line 2726 "parser/parser.c"
     break;
 
   case 28:
-#line 442 "parser/parser.y"
+#line 445 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_dereference; }
-#line 2729 "parser/parser.c"
+#line 2732 "parser/parser.c"
     break;
 
   case 29:
-#line 443 "parser/parser.y"
+#line 446 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_numeric_plus; }
-#line 2735 "parser/parser.c"
+#line 2738 "parser/parser.c"
     break;
 
   case 30:
-#line 444 "parser/parser.y"
+#line 447 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_numeric_negate; }
-#line 2741 "parser/parser.c"
+#line 2744 "parser/parser.c"
     break;
 
   case 31:
-#line 445 "parser/parser.y"
+#line 448 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_bitwise_negate; }
-#line 2747 "parser/parser.c"
+#line 2750 "parser/parser.c"
     break;
 
   case 32:
-#line 446 "parser/parser.y"
+#line 449 "parser/parser.y"
               { (yyval.unary_expression_kind) = uek_logical_negate; }
-#line 2753 "parser/parser.c"
+#line 2756 "parser/parser.c"
     break;
 
   case 33:
-#line 450 "parser/parser.y"
+#line 453 "parser/parser.y"
                            {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2761 "parser/parser.c"
+#line 2764 "parser/parser.c"
     break;
 
   case 34:
-#line 452 "parser/parser.y"
+#line 455 "parser/parser.y"
                                               {
 		if ((*error = cast_expression_cast_callback(&(yyval.expression), (yyvsp[-2].type), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2770 "parser/parser.c"
+#line 2773 "parser/parser.c"
     break;
 
   case 35:
-#line 458 "parser/parser.y"
+#line 461 "parser/parser.y"
                           {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2778 "parser/parser.c"
+#line 2781 "parser/parser.c"
     break;
 
   case 36:
-#line 460 "parser/parser.y"
+#line 463 "parser/parser.y"
                                                           {
 		if ((*error = multiplicative_expression_multiply_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2787 "parser/parser.c"
+#line 2790 "parser/parser.c"
     break;
 
   case 37:
-#line 463 "parser/parser.y"
+#line 466 "parser/parser.y"
                                                           {
 		if ((*error = multiplicative_expression_divide_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2796 "parser/parser.c"
+#line 2799 "parser/parser.c"
     break;
 
   case 38:
-#line 466 "parser/parser.y"
+#line 469 "parser/parser.y"
                                                           {
 		if ((*error = multiplicative_expression_rdivide_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2805 "parser/parser.c"
+#line 2808 "parser/parser.c"
     break;
 
   case 39:
-#line 472 "parser/parser.y"
+#line 475 "parser/parser.y"
                                     {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2813 "parser/parser.c"
+#line 2816 "parser/parser.c"
     break;
 
   case 40:
-#line 474 "parser/parser.y"
+#line 477 "parser/parser.y"
                                                               {
 		if ((*error = additive_expression_add_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2822 "parser/parser.c"
+#line 2825 "parser/parser.c"
     break;
 
   case 41:
-#line 477 "parser/parser.y"
+#line 480 "parser/parser.y"
                                                               {
 		if ((*error = additive_expression_subtract_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2831 "parser/parser.c"
+#line 2834 "parser/parser.c"
     break;
 
   case 42:
-#line 483 "parser/parser.y"
+#line 486 "parser/parser.y"
                               {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2839 "parser/parser.c"
+#line 2842 "parser/parser.c"
     break;
 
   case 43:
-#line 485 "parser/parser.y"
+#line 488 "parser/parser.y"
                                                          {
 		if ((*error = shift_expression_leftshift_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2848 "parser/parser.c"
+#line 2851 "parser/parser.c"
     break;
 
   case 44:
-#line 488 "parser/parser.y"
+#line 491 "parser/parser.y"
                                                           {
 		if ((*error = shift_expression_rightshift_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2857 "parser/parser.c"
+#line 2860 "parser/parser.c"
     break;
 
   case 45:
-#line 494 "parser/parser.y"
+#line 497 "parser/parser.y"
                            {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2865 "parser/parser.c"
+#line 2868 "parser/parser.c"
     break;
 
   case 46:
-#line 496 "parser/parser.y"
+#line 499 "parser/parser.y"
                                                        {
 		if ((*error = relational_expression_less_than_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2874 "parser/parser.c"
+#line 2877 "parser/parser.c"
     break;
 
   case 47:
-#line 499 "parser/parser.y"
+#line 502 "parser/parser.y"
                                                        {
 		if ((*error = relational_expression_greater_than_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2883 "parser/parser.c"
+#line 2886 "parser/parser.c"
     break;
 
   case 48:
-#line 502 "parser/parser.y"
+#line 505 "parser/parser.y"
                                                          {
 		if ((*error = relational_expression_less_than_equal_to_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2892 "parser/parser.c"
+#line 2895 "parser/parser.c"
     break;
 
   case 49:
-#line 505 "parser/parser.y"
+#line 508 "parser/parser.y"
                                                          {
 		if ((*error = relational_expression_greater_than_equal_to_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2901 "parser/parser.c"
+#line 2904 "parser/parser.c"
     break;
 
   case 50:
-#line 511 "parser/parser.y"
+#line 514 "parser/parser.y"
                                 {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2909 "parser/parser.c"
+#line 2912 "parser/parser.c"
     break;
 
   case 51:
-#line 513 "parser/parser.y"
+#line 516 "parser/parser.y"
                                                             {
 		if ((*error = equality_expression_equal_to_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2918 "parser/parser.c"
+#line 2921 "parser/parser.c"
     break;
 
   case 52:
-#line 516 "parser/parser.y"
+#line 519 "parser/parser.y"
                                                             {
 		if ((*error = equality_expression_not_equal_to_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2927 "parser/parser.c"
+#line 2930 "parser/parser.c"
     break;
 
   case 53:
-#line 522 "parser/parser.y"
+#line 525 "parser/parser.y"
                               {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2935 "parser/parser.c"
+#line 2938 "parser/parser.c"
     break;
 
   case 54:
-#line 524 "parser/parser.y"
+#line 527 "parser/parser.y"
                                                    {
 		if ((*error = and_expression_and_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2944 "parser/parser.c"
+#line 2947 "parser/parser.c"
     break;
 
   case 55:
-#line 530 "parser/parser.y"
+#line 533 "parser/parser.y"
                          {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2952 "parser/parser.c"
+#line 2955 "parser/parser.c"
     break;
 
   case 56:
-#line 532 "parser/parser.y"
+#line 535 "parser/parser.y"
                                                        {
 		if ((*error = exclusive_or_expression_xor_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2961 "parser/parser.c"
+#line 2964 "parser/parser.c"
     break;
 
   case 57:
-#line 538 "parser/parser.y"
+#line 541 "parser/parser.y"
                                   {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2969 "parser/parser.c"
+#line 2972 "parser/parser.c"
     break;
 
   case 58:
-#line 540 "parser/parser.y"
+#line 543 "parser/parser.y"
                                                                 {
 		if ((*error = inclusive_or_expression_or_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 2978 "parser/parser.c"
+#line 2981 "parser/parser.c"
     break;
 
   case 59:
-#line 546 "parser/parser.y"
+#line 549 "parser/parser.y"
                                   {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 2986 "parser/parser.c"
+#line 2989 "parser/parser.c"
     break;
 
   case 60:
-#line 548 "parser/parser.y"
+#line 551 "parser/parser.y"
                                                                   {
 		if ((*error = logical_and_expression_and_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 2995 "parser/parser.c"
+#line 2998 "parser/parser.c"
     break;
 
   case 61:
-#line 554 "parser/parser.y"
+#line 557 "parser/parser.y"
                                  {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 3003 "parser/parser.c"
+#line 3006 "parser/parser.c"
     break;
 
   case 62:
-#line 556 "parser/parser.y"
+#line 559 "parser/parser.y"
                                                                {
 		if ((*error = logical_or_expression_or_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 3012 "parser/parser.c"
+#line 3015 "parser/parser.c"
     break;
 
   case 63:
-#line 562 "parser/parser.y"
+#line 565 "parser/parser.y"
                                 {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 3020 "parser/parser.c"
+#line 3023 "parser/parser.c"
     break;
 
   case 64:
-#line 564 "parser/parser.y"
+#line 567 "parser/parser.y"
                                                                             {
 		if ((*error = conditional_expression_ternary(&(yyval.expression), (yyvsp[-4].expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3029 "parser/parser.c"
+#line 3032 "parser/parser.c"
     break;
 
   case 65:
-#line 570 "parser/parser.y"
+#line 573 "parser/parser.y"
                                  {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 3037 "parser/parser.c"
+#line 3040 "parser/parser.c"
     break;
 
   case 66:
-#line 572 "parser/parser.y"
+#line 575 "parser/parser.y"
                                                                        {
 		if ((*error = assignment_expression_assignment_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[-1].binary_expression_kind), (yyvsp[0].expression), types)))
 			YYABORT;
 	}
-#line 3046 "parser/parser.c"
+#line 3049 "parser/parser.c"
     break;
 
   case 67:
-#line 578 "parser/parser.y"
+#line 581 "parser/parser.y"
               { (yyval.binary_expression_kind) = bek_regular_assign; }
-#line 3052 "parser/parser.c"
+#line 3055 "parser/parser.c"
     break;
 
   case 68:
-#line 579 "parser/parser.y"
+#line 582 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_multiply_assign; }
-#line 3058 "parser/parser.c"
+#line 3061 "parser/parser.c"
     break;
 
   case 69:
-#line 580 "parser/parser.y"
+#line 583 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_divide_assign; }
-#line 3064 "parser/parser.c"
+#line 3067 "parser/parser.c"
     break;
 
   case 70:
-#line 581 "parser/parser.y"
+#line 584 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_rdivide_assign; }
-#line 3070 "parser/parser.c"
+#line 3073 "parser/parser.c"
     break;
 
   case 71:
-#line 582 "parser/parser.y"
+#line 585 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_add_assign; }
-#line 3076 "parser/parser.c"
+#line 3079 "parser/parser.c"
     break;
 
   case 72:
-#line 583 "parser/parser.y"
+#line 586 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_subtract_assign; }
-#line 3082 "parser/parser.c"
+#line 3085 "parser/parser.c"
     break;
 
   case 73:
-#line 584 "parser/parser.y"
+#line 587 "parser/parser.y"
                       { (yyval.binary_expression_kind) = bek_leftshift_assign; }
-#line 3088 "parser/parser.c"
+#line 3091 "parser/parser.c"
     break;
 
   case 74:
-#line 585 "parser/parser.y"
+#line 588 "parser/parser.y"
                        { (yyval.binary_expression_kind) = bek_rightshift_assign; }
-#line 3094 "parser/parser.c"
+#line 3097 "parser/parser.c"
     break;
 
   case 75:
-#line 586 "parser/parser.y"
+#line 589 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_bitwise_and_assign; }
-#line 3100 "parser/parser.c"
+#line 3103 "parser/parser.c"
     break;
 
   case 76:
-#line 587 "parser/parser.y"
+#line 590 "parser/parser.y"
                      { (yyval.binary_expression_kind) = bek_bitwise_xor_assign; }
-#line 3106 "parser/parser.c"
+#line 3109 "parser/parser.c"
     break;
 
   case 77:
-#line 588 "parser/parser.y"
+#line 591 "parser/parser.y"
                     { (yyval.binary_expression_kind) = bek_bitwise_or_assign; }
-#line 3112 "parser/parser.c"
+#line 3115 "parser/parser.c"
     break;
 
   case 78:
-#line 592 "parser/parser.y"
+#line 595 "parser/parser.y"
                                 {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 3120 "parser/parser.c"
+#line 3123 "parser/parser.c"
     break;
 
   case 79:
-#line 594 "parser/parser.y"
+#line 597 "parser/parser.y"
                                                  {
 		if ((*error = expression_comma_callback(&(yyval.expression), (yyvsp[-2].expression), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3129 "parser/parser.c"
+#line 3132 "parser/parser.c"
     break;
 
   case 80:
-#line 600 "parser/parser.y"
+#line 603 "parser/parser.y"
                                  {
 		(yyval.expression) = (yyvsp[0].expression);
 	}
-#line 3137 "parser/parser.c"
+#line 3140 "parser/parser.c"
     break;
 
   case 81:
-#line 605 "parser/parser.y"
+#line 608 "parser/parser.y"
                                      {
 		// this could only be a struct declaration, right?
 		if ((*error = declaration_just_specifiers_callback(&(yyval.statement_ll), (yyvsp[-1].declaration_specifiers))))
 			YYABORT;
 	}
-#line 3147 "parser/parser.c"
+#line 3150 "parser/parser.c"
     break;
 
   case 82:
-#line 609 "parser/parser.y"
+#line 612 "parser/parser.y"
                                                             {
 		// these two TODOs are gonna possibly push into type name.
 		// is the point where the two sides that make up a type collide:
 		if ((*error = declaration_specifiers_and_init_list_callback(&(yyval.statement_ll), (yyvsp[-2].declaration_specifiers), (yyvsp[-1].init_declarator_ll), scope)))
 			YYABORT;
 	}
-#line 3158 "parser/parser.c"
+#line 3161 "parser/parser.c"
     break;
 
   case 83:
-#line 617 "parser/parser.y"
+#line 620 "parser/parser.y"
                                   {
 		if ((*error = declaration_specifiers_storage_class_callback(&(yyval.declaration_specifiers), (yyvsp[0].storage_class), NULL)))
 			YYABORT;
 	}
-#line 3167 "parser/parser.c"
+#line 3170 "parser/parser.c"
     break;
 
   case 84:
-#line 620 "parser/parser.y"
+#line 623 "parser/parser.y"
                                                            {
 		if ((*error = declaration_specifiers_storage_class_callback(&(yyval.declaration_specifiers), (yyvsp[-1].storage_class), (yyvsp[0].declaration_specifiers))))
 			YYABORT;
 	}
-#line 3176 "parser/parser.c"
+#line 3179 "parser/parser.c"
     break;
 
   case 85:
-#line 623 "parser/parser.y"
+#line 626 "parser/parser.y"
                            {
 		if ((*error = declaration_specifiers_type_specifier_callback(&(yyval.declaration_specifiers), (yyvsp[0].type), NULL, types)))
 			YYABORT;
 	}
-#line 3185 "parser/parser.c"
+#line 3188 "parser/parser.c"
     break;
 
   case 86:
-#line 626 "parser/parser.y"
+#line 629 "parser/parser.y"
                                                   {
 		if ((*error = declaration_specifiers_type_specifier_callback(&(yyval.declaration_specifiers), (yyvsp[-1].type), (yyvsp[0].declaration_specifiers), types)))
 			YYABORT;
 	}
-#line 3194 "parser/parser.c"
+#line 3197 "parser/parser.c"
     break;
 
   case 87:
-#line 629 "parser/parser.y"
+#line 632 "parser/parser.y"
                            {
 		if ((*error = declaration_specifiers_type_qualifier_callback(&(yyval.declaration_specifiers), (yyvsp[0].type_qualifier), NULL)))
 			YYABORT;
 	}
-#line 3203 "parser/parser.c"
+#line 3206 "parser/parser.c"
     break;
 
   case 88:
-#line 632 "parser/parser.y"
+#line 635 "parser/parser.y"
                                                   {
 		if ((*error = declaration_specifiers_type_qualifier_callback(&(yyval.declaration_specifiers), (yyvsp[-1].type_qualifier), (yyvsp[0].declaration_specifiers))))
 			YYABORT;
 	}
-#line 3212 "parser/parser.c"
+#line 3215 "parser/parser.c"
     break;
 
   case 89:
-#line 638 "parser/parser.y"
+#line 641 "parser/parser.y"
                           {
 		if ((*error = init_declarator_ll_head_callback(&(yyval.init_declarator_ll), (yyvsp[0].init_declarator))))
 			YYABORT;
 	}
-#line 3221 "parser/parser.c"
+#line 3224 "parser/parser.c"
     break;
 
   case 90:
-#line 641 "parser/parser.y"
+#line 644 "parser/parser.y"
                                                      {
 		if ((*error = init_declarator_ll_append_callback(&(yyval.init_declarator_ll), (yyvsp[-2].init_declarator_ll), (yyvsp[0].init_declarator))))
 			YYABORT;
 	}
-#line 3230 "parser/parser.c"
+#line 3233 "parser/parser.c"
     break;
 
   case 91:
-#line 647 "parser/parser.y"
+#line 650 "parser/parser.y"
                      {
 		if ((*error = init_declarator_just_declarator_callback(&(yyval.init_declarator), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3239 "parser/parser.c"
+#line 3242 "parser/parser.c"
     break;
 
   case 92:
-#line 650 "parser/parser.y"
+#line 653 "parser/parser.y"
                                        {
 		if ((*error = init_declarator_declarator_and_initializer_callback(&(yyval.init_declarator), (yyvsp[-2].declarator), (yyvsp[0].initializer))))
 			YYABORT;
 	}
-#line 3248 "parser/parser.c"
+#line 3251 "parser/parser.c"
     break;
 
   case 93:
-#line 657 "parser/parser.y"
+#line 660 "parser/parser.y"
                   { (yyval.storage_class) = sc_typedef; }
-#line 3254 "parser/parser.c"
+#line 3257 "parser/parser.c"
     break;
 
   case 94:
-#line 658 "parser/parser.y"
+#line 661 "parser/parser.y"
                  { (yyval.storage_class) = sc_extern; }
-#line 3260 "parser/parser.c"
+#line 3263 "parser/parser.c"
     break;
 
   case 95:
-#line 659 "parser/parser.y"
+#line 662 "parser/parser.y"
                  { (yyval.storage_class) = sc_static; }
-#line 3266 "parser/parser.c"
+#line 3269 "parser/parser.c"
     break;
 
   case 96:
-#line 660 "parser/parser.y"
+#line 663 "parser/parser.y"
                { (yyval.storage_class) = sc_auto; }
-#line 3272 "parser/parser.c"
+#line 3275 "parser/parser.c"
     break;
 
   case 97:
-#line 661 "parser/parser.y"
+#line 664 "parser/parser.y"
                    { (yyval.storage_class) = sc_register; }
-#line 3278 "parser/parser.c"
+#line 3281 "parser/parser.c"
     break;
 
   case 98:
-#line 666 "parser/parser.y"
+#line 669 "parser/parser.y"
                { (yyval.type) = type_specifier_void_callback(types); }
-#line 3284 "parser/parser.c"
+#line 3287 "parser/parser.c"
     break;
 
   case 99:
-#line 667 "parser/parser.y"
+#line 670 "parser/parser.y"
                { (yyval.type) = type_specifier_char_callback(types); }
-#line 3290 "parser/parser.c"
+#line 3293 "parser/parser.c"
     break;
 
   case 100:
-#line 668 "parser/parser.y"
+#line 671 "parser/parser.y"
                 { (yyval.type) = type_specifier_short_callback(types); }
-#line 3296 "parser/parser.c"
+#line 3299 "parser/parser.c"
     break;
 
   case 101:
-#line 669 "parser/parser.y"
+#line 672 "parser/parser.y"
               { (yyval.type) = type_specifier_int_callback(types); }
-#line 3302 "parser/parser.c"
+#line 3305 "parser/parser.c"
     break;
 
   case 102:
-#line 670 "parser/parser.y"
+#line 673 "parser/parser.y"
                { (yyval.type) = type_specifier_long_callback(types); }
-#line 3308 "parser/parser.c"
+#line 3311 "parser/parser.c"
     break;
 
   case 103:
-#line 671 "parser/parser.y"
+#line 674 "parser/parser.y"
                 { (yyval.type) = type_specifier_float_callback(types); }
-#line 3314 "parser/parser.c"
+#line 3317 "parser/parser.c"
     break;
 
   case 104:
-#line 672 "parser/parser.y"
+#line 675 "parser/parser.y"
                  { (yyval.type) = type_specifier_double_callback(types); }
-#line 3320 "parser/parser.c"
+#line 3323 "parser/parser.c"
     break;
 
   case 105:
-#line 673 "parser/parser.y"
+#line 676 "parser/parser.y"
                  { (yyval.type) = type_specifier_signed_callback(types); }
-#line 3326 "parser/parser.c"
+#line 3329 "parser/parser.c"
     break;
 
   case 106:
-#line 674 "parser/parser.y"
+#line 677 "parser/parser.y"
                    { (yyval.type) = type_specifier_unsigned_callback(types); }
-#line 3332 "parser/parser.c"
+#line 3335 "parser/parser.c"
     break;
 
   case 107:
-#line 675 "parser/parser.y"
+#line 678 "parser/parser.y"
                                     { (yyval.type) = (yyvsp[0].type); }
-#line 3338 "parser/parser.c"
+#line 3341 "parser/parser.c"
     break;
 
   case 108:
-#line 676 "parser/parser.y"
+#line 679 "parser/parser.y"
                          { (yyval.type) = (yyvsp[0].type); }
-#line 3344 "parser/parser.c"
+#line 3347 "parser/parser.c"
     break;
 
   case 109:
-#line 677 "parser/parser.y"
+#line 680 "parser/parser.y"
                     { (yyval.type) = (yyvsp[0].type); }
-#line 3350 "parser/parser.c"
+#line 3353 "parser/parser.c"
     break;
 
   case 110:
-#line 682 "parser/parser.y"
+#line 685 "parser/parser.y"
                                                                        {
 		if ((*error = struct_or_union_specifier_declaration_list_callback(&(yyval.type), (yyvsp[-4].boolean), (yyvsp[-3].identifier), (yyvsp[-1].struct_field_ll), scope)))
 			YYABORT;
 	}
-#line 3359 "parser/parser.c"
+#line 3362 "parser/parser.c"
     break;
 
   case 111:
-#line 685 "parser/parser.y"
+#line 688 "parser/parser.y"
                                                                        {
 		if ((*error = struct_or_union_specifier_declaration_list_callback(&(yyval.type), (yyvsp[-3].boolean), NULL, (yyvsp[-1].struct_field_ll), scope)))
 			YYABORT;
 	}
-#line 3368 "parser/parser.c"
+#line 3371 "parser/parser.c"
     break;
 
   case 112:
-#line 688 "parser/parser.y"
+#line 691 "parser/parser.y"
                                                                        {
 		if ((*error = struct_or_union_specifier_just_identifier_callback(&(yyval.type), (yyvsp[-1].boolean), (yyvsp[0].identifier), scope)))
 			YYABORT;
 	}
-#line 3377 "parser/parser.c"
+#line 3380 "parser/parser.c"
     break;
 
   case 113:
-#line 694 "parser/parser.y"
+#line 697 "parser/parser.y"
                  { (yyval.boolean) = true; }
-#line 3383 "parser/parser.c"
+#line 3386 "parser/parser.c"
     break;
 
   case 114:
-#line 695 "parser/parser.y"
+#line 698 "parser/parser.y"
                 { (yyval.boolean) = false; }
-#line 3389 "parser/parser.c"
+#line 3392 "parser/parser.c"
     break;
 
   case 115:
-#line 700 "parser/parser.y"
+#line 703 "parser/parser.y"
                              {
 		(yyval.struct_field_ll) = (yyvsp[0].struct_field_ll);
 	}
-#line 3397 "parser/parser.c"
+#line 3400 "parser/parser.c"
     break;
 
   case 116:
-#line 702 "parser/parser.y"
+#line 705 "parser/parser.y"
                                                        {
 		if ((*error = struct_declaration_list_merge_callback(&(yyval.struct_field_ll), (yyvsp[-1].struct_field_ll), (yyvsp[0].struct_field_ll))))
 			YYABORT;
 	}
-#line 3406 "parser/parser.c"
+#line 3409 "parser/parser.c"
     break;
 
   case 117:
-#line 709 "parser/parser.y"
+#line 712 "parser/parser.y"
                                                               {
 		if ((*error = struct_declaration_declaration_callback(&(yyval.struct_field_ll), (yyvsp[-2].specifier_qualifiers), (yyvsp[-1].struct_declarator_ll))))
 			YYABORT;
 	}
-#line 3415 "parser/parser.c"
+#line 3418 "parser/parser.c"
     break;
 
   case 118:
-#line 716 "parser/parser.y"
+#line 719 "parser/parser.y"
                                                   {
 		if ((*error = specifier_qualifier_list_prepend_specifier(&(yyval.specifier_qualifiers), (yyvsp[-1].type), (yyvsp[0].specifier_qualifiers), types)))
 			YYABORT;
 	}
-#line 3424 "parser/parser.c"
+#line 3427 "parser/parser.c"
     break;
 
   case 119:
-#line 719 "parser/parser.y"
+#line 722 "parser/parser.y"
                            {
 		if ((*error = specifier_qualifier_list_head_specifier(&(yyval.specifier_qualifiers), (yyvsp[0].type), types)))
 			YYABORT;
 	}
-#line 3433 "parser/parser.c"
+#line 3436 "parser/parser.c"
     break;
 
   case 120:
-#line 722 "parser/parser.y"
+#line 725 "parser/parser.y"
                                                     {
 		TODO;
 		if ((*error = specifier_qualifier_list_prepend_qualifier(&(yyval.specifier_qualifiers), (yyvsp[-1].type_qualifier), (yyvsp[0].specifier_qualifiers))))
 			YYABORT;
 	}
-#line 3443 "parser/parser.c"
+#line 3446 "parser/parser.c"
     break;
 
   case 121:
-#line 726 "parser/parser.y"
+#line 729 "parser/parser.y"
                            {
 		TODO;
 		if ((*error = specifier_qualifier_list_head_qualifier(&(yyval.specifier_qualifiers), (yyvsp[0].type_qualifier))))
 			YYABORT;
 	}
-#line 3453 "parser/parser.c"
+#line 3456 "parser/parser.c"
     break;
 
   case 122:
-#line 734 "parser/parser.y"
+#line 737 "parser/parser.y"
                             {
 		if ((*error = struct_declarator_list_head_callback(&(yyval.struct_declarator_ll), (yyvsp[0].struct_declarator))))
 			YYABORT;
 	}
-#line 3462 "parser/parser.c"
+#line 3465 "parser/parser.c"
     break;
 
   case 123:
-#line 737 "parser/parser.y"
+#line 740 "parser/parser.y"
                                                          {
 		TODO;
 		if ((*error = struct_declarator_list_append_callback(&(yyval.struct_declarator_ll), (yyvsp[-2].struct_declarator_ll), (yyvsp[0].struct_declarator))))
 			YYABORT;
 	}
-#line 3472 "parser/parser.c"
+#line 3475 "parser/parser.c"
     break;
 
   case 124:
-#line 745 "parser/parser.y"
+#line 748 "parser/parser.y"
                      {
 		if ((*error = struct_declarator_declarator(&(yyval.struct_declarator), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3481 "parser/parser.c"
+#line 3484 "parser/parser.c"
     break;
 
   case 125:
-#line 748 "parser/parser.y"
+#line 751 "parser/parser.y"
                                     {
 		TODO;
 		if ((*error = struct_declarator_bitfield(&(yyval.struct_declarator), NULL, (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3491 "parser/parser.c"
+#line 3494 "parser/parser.c"
     break;
 
   case 126:
-#line 752 "parser/parser.y"
+#line 755 "parser/parser.y"
                                                {
 		TODO;
 		if ((*error = struct_declarator_declarator_and_bitfield(&(yyval.struct_declarator), (yyvsp[-2].declarator), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3501 "parser/parser.c"
+#line 3504 "parser/parser.c"
     break;
 
   case 127:
-#line 759 "parser/parser.y"
+#line 762 "parser/parser.y"
                                        {
 		if ((*error = enum_specifier_just_list(&(yyval.type), NULL, (yyvsp[-1].enumerator))))
 			YYABORT;
 	}
-#line 3510 "parser/parser.c"
+#line 3513 "parser/parser.c"
     break;
 
   case 128:
-#line 762 "parser/parser.y"
+#line 765 "parser/parser.y"
                                                     {
 		if ((*error = enum_specifier_identifier_and_list(&(yyval.type), (yyvsp[-3].identifier), (yyvsp[-1].enumerator))))
 			YYABORT;
 	}
-#line 3519 "parser/parser.c"
+#line 3522 "parser/parser.c"
     break;
 
   case 129:
-#line 765 "parser/parser.y"
+#line 768 "parser/parser.y"
                             {
 		if ((*error = enum_specifier_just_identifier(&(yyval.type), (yyvsp[0].identifier), NULL)))
 			YYABORT;
 	}
-#line 3528 "parser/parser.c"
+#line 3531 "parser/parser.c"
     break;
 
   case 130:
-#line 771 "parser/parser.y"
+#line 774 "parser/parser.y"
                      {
 		if ((*error = enumerator_list_head_callback(&(yyval.enumerator), (yyvsp[0].enumerator_entry))))
 			YYABORT;
 	}
-#line 3537 "parser/parser.c"
+#line 3540 "parser/parser.c"
     break;
 
   case 131:
-#line 774 "parser/parser.y"
+#line 777 "parser/parser.y"
                                            {
 		if ((*error = enumerator_list_append_callback(&(yyval.enumerator), (yyvsp[-2].enumerator), (yyvsp[0].enumerator_entry))))
 			YYABORT;
 	}
-#line 3546 "parser/parser.c"
+#line 3549 "parser/parser.c"
     break;
 
   case 132:
-#line 780 "parser/parser.y"
+#line 783 "parser/parser.y"
                      {
 		if ((*error = enumerator_just_identifier_callback(&(yyval.enumerator_entry), (yyvsp[0].identifier), NULL)))
 			YYABORT;
 	}
-#line 3555 "parser/parser.c"
+#line 3558 "parser/parser.c"
     break;
 
   case 133:
-#line 783 "parser/parser.y"
+#line 786 "parser/parser.y"
                                                {
 		if ((*error = enumerator_identifier_and_expression_callback(&(yyval.enumerator_entry), (yyvsp[-2].identifier), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3564 "parser/parser.c"
+#line 3567 "parser/parser.c"
     break;
 
   case 134:
-#line 790 "parser/parser.y"
+#line 793 "parser/parser.y"
                 { (yyval.type_qualifier) = tq_constant; }
-#line 3570 "parser/parser.c"
+#line 3573 "parser/parser.c"
     break;
 
   case 135:
-#line 791 "parser/parser.y"
+#line 794 "parser/parser.y"
                    { (yyval.type_qualifier) = tq_volatile; }
-#line 3576 "parser/parser.c"
+#line 3579 "parser/parser.c"
     break;
 
   case 136:
-#line 795 "parser/parser.y"
+#line 798 "parser/parser.y"
                                     {
 		if ((*error = declarator_pointer_callback(&(yyval.declarator), (yyvsp[-1].pointer), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3585 "parser/parser.c"
+#line 3588 "parser/parser.c"
     break;
 
   case 137:
-#line 798 "parser/parser.y"
+#line 801 "parser/parser.y"
                               {
 		(yyval.declarator) = (yyvsp[0].declarator);
 	}
-#line 3593 "parser/parser.c"
+#line 3596 "parser/parser.c"
     break;
 
   case 138:
-#line 803 "parser/parser.y"
+#line 806 "parser/parser.y"
                      {
 		if ((*error = direct_declarator_identifier_callback(&(yyval.declarator), (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 3602 "parser/parser.c"
+#line 3605 "parser/parser.c"
     break;
 
   case 139:
-#line 806 "parser/parser.y"
+#line 809 "parser/parser.y"
                                {
 		(yyval.declarator) = (yyvsp[-1].declarator);
 	}
-#line 3610 "parser/parser.c"
+#line 3613 "parser/parser.c"
     break;
 
   case 140:
-#line 808 "parser/parser.y"
+#line 811 "parser/parser.y"
                                                           {
 		if ((*error = direct_declarator_array_callback(&(yyval.declarator), (yyvsp[-3].declarator), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 3619 "parser/parser.c"
+#line 3622 "parser/parser.c"
     break;
 
   case 141:
-#line 811 "parser/parser.y"
+#line 814 "parser/parser.y"
                                       {
 		// can only be the outer-most brackets
 		if ((*error = direct_declarator_sizeless_array_callback(&(yyval.declarator), (yyvsp[-2].declarator))))
 			YYABORT;
 	}
-#line 3629 "parser/parser.c"
+#line 3632 "parser/parser.c"
     break;
 
   case 142:
-#line 815 "parser/parser.y"
+#line 818 "parser/parser.y"
                                                           {
 		// parameter types and names
 		if ((*error = direct_declarator_parameter_list_callback(&(yyval.declarator), (yyvsp[-3].declarator), (yyvsp[-1].parameter_ll))))
 			YYABORT;
 	}
-#line 3639 "parser/parser.c"
+#line 3642 "parser/parser.c"
     break;
 
   case 143:
-#line 819 "parser/parser.y"
+#line 822 "parser/parser.y"
                                                       {
 		// just the parameter names are given now,
 		// types show up later
 		if ((*error = direct_declarator_identifier_list_callback(&(yyval.declarator), (yyvsp[-3].declarator), (yyvsp[-1].identifier_ll))))
 			YYABORT;
 	}
-#line 3650 "parser/parser.c"
+#line 3653 "parser/parser.c"
     break;
 
   case 144:
-#line 824 "parser/parser.y"
+#line 827 "parser/parser.y"
                                       {
 		if ((*error = direct_declarator_function_callback(&(yyval.declarator), (yyvsp[-2].declarator))))
 			YYABORT;
 	}
-#line 3659 "parser/parser.c"
+#line 3662 "parser/parser.c"
     break;
 
   case 145:
-#line 830 "parser/parser.y"
+#line 833 "parser/parser.y"
               {
 		if ((*error = pointer_pointer_callback(&(yyval.pointer), NULL)))
 			YYABORT;
 	}
-#line 3668 "parser/parser.c"
+#line 3671 "parser/parser.c"
     break;
 
   case 146:
-#line 833 "parser/parser.y"
+#line 836 "parser/parser.y"
                                             {
 		if ((*error = pointer_with_qualifiers_callback(&(yyval.pointer), (yyvsp[0].type_qualifier_list), NULL)))
 			YYABORT;
 	}
-#line 3677 "parser/parser.c"
+#line 3680 "parser/parser.c"
     break;
 
   case 147:
-#line 836 "parser/parser.y"
+#line 839 "parser/parser.y"
                                             {
 		if ((*error = pointer_pointer_callback(&(yyval.pointer), (yyvsp[0].pointer))))
 			YYABORT;
 	}
-#line 3686 "parser/parser.c"
+#line 3689 "parser/parser.c"
     break;
 
   case 148:
-#line 839 "parser/parser.y"
+#line 842 "parser/parser.y"
                                             {
 		if ((*error = pointer_with_qualifiers_callback(&(yyval.pointer), (yyvsp[-1].type_qualifier_list), (yyvsp[0].pointer))))
 			YYABORT;
 	}
-#line 3695 "parser/parser.c"
+#line 3698 "parser/parser.c"
     break;
 
   case 149:
-#line 845 "parser/parser.y"
+#line 848 "parser/parser.y"
                          {
 		if ((*error = type_qualifier_list_head_callback(&(yyval.type_qualifier_list), (yyvsp[0].type_qualifier))))
 			YYABORT;
 	}
-#line 3704 "parser/parser.c"
+#line 3707 "parser/parser.c"
     break;
 
   case 150:
-#line 848 "parser/parser.y"
+#line 851 "parser/parser.y"
                                                {
 		if ((*error = type_qualifier_list_append_callback(&(yyval.type_qualifier_list), (yyvsp[-1].type_qualifier_list), (yyvsp[0].type_qualifier))))
 			YYABORT;
 	}
-#line 3713 "parser/parser.c"
+#line 3716 "parser/parser.c"
     break;
 
   case 151:
-#line 854 "parser/parser.y"
+#line 857 "parser/parser.y"
                          {
 		(yyval.parameter_ll) = (yyvsp[0].parameter_ll);
 	}
-#line 3721 "parser/parser.c"
+#line 3724 "parser/parser.c"
     break;
 
   case 152:
-#line 856 "parser/parser.y"
+#line 859 "parser/parser.y"
                                         {
 		parameter_type_list_ellipsis(&(yyval.parameter_ll), (yyvsp[-2].parameter_ll));
 	}
-#line 3729 "parser/parser.c"
+#line 3732 "parser/parser.c"
     break;
 
   case 153:
-#line 861 "parser/parser.y"
+#line 864 "parser/parser.y"
                                 {
 		if ((*error = parameter_list_head_callback(&(yyval.parameter_ll), (yyvsp[0].parameter))))
 			YYABORT;
 	}
-#line 3738 "parser/parser.c"
+#line 3741 "parser/parser.c"
     break;
 
   case 154:
-#line 864 "parser/parser.y"
+#line 867 "parser/parser.y"
                                                      {
 		if ((*error = parameter_list_append_callback(&(yyval.parameter_ll), (yyvsp[-2].parameter_ll), (yyvsp[0].parameter))))
 			YYABORT;
 	}
-#line 3747 "parser/parser.c"
+#line 3750 "parser/parser.c"
     break;
 
   case 155:
-#line 870 "parser/parser.y"
+#line 873 "parser/parser.y"
                                             {
 		if ((*error = parameter_declaration_declarator_callback(&(yyval.parameter), (yyvsp[-1].declaration_specifiers), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3756 "parser/parser.c"
+#line 3759 "parser/parser.c"
     break;
 
   case 156:
-#line 873 "parser/parser.y"
+#line 876 "parser/parser.y"
                                                        {
 		if ((*error = parameter_declaration_abstract_declarator_callback(&(yyval.parameter), (yyvsp[-1].declaration_specifiers), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3765 "parser/parser.c"
+#line 3768 "parser/parser.c"
     break;
 
   case 157:
-#line 876 "parser/parser.y"
+#line 879 "parser/parser.y"
                                    {
 		if ((*error = parameter_declaration_just_specifiers_callback(&(yyval.parameter), (yyvsp[0].declaration_specifiers))))
 			YYABORT;
 	}
-#line 3774 "parser/parser.c"
+#line 3777 "parser/parser.c"
     break;
 
   case 158:
-#line 882 "parser/parser.y"
+#line 885 "parser/parser.y"
                      {
 		if ((*error = identifier_list_head_callback(&(yyval.identifier_ll), (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 3783 "parser/parser.c"
+#line 3786 "parser/parser.c"
     break;
 
   case 159:
-#line 885 "parser/parser.y"
+#line 888 "parser/parser.y"
                                            {
 		if ((*error = identifier_list_append_callback(&(yyval.identifier_ll), (yyvsp[-2].identifier_ll), (yyvsp[0].identifier))))
 			YYABORT;
 	}
-#line 3792 "parser/parser.c"
+#line 3795 "parser/parser.c"
     break;
 
   case 160:
-#line 891 "parser/parser.y"
+#line 894 "parser/parser.y"
                                    {
 		if ((*error = type_name_just_qualifier_list(&(yyval.type), (yyvsp[0].specifier_qualifiers))))
 			YYABORT;
 	}
-#line 3801 "parser/parser.c"
+#line 3804 "parser/parser.c"
     break;
 
   case 161:
-#line 894 "parser/parser.y"
+#line 897 "parser/parser.y"
                                                          {
 		if ((*error = type_name_qualifier_list_and_abstract_declarator(&(yyval.type), (yyvsp[-1].specifier_qualifiers), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3810 "parser/parser.c"
+#line 3813 "parser/parser.c"
     break;
 
   case 162:
-#line 900 "parser/parser.y"
+#line 903 "parser/parser.y"
                   {
 		if ((*error = abstract_declarator_pointer_callback(&(yyval.declarator), (yyvsp[0].pointer), NULL)))
 			YYABORT;
 	}
-#line 3819 "parser/parser.c"
+#line 3822 "parser/parser.c"
     break;
 
   case 163:
-#line 903 "parser/parser.y"
+#line 906 "parser/parser.y"
                                        {
 		(yyval.declarator) = (yyvsp[0].declarator);
 	}
-#line 3827 "parser/parser.c"
+#line 3830 "parser/parser.c"
     break;
 
   case 164:
-#line 905 "parser/parser.y"
+#line 908 "parser/parser.y"
                                                {
 		if ((*error = abstract_declarator_pointer_callback(&(yyval.declarator), (yyvsp[-1].pointer), (yyvsp[0].declarator))))
 			YYABORT;
 	}
-#line 3836 "parser/parser.c"
+#line 3839 "parser/parser.c"
     break;
 
   case 165:
-#line 911 "parser/parser.y"
+#line 914 "parser/parser.y"
                                       {
 		(yyval.declarator) = (yyvsp[-1].declarator);
 	}
-#line 3844 "parser/parser.c"
+#line 3847 "parser/parser.c"
     break;
 
   case 166:
-#line 913 "parser/parser.y"
+#line 916 "parser/parser.y"
                     {
 		if ((*error = direct_abstract_declarator_sizeless_array(&(yyval.declarator))))
 			YYABORT;
 	}
-#line 3853 "parser/parser.c"
+#line 3856 "parser/parser.c"
     break;
 
   case 167:
-#line 916 "parser/parser.y"
+#line 919 "parser/parser.y"
                                         {
 		if ((*error = direct_abstract_declarator_array(&(yyval.declarator), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 3862 "parser/parser.c"
+#line 3865 "parser/parser.c"
     break;
 
   case 168:
-#line 919 "parser/parser.y"
+#line 922 "parser/parser.y"
                                                {
 		if ((*error = direct_abstract_declarator_sizeless_array(&(yyval.declarator), (yyvsp[-2].declarator))))
 			YYABORT;
 	}
-#line 3871 "parser/parser.c"
+#line 3874 "parser/parser.c"
     break;
 
   case 169:
-#line 922 "parser/parser.y"
+#line 925 "parser/parser.y"
                                                                    {
 		if ((*error = direct_abstract_declarator_array(&(yyval.declarator), (yyvsp[-3].declarator), (yyvsp[-1].expression))))
 			YYABORT;
 	}
-#line 3880 "parser/parser.c"
+#line 3883 "parser/parser.c"
     break;
 
   case 170:
-#line 925 "parser/parser.y"
+#line 928 "parser/parser.y"
                     {
 		if ((*error = direct_abstract_declarator_empty_function(&(yyval.declarator), NULL)))
 			YYABORT;
 	}
-#line 3889 "parser/parser.c"
+#line 3892 "parser/parser.c"
     break;
 
   case 171:
-#line 928 "parser/parser.y"
+#line 931 "parser/parser.y"
                                         {
 		if ((*error = direct_abstract_declarator_function(&(yyval.declarator), NULL, (yyvsp[-1].parameter_ll))))
 			YYABORT;
 	}
-#line 3898 "parser/parser.c"
+#line 3901 "parser/parser.c"
     break;
 
   case 172:
-#line 931 "parser/parser.y"
+#line 934 "parser/parser.y"
                                                {
 		if ((*error = direct_abstract_declarator_empty_function(&(yyval.declarator), (yyvsp[-2].declarator))))
 			YYABORT;
 	}
-#line 3907 "parser/parser.c"
+#line 3910 "parser/parser.c"
     break;
 
   case 173:
-#line 934 "parser/parser.y"
+#line 937 "parser/parser.y"
                                                                    {
 		if ((*error = direct_abstract_declarator_function(&(yyval.declarator), (yyvsp[-3].declarator), (yyvsp[-1].parameter_ll))))
 			YYABORT;
 	}
-#line 3916 "parser/parser.c"
+#line 3919 "parser/parser.c"
     break;
 
   case 174:
-#line 940 "parser/parser.y"
+#line 943 "parser/parser.y"
                                 {
 		if ((*error = initializer_expression_callback(&(yyval.initializer), (yyvsp[0].expression))))
 			YYABORT;
 	}
-#line 3925 "parser/parser.c"
+#line 3928 "parser/parser.c"
     break;
 
   case 175:
-#line 943 "parser/parser.y"
+#line 946 "parser/parser.y"
                                      {
 		if ((*error = initializer_initializer_list_callback(&(yyval.initializer), (yyvsp[-1].initializer))))
 			YYABORT;
 	}
-#line 3934 "parser/parser.c"
+#line 3937 "parser/parser.c"
     break;
 
   case 176:
-#line 946 "parser/parser.y"
+#line 949 "parser/parser.y"
                                          {
 		if ((*error = initializer_initializer_list_callback(&(yyval.initializer), (yyvsp[-2].initializer))))
 			YYABORT;
 	}
-#line 3943 "parser/parser.c"
+#line 3946 "parser/parser.c"
     break;
 
   case 177:
-#line 952 "parser/parser.y"
+#line 955 "parser/parser.y"
                       {
 		if ((*error = initializer_list_head_callback(&(yyval.initializer), (yyvsp[0].initializer))))
 			YYABORT;
 	}
-#line 3952 "parser/parser.c"
+#line 3955 "parser/parser.c"
     break;
 
   case 178:
-#line 955 "parser/parser.y"
+#line 958 "parser/parser.y"
                                              {
 		if ((*error = initializer_list_append_callback(&(yyval.initializer), (yyvsp[-2].initializer), (yyvsp[0].initializer))))
 			YYABORT;
 	}
-#line 3961 "parser/parser.c"
+#line 3964 "parser/parser.c"
     break;
 
   case 179:
-#line 961 "parser/parser.y"
+#line 964 "parser/parser.y"
                             { (yyval.statement) = (yyvsp[0].statement); }
-#line 3967 "parser/parser.c"
+#line 3970 "parser/parser.c"
     break;
 
   case 180:
-#line 962 "parser/parser.y"
+#line 965 "parser/parser.y"
                              { (yyval.statement) = (struct statement*) (yyvsp[0].compound_statement); }
-#line 3973 "parser/parser.c"
+#line 3976 "parser/parser.c"
     break;
 
   case 181:
-#line 963 "parser/parser.y"
+#line 966 "parser/parser.y"
                                { (yyval.statement) = (yyvsp[0].statement); }
-#line 3979 "parser/parser.c"
+#line 3982 "parser/parser.c"
     break;
 
   case 182:
-#line 964 "parser/parser.y"
+#line 967 "parser/parser.y"
                               { (yyval.statement) = (yyvsp[0].statement); }
-#line 3985 "parser/parser.c"
+#line 3988 "parser/parser.c"
     break;
 
   case 183:
-#line 965 "parser/parser.y"
+#line 968 "parser/parser.y"
                               { (yyval.statement) = (yyvsp[0].statement); }
-#line 3991 "parser/parser.c"
+#line 3994 "parser/parser.c"
     break;
 
   case 184:
-#line 966 "parser/parser.y"
+#line 969 "parser/parser.y"
                          { (yyval.statement) = (yyvsp[0].statement); }
-#line 3997 "parser/parser.c"
+#line 4000 "parser/parser.c"
     break;
 
   case 185:
-#line 970 "parser/parser.y"
+#line 973 "parser/parser.y"
                                    {
 		if ((*error = labeled_statement_label_callback(&(yyval.statement), (yyvsp[-2].identifier), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4006 "parser/parser.c"
+#line 4009 "parser/parser.c"
     break;
 
   case 186:
-#line 973 "parser/parser.y"
+#line 976 "parser/parser.y"
                                                    {
 		if ((*error = labeled_statement_case_callback(&(yyval.statement), (yyvsp[-2].expression), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4015 "parser/parser.c"
+#line 4018 "parser/parser.c"
     break;
 
   case 187:
-#line 976 "parser/parser.y"
+#line 979 "parser/parser.y"
                                   {
 		if ((*error = labeled_statement_default_callback(&(yyval.statement), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4024 "parser/parser.c"
+#line 4027 "parser/parser.c"
     break;
 
   case 188:
-#line 982 "parser/parser.y"
+#line 985 "parser/parser.y"
                  {
 		(yyval.statement_ll) = NULL;
 	}
-#line 4032 "parser/parser.c"
+#line 4035 "parser/parser.c"
     break;
 
   case 189:
-#line 984 "parser/parser.y"
+#line 987 "parser/parser.y"
                              {
 		(yyval.statement_ll) = (yyvsp[0].statement_ll);
 	}
-#line 4040 "parser/parser.c"
+#line 4043 "parser/parser.c"
     break;
 
   case 190:
-#line 989 "parser/parser.y"
+#line 992 "parser/parser.y"
                  {
 		(yyval.statement_ll) = NULL;
 	}
-#line 4048 "parser/parser.c"
+#line 4051 "parser/parser.c"
     break;
 
   case 191:
-#line 991 "parser/parser.y"
+#line 994 "parser/parser.y"
                            {
 		(yyval.statement_ll) = (yyvsp[0].statement_ll);
 	}
-#line 4056 "parser/parser.c"
+#line 4059 "parser/parser.c"
     break;
 
   case 192:
-#line 996 "parser/parser.y"
+#line 999 "parser/parser.y"
                      {
 			(yyval.line) = *line;
 			if ((*error = compound_statement_open_callback(scope)))
 				YYABORT;
 		}
-#line 4066 "parser/parser.c"
+#line 4069 "parser/parser.c"
     break;
 
   case 193:
-#line 1000 "parser/parser.y"
+#line 1003 "parser/parser.y"
                                                                     {
 			compound_statement_close_callback(scope);
 		}
-#line 4074 "parser/parser.c"
+#line 4077 "parser/parser.c"
     break;
 
   case 194:
-#line 1002 "parser/parser.y"
+#line 1005 "parser/parser.y"
                       {
 			if ((*error = compound_statement_statements_callback(&(yyval.compound_statement), (yyvsp[-4].line), (yyvsp[-3].statement_ll), (yyvsp[-2].statement_ll))))
 				YYABORT;
 		}
-#line 4083 "parser/parser.c"
+#line 4086 "parser/parser.c"
     break;
 
   case 195:
-#line 1009 "parser/parser.y"
+#line 1012 "parser/parser.y"
                       {
 		(yyval.statement_ll) = (yyvsp[0].statement_ll);
 	}
-#line 4091 "parser/parser.c"
+#line 4094 "parser/parser.c"
     break;
 
   case 196:
-#line 1011 "parser/parser.y"
+#line 1014 "parser/parser.y"
                                          {
 		declaration_list_merge_callback(&(yyval.statement_ll), (yyvsp[-1].statement_ll), (yyvsp[0].statement_ll));
 	}
-#line 4099 "parser/parser.c"
+#line 4102 "parser/parser.c"
     break;
 
   case 197:
-#line 1016 "parser/parser.y"
+#line 1019 "parser/parser.y"
                     {
 		if ((*error = statement_list_head_callback(&(yyval.statement_ll), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4108 "parser/parser.c"
+#line 4111 "parser/parser.c"
     break;
 
   case 198:
-#line 1019 "parser/parser.y"
+#line 1022 "parser/parser.y"
                                      {
 		if ((*error = statement_list_append_callback(&(yyval.statement_ll), (yyvsp[-1].statement_ll), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4117 "parser/parser.c"
+#line 4120 "parser/parser.c"
     break;
 
   case 199:
-#line 1025 "parser/parser.y"
+#line 1028 "parser/parser.y"
               {
 		(yyval.statement) = NULL;
 	}
-#line 4125 "parser/parser.c"
+#line 4128 "parser/parser.c"
     break;
 
   case 200:
-#line 1027 "parser/parser.y"
+#line 1030 "parser/parser.y"
                               { (yyval.line) = *line; }
-#line 4131 "parser/parser.c"
+#line 4134 "parser/parser.c"
     break;
 
   case 201:
-#line 1027 "parser/parser.y"
+#line 1030 "parser/parser.y"
                                                   {
 		if ((*error = expression_statement_expression_callback(&(yyval.statement), (yyvsp[-1].line), (yyvsp[-2].expression))))
 			YYABORT;
 	}
-#line 4140 "parser/parser.c"
+#line 4143 "parser/parser.c"
     break;
 
   case 202:
-#line 1033 "parser/parser.y"
+#line 1036 "parser/parser.y"
                                                        {
 		if ((*error = selection_statement_if_callback(&(yyval.statement), (yyvsp[-2].expression), (yyvsp[0].statement), NULL, types)))
 			YYABORT;
 	}
-#line 4149 "parser/parser.c"
+#line 4152 "parser/parser.c"
     break;
 
   case 203:
-#line 1036 "parser/parser.y"
+#line 1039 "parser/parser.y"
                                                            {
 		if ((*error = selection_statement_if_callback(&(yyval.statement), (yyvsp[-4].expression), (yyvsp[-2].statement), (yyvsp[0].statement), types)))
 			YYABORT;
 	}
-#line 4158 "parser/parser.c"
+#line 4161 "parser/parser.c"
     break;
 
   case 204:
-#line 1039 "parser/parser.y"
+#line 1042 "parser/parser.y"
                                                 {
 		if ((*error = selection_statement_switch_callback(&(yyval.statement), (yyvsp[-2].expression), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4167 "parser/parser.c"
+#line 4170 "parser/parser.c"
     break;
 
   case 205:
-#line 1045 "parser/parser.y"
+#line 1048 "parser/parser.y"
                                              {
 		if ((*error = iteration_statement_while_callback(&(yyval.statement), (yyvsp[-2].expression), (yyvsp[0].statement), types)))
 			YYABORT;
 	}
-#line 4176 "parser/parser.c"
+#line 4179 "parser/parser.c"
     break;
 
   case 206:
-#line 1048 "parser/parser.y"
+#line 1051 "parser/parser.y"
                                                       {
 		if ((*error = iteration_statement_dowhile_callback(&(yyval.statement), (yyvsp[-5].statement), (yyvsp[-2].expression))))
 			YYABORT;
 	}
-#line 4185 "parser/parser.c"
+#line 4188 "parser/parser.c"
     break;
 
   case 207:
-#line 1051 "parser/parser.y"
+#line 1054 "parser/parser.y"
                                                                             {
 		if ((*error = iteration_statement_for_callback(&(yyval.statement), (yyvsp[-3].statement), (yyvsp[-2].statement), NULL, (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4194 "parser/parser.c"
+#line 4197 "parser/parser.c"
     break;
 
   case 208:
-#line 1054 "parser/parser.y"
+#line 1057 "parser/parser.y"
                                                                                        {
 		if ((*error = iteration_statement_for_callback(&(yyval.statement), (yyvsp[-4].statement), (yyvsp[-3].statement), (yyvsp[-2].expression), (yyvsp[0].statement))))
 			YYABORT;
 	}
-#line 4203 "parser/parser.c"
+#line 4206 "parser/parser.c"
     break;
 
   case 209:
-#line 1060 "parser/parser.y"
+#line 1063 "parser/parser.y"
                               {
 		if ((*error = jump_statement_goto_callback(&(yyval.statement), (yyvsp[-1].identifier))))
 			YYABORT;
 	}
-#line 4212 "parser/parser.c"
+#line 4215 "parser/parser.c"
     break;
 
   case 210:
-#line 1063 "parser/parser.y"
+#line 1066 "parser/parser.y"
                          {
 		if ((*error = jump_statement_continue_callback(&(yyval.statement))))
 			YYABORT;
 	}
-#line 4221 "parser/parser.c"
+#line 4224 "parser/parser.c"
     break;
 
   case 211:
-#line 1066 "parser/parser.y"
+#line 1069 "parser/parser.y"
                       {
 		if ((*error = jump_statement_break_callback(&(yyval.statement))))
 			YYABORT;
 	}
-#line 4230 "parser/parser.c"
+#line 4233 "parser/parser.c"
     break;
 
   case 212:
-#line 1069 "parser/parser.y"
+#line 1072 "parser/parser.y"
                           {(yyval.line) = *line; }
-#line 4236 "parser/parser.c"
+#line 4239 "parser/parser.c"
     break;
 
   case 213:
-#line 1069 "parser/parser.y"
+#line 1072 "parser/parser.y"
                                              {
-		if ((*error = jump_statement_return_callback(&(yyval.statement), (yyvsp[-1].line), NULL)))
+		if ((*error = jump_statement_return_callback(&(yyval.statement), (yyvsp[-1].line), NULL, NULL, NULL, funcname)))
 			YYABORT;
 	}
-#line 4245 "parser/parser.c"
+#line 4248 "parser/parser.c"
     break;
 
   case 214:
-#line 1072 "parser/parser.y"
+#line 1075 "parser/parser.y"
                           {(yyval.line) = *line; }
-#line 4251 "parser/parser.c"
+#line 4254 "parser/parser.c"
     break;
 
   case 215:
-#line 1072 "parser/parser.y"
+#line 1075 "parser/parser.y"
                                                         {
-		if ((*error = jump_statement_return_callback(&(yyval.statement), (yyvsp[-2].line), (yyvsp[-1].expression))))
+		if ((*error = jump_statement_return_callback(&(yyval.statement), (yyvsp[-2].line), rettype, (yyvsp[-1].expression), types, funcname)))
 			YYABORT;
 	}
-#line 4260 "parser/parser.c"
+#line 4263 "parser/parser.c"
     break;
 
   case 216:
-#line 1077 "parser/parser.y"
+#line 1080 "parser/parser.y"
                         {
 		HERE;
 	}
-#line 4268 "parser/parser.c"
+#line 4271 "parser/parser.c"
     break;
 
   case 217:
-#line 1082 "parser/parser.y"
+#line 1085 "parser/parser.y"
                                {
 		HERE;
 	}
-#line 4276 "parser/parser.c"
+#line 4279 "parser/parser.c"
     break;
 
   case 218:
-#line 1084 "parser/parser.y"
+#line 1087 "parser/parser.y"
                                                   {
 		HERE;
 	}
-#line 4284 "parser/parser.c"
+#line 4287 "parser/parser.c"
     break;
 
   case 219:
-#line 1089 "parser/parser.y"
+#line 1092 "parser/parser.y"
                               {
 		if ((*error = external_declaration_function_callback((yyvsp[0].function_definition), asm_writer)))
 			YYABORT;
 	}
-#line 4293 "parser/parser.c"
+#line 4296 "parser/parser.c"
     break;
 
   case 220:
-#line 1092 "parser/parser.y"
+#line 1095 "parser/parser.y"
                         {
 		if ((*error = external_declaration_global_callback((yyvsp[0].statement_ll))))
 			YYABORT;
 	}
-#line 4302 "parser/parser.c"
+#line 4305 "parser/parser.c"
     break;
 
   case 221:
-#line 1098 "parser/parser.y"
+#line 1101 "parser/parser.y"
                                                                  {
-		if ((*error = function_definition_prebody(&(yyval.function_definition), (yyvsp[-1].declaration_specifiers), (yyvsp[0].declarator), scope)))
+		if ((*error = function_definition_prebody(&(yyval.function_definition), (yyvsp[-1].declaration_specifiers), (yyvsp[0].declarator), scope, &rettype, &funcname)))
 			YYABORT;
 	}
-#line 4311 "parser/parser.c"
+#line 4314 "parser/parser.c"
     break;
 
   case 222:
-#line 1101 "parser/parser.y"
+#line 1104 "parser/parser.y"
                              {
 		if ((*error = function_definition_postbody((yyvsp[-1].function_definition), scope)))
 			YYABORT;
 	}
-#line 4320 "parser/parser.c"
+#line 4323 "parser/parser.c"
     break;
 
   case 223:
-#line 1104 "parser/parser.y"
+#line 1107 "parser/parser.y"
           {
 		if ((*error = function_definition_with_specifiers_and_declarator(&(yyval.function_definition), (yyvsp[-2].function_definition), (yyvsp[-1].compound_statement))))
 			YYABORT;
 		tfree((yyvsp[-4].declaration_specifiers)), tfree((yyvsp[-3].declarator));
 	}
-#line 4330 "parser/parser.c"
+#line 4333 "parser/parser.c"
     break;
 
   case 224:
-#line 1108 "parser/parser.y"
+#line 1111 "parser/parser.y"
                                                                                  {
 		CHECK;
 		if ((*error = function_definition_with_declarator(&(yyval.function_definition), NULL, (yyvsp[-1].declarator), NULL, (yyvsp[0].compound_statement))))
 			YYABORT;
 	}
-#line 4340 "parser/parser.c"
+#line 4343 "parser/parser.c"
     break;
 
 
-#line 4344 "parser/parser.c"
+#line 4347 "parser/parser.c"
 
       default: break;
     }
@@ -4390,7 +4393,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (error, scope, types, asm_writer, line, string_counter, YY_("syntax error"));
+      yyerror (error, scope, types, asm_writer, line, section_counter, YY_("syntax error"));
 #else
 # define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
                                         yyssp, yytoken)
@@ -4417,7 +4420,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (error, scope, types, asm_writer, line, string_counter, yymsgp);
+        yyerror (error, scope, types, asm_writer, line, section_counter, yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -4441,7 +4444,7 @@ yyerrlab:
       else
         {
           yydestruct ("Error: discarding",
-                      yytoken, &yylval, error, scope, types, asm_writer, line, string_counter);
+                      yytoken, &yylval, error, scope, types, asm_writer, line, section_counter);
           yychar = YYEMPTY;
         }
     }
@@ -4495,7 +4498,7 @@ yyerrlab1:
 
 
       yydestruct ("Error: popping",
-                  yystos[yystate], yyvsp, error, scope, types, asm_writer, line, string_counter);
+                  yystos[yystate], yyvsp, error, scope, types, asm_writer, line, section_counter);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -4534,7 +4537,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (error, scope, types, asm_writer, line, string_counter, YY_("memory exhausted"));
+  yyerror (error, scope, types, asm_writer, line, section_counter, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -4550,7 +4553,7 @@ yyreturn:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval, error, scope, types, asm_writer, line, string_counter);
+                  yytoken, &yylval, error, scope, types, asm_writer, line, section_counter);
     }
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
@@ -4559,7 +4562,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-                  yystos[+*yyssp], yyvsp, error, scope, types, asm_writer, line, string_counter);
+                  yystos[+*yyssp], yyvsp, error, scope, types, asm_writer, line, section_counter);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -4572,7 +4575,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1114 "parser/parser.y"
+#line 1117 "parser/parser.y"
 
 
 

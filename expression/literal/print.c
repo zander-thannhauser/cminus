@@ -56,8 +56,8 @@ void literal_expression_print(
 		
 		switch (ftype->kind)
 		{
-			case fk_float: fprintf(stream, "%g", this->value._float); break;
-			case fk_double: fprintf(stream, "%lg", this->value._double); break;
+			case fk_float: fprintf(stream, "%f", this->value._float); break;
+			case fk_double: fprintf(stream, "%lf", this->value._double); break;
 			
 			case number_of_float_kinds: abort();
 		}
