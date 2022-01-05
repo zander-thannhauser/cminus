@@ -4,10 +4,10 @@
 #include <memory/tinc.h>
 #include <memory/tfree.h>
 
-#include <type/pointer/struct.h>
+/*#include <type/pointer/struct.h>*/
 #include <type/pointer/new.h>
 
-#include <types/struct.h>
+/*#include <types/struct.h>*/
 
 #include "../new.h"
 
@@ -22,21 +22,51 @@ int new_unary_expression(
 	struct types* types)
 {
 	int error = 0;
+	struct type* type = NULL;
 	ENTER;
 	
-	TODO;
-	#if 0
-	if (inner->kind == ek_literal)
+	switch (kind)
 	{
-		// constant fold
-		TODO;
-	}
-	else
-	{
-		struct type* type = NULL;
-		
-		switch (kind)
+		case uek_address_of:
 		{
+			error = new_pointer_type(
+				(struct pointer_type**) &type,
+				/* qualifiers:  */ NULL,
+				/* dereference: */ inner->type);
+			break;
+		}
+		
+		
+		default:
+			dpv(kind);
+			TODO;
+			break;
+	}
+	
+	struct unary_expression* this = NULL;
+	
+	if (!error)
+		error = new_expression(
+			(struct expression**) &this,
+			ek_unary, &unary_expression_inheritance,
+			type, sizeof(*this));
+	
+	if (!error)
+	{
+		this->kind = kind;
+		this->inner = tinc(inner);
+		
+		*new = (struct expression*) this;
+	}
+	
+	tfree(type);
+	
+	EXIT;
+	return error;
+}
+
+#if 0
+
 			case uek_dereference:
 			{
 				if (inner->type->kind != tk_pointer)
@@ -66,16 +96,8 @@ int new_unary_expression(
 				
 				break;
 			}
-			
-			case uek_address_of:
-			{
-				error = new_pointer_type(
-					(struct pointer_type**) &type,
-					NULL, inner->type);
-				
-				break;
-			}
-			
+
+
 			case uek_logical_negate:
 			{
 				if (inner->type->kind != tk_primitive)
@@ -88,38 +110,7 @@ int new_unary_expression(
 				TODO; // cast to bool
 				break;
 			}
-			
-			default:
-				dpv(kind);
-				TODO;
-				break;
-		}
-		
-		struct unary_expression* this = NULL;
-		
-		if (!error)
-			error = new_expression(
-				(struct expression**) &this,
-				ek_unary, &unary_expression_inheritance,
-				type, sizeof(*this));
-		
-		if (!error)
-		{
-			this->kind = kind;
-			this->inner = tinc(inner);
-			
-			*new = (struct expression*) this;
-		}
-		
-		tfree(type);
-	}
-	#endif
-	
-	EXIT;
-	return error;
-}
-
-
+#endif
 
 
 

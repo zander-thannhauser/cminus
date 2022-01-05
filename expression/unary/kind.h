@@ -11,6 +11,8 @@ enum unary_expression_kind
 	uek_numeric_negate,
 	uek_bitwise_negate,
 	uek_logical_negate,
+	
+	number_of_unary_expressions,
 };
 
 #endif

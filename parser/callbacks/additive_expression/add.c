@@ -55,6 +55,20 @@ int additive_expression_add_callback(
 		
 		tfree(cast_left), tfree(cast_right);
 	}
+	else if (ltype->kind == tk_float && rtype->kind == tk_integer)
+	{
+		struct expression *cast_right = NULL;
+		
+		error = 0
+			?: new_cast_expression(&cast_right, ltype, right, types)
+			?: new_binary_expression(retval, bek_add, left, cast_right, types);
+		
+		tfree(cast_right);
+	}
+	else if (ltype->kind == tk_integer && rtype->kind == tk_float)
+	{
+		TODO;
+	}
 	else
 	{
 		TODO;

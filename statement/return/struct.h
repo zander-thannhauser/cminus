@@ -1,4 +1,6 @@
 
+#include <stdbool.h>
+
 struct expression;
 
 #include "../struct.h"
@@ -7,7 +9,7 @@ struct return_statement
 {
 	struct statement super;
 	
-	bool is_integer_result;
+	bool is_float_result;
 	
 	char* funcname;
 	struct expression* return_value; // optional

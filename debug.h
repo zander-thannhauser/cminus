@@ -1,5 +1,5 @@
 
-#ifdef DEBUGGING
+#ifndef RELEASE
 	#include <assert.h>
 	#include <stdio.h>
 	#include <dirent.h>
@@ -9,7 +9,6 @@
 	#include <sys/mount.h>
 	#include <locale.h>
 	#include <limits.h>
-/*	#include <search.h>*/
 	#include <string.h>
 	#include <getopt.h>
 	#include <ftw.h>
@@ -26,7 +25,10 @@
 	#include <sys/wait.h>
 	#include <stdbool.h>
 	#include <linux/limits.h>
+#endif
 
+#ifdef DEBUGGING
+	#if defined DEBUGGING
 	extern int debug_depth;
 	
 	#define TODO \
@@ -77,12 +79,12 @@
 	#define dpvsn(str, len) \
 		assert(debug_depth >= 0), \
 		printf((_Generic(str, \
-			char*:    "%*s" #str " == " "\".*%s\"\n", \
-			const char*:    "%*s" #str " == " "\".*%s\"\n", \
-			wchar_t*: "%*s" #str " == " "L\"%.*ls\"\n", \
+			char*:          "%*s" #str " == " "\"%.*s\"\n", \
+			const char*:    "%*s" #str " == " "\"%.*s\"\n", \
+			wchar_t*:       "%*s" #str " == " "L\"%.*ls\"\n", \
 			const wchar_t*: "%*s" #str " == " "L\"%.*ls\"\n", \
 			default:  "%*s" #str " == " "(unknown) %i,%p\n")), \
-			debug_depth, "", (int) len, str);
+			debug_depth, "", (int) (len), str);
 	
 	#define dperror(val) \
 		assert(debug_depth >= 0),\
@@ -183,6 +185,7 @@
 		assert(debug_depth >= 0),\
 		printf("%*s" format, debug_depth, "", ## __VA_ARGS__)
 	
+	#endif
 #else
 	#include <assert.h>
 	
@@ -195,6 +198,7 @@
 	#define dpvb(x) ;
 	#define dpvc(x) ;
 	#define dpvo(x) ;
+	#define dpvsn(_, __) ;
 	
 	#define ENTER
 	#define EXIT

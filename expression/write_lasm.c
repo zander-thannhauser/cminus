@@ -1,7 +1,9 @@
 
 #include <debug.h>
 
-#include <asm/writer/comment.h>
+#ifdef VERBOSE_ASSEMBLY
+#include <asm/writer/indent.h>
+#endif
 
 #include "struct.h"
 #include "inheritance.h"
@@ -19,7 +21,9 @@ int expression_write_lasm(struct expression* this, struct asm_writer* writer)
 	
 	error = (this->inheritance->write_lasm)(this, writer);
 	
-	asm_writer_comment(writer, "&(%E)", this);
+	#ifdef VERBOSE_ASSEMBLY
+	asm_writer_indent2(writer, "&(%E)", this);
+	#endif
 	
 	EXIT;
 	return error;

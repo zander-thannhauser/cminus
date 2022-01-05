@@ -1,15 +1,25 @@
 
 #include <debug.h>
 
-/*#include <asm/tables/pktors.h>*/
+#include <asm/tables/iktors.h>
 
 #include <type/float/struct.h>
+#include <type/integer/struct.h>
 
-#include <asm/location/struct.h>
+/*#include <asm/location/struct.h>*/
 
 #include <asm/writer/write/movf.h>
-
+#include <asm/writer/write/movi.h>
+#include <asm/writer/write/itof.h>
+#include <asm/writer/write/ftoi.h>
+#include <asm/writer/write/movsx.h>
+/*#include <asm/writer/write/chint.h>*/
+#include <asm/writer/write/chfloat.h>
 #include <expression/write_rasm.h>
+
+#ifdef VERBOSE_ASSEMBLY
+#include <asm/writer/unindent.h>
+#endif
 
 #include "struct.h"
 #include "write_rasm.h"
@@ -26,62 +36,115 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 	
 	if (bt->kind == tk_integer && at->kind == tk_integer)
 	{
-	/*	struct primitive_type* const pbt = (typeof(pbt)) bt;*/
-	/*	struct primitive_type* const pat = (typeof(pat)) at;*/
-		// use asm_writer_write_mov();
-		TODO;
+		struct integer_type* const ibt = (typeof(ibt)) bt;
+		struct integer_type* const iat = (typeof(iat)) at;
+		
+		asm_writer_write_movi_to(writer, 0, stackptr, working_1, ibt->kind);
+		
+		if ((ibt->kind & ~1) == (iat->kind & ~1))
+		{
+			// same-sized integers: nothing to do
+		}
+		else if ((ibt->kind & 1) && (iat->kind & 1))
+		{
+			// unsigned to unsigned
+			if (ibt->kind < iat->kind)
+			{
+				// getting larger
+				TODO;
+			}
+			else
+			{
+				// getting smaller
+				TODO;
+			}
+		}
+		else if (!(ibt->kind & 1) && (iat->kind & 1))
+		{
+			// signed to unsigned
+			if (ibt->kind < iat->kind)
+			{
+				// getting larger
+				TODO;
+			}
+			else
+			{
+				// getting smaller
+				TODO;
+			}
+		}
+		else if ((ibt->kind & 1) && !(iat->kind & 1))
+		{
+			// unsigned to signed
+			if (ibt->kind < iat->kind)
+			{
+				// getting larger
+				TODO;
+			}
+			else
+			{
+				// getting smaller
+				TODO;
+			}
+		}
+		else
+		{
+			// signed to signed
+			if (ibt->kind < iat->kind)
+			{
+				// getting larger
+				asm_writer_write_movsx(writer,
+					working_1, iktors[ibt->kind],
+					working_1, iktors[iat->kind]);
+			}
+			else
+			{
+				// getting smaller
+			}
+		}
+		
+		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
+	}
+	else if (bt->kind == tk_integer && at->kind == tk_float)
+	{
+		struct integer_type* const ibt = (typeof(ibt)) bt;
+		struct float_type* const fat = (typeof(fat)) at;
+		
+		asm_writer_write_itof(writer, 0, stackptr, ibt->kind, working_f1, fat->kind);
+		
+		asm_writer_write_movf_from(writer, working_f1, 0, stackptr, fat->kind);
+	}
+	else if (bt->kind == tk_float && at->kind == tk_integer)
+	{
+		struct float_type* const fbt = (typeof(fbt)) bt;
+		struct integer_type* const iat = (typeof(iat)) at;
+		
+		asm_writer_write_ftoi(writer, 0, stackptr, fbt->kind, working_1);
+		
+		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
 	}
 	else if (bt->kind == tk_float && at->kind == tk_float)
 	{
 		struct float_type* const fbt = (typeof(fbt)) bt;
 		struct float_type* const fat = (typeof(fat)) at;
 		
-		asm_writer_write_movf(writer,
-			ASMOFFS(0), fbt->kind,
-			ASMFREG(working_1), fat->kind);
+		asm_writer_write_chfloat(writer,
+			0, stackptr, fbt->kind,
+			working_f1, fat->kind);
 		
-		asm_writer_write_movf(writer,
-			ASMFREG(working_1), fat->kind,
-			ASMOFFS(0), fat->kind);
+		asm_writer_write_movf_from(writer,
+			working_f1,
+			0, stackptr,
+			fat->kind);
 	}
 	else
 	{
 		error = 1;
 		TODO;
 	}
-	#if 0
-	// checked in 'new()':
-	assert(at->kind == tk_primitive || at->kind == tk_pointer);
-	assert(bt->kind == tk_primitive || bt->kind == tk_pointer);
 	
-	enum primitive_kind const bk = (bt->kind == tk_pointer) ? pk_unsigned_long : pbt->kind;
-	enum primitive_kind const ak = (at->kind == tk_pointer) ? pk_unsigned_long : pat->kind;
-	
-	const enum register_size brs = pktors[bk], ars = pktors[ak];
-	
-	if (bk == ak) { // same type?
-		HERE;
-	} else if (bk == pk_float && ak == pk_double) { // float -> double?
-		TODO;
-	} else if (bk == pk_double && ak == pk_float) { // double -> float?
-		TODO;
-	} else if (bk == pk_float) { // float -> *?
-		TODO;
-	} else if (bk == pk_double) { // double -> *?
-		TODO;
-	} else if (ak == pk_float) { // * -> float?
-		TODO;
-	} else if (ak == pk_double) { // * -> double?
-		TODO;
-	} else if (brs == ars) { // are register sizes equal?
-		TODO;
-	} else if (ars > brs) { // is after larger than before?
-		// mov with zeros
-		TODO;
-	} else {
-		// truncate
-		TODO;
-	}
+	#ifdef VERBOSE_ASSEMBLY
+	asm_writer_unindent(writer);
 	#endif
 	
 	EXIT;

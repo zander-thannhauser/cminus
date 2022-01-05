@@ -26,14 +26,14 @@ int jump_statement_return_callback(
 	
 	assert(name);
 	
-	bool is_integer_result = rettype->kind != tk_float;
+	bool is_float_result = (rettype->kind == tk_float);
 	
 	struct expression* casted = NULL;
 	
 	error = 0
 		?: new_cast_expression(&casted, rettype, expression, types)
 		?: new_return_statement(
-			(struct return_statement**) out, line, is_integer_result, name, casted);
+			(struct return_statement**) out, line, is_float_result, name, casted);
 	
 	tfree(casted);
 	tfree(expression);
@@ -41,4 +41,9 @@ int jump_statement_return_callback(
 	EXIT;
 	return error;
 }
+
+
+
+
+
 

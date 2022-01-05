@@ -5,13 +5,17 @@
 /*#include <asm/tables/instrs.h>*/
 /*#include <asm/tables/intregs.h>*/
 
-#include <asm/writer/indent.h>
+/*#include <asm/writer/indent.h>*/
+
+#ifdef VERBOSE_ASSEMBLY
 #include <asm/writer/unindent.h>
-#include <asm/writer/comment.h>
-#include <asm/writer/write.h>
+#endif
+/*#include <asm/writer/comment.h>*/
+/*#include <asm/writer/write.h>*/
 
 /*#include <type/primitive/struct.h>*/
 
+#include <expression/write_lasm.h>
 #include <expression/write_rasm.h>
 
 #include "struct.h"
@@ -23,22 +27,22 @@ int unary_expression_write_rasm(struct expression* super, struct asm_writer* wri
 	struct unary_expression* const this = (typeof(this)) super;
 	ENTER;
 	
-	TODO;
-	#if 0
-	asm_writer_indent(writer);
-	
-	error = expression_write_rasm(this->inner, writer);
-	
-	asm_writer_unindent(writer);
-	
 	switch (this->kind)
 	{
 		case uek_address_of:
-			TODO;
+		{
+			expression_write_lasm(this->inner, writer);
+			#ifdef VERBOSE_ASSEMBLY
+			asm_writer_unindent(writer);
+			#endif
 			break;
-			
+		}
+		
 		case uek_dereference:
 		{
+			TODO;
+			#if 0
+			error = expression_write_rasm(this->inner, writer);
 			asm_writer_comment(writer, "dereference:");
 			
 			enum register_size rs;
@@ -81,6 +85,7 @@ int unary_expression_write_rasm(struct expression* super, struct asm_writer* wri
 				// dereference struct/union
 				TODO;
 			}
+			#endif
 			break;
 		}
 		case uek_numeric_plus:
@@ -98,8 +103,11 @@ int unary_expression_write_rasm(struct expression* super, struct asm_writer* wri
 		case uek_logical_negate:
 			TODO;
 			break;
+		
+		default:
+			TODO;
+			break;
 	}
-	#endif
 	
 	EXIT;
 	return error;

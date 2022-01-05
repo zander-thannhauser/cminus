@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdlib.h>
 #include <inttypes.h>
 
@@ -12,7 +13,7 @@
 
 // refer to data in register
 #define ASMREG(reg) \
-	&(struct asm_location) { .kind = al_register, ._register = reg}
+	&(struct asm_location) { .kind = al_int_register, ._register = reg}
 
 // refer to data in float register
 #define ASMFREG(reg) \
@@ -27,8 +28,8 @@
 	&(struct asm_location) { .kind = al_literal, .literal = lit}
 
 // refer to data stored at an offset location to the stack.
-#define ASMOFF(off) \
-	&(struct asm_location) { .kind = al_offset, .offset = off}
+#define ASMOFFB(off) \
+	&(struct asm_location) { .kind = al_offsetb, .offset = off}
 
 // refer to data stored at an offset location to the stack.
 #define ASMOFFS(off) \
@@ -42,10 +43,10 @@ struct asm_location
 	enum {
 		al_global,
 		al_string,
-		al_offset,
+		al_offsetb,
 		al_offsets,
 		al_literal,
-		al_register,
+		al_int_register,
 		al_float_register,
 		al_deref_register,
 	} kind;
@@ -70,4 +71,4 @@ struct asm_location
 
 
 
-
+#endif

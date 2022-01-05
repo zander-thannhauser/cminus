@@ -1,22 +1,17 @@
 
-int printf(const char*, ...);
+void write(int);
+void exit();
 
-double fmod(double, double);
-
-double add(double a, double b)
+void main ()
 {
-	printf("a = %f\n", a);
-	return a + b;
+	int i, j, k, l;
+	
+	i = 1; j = 0; k = 0; l = 1;
+	
+	write(i && j);
+	write(i && i);
+	write(k && l);
+	write(k && j);
+	
+	exit();
 }
-
-int main()
-{
-	double d;
-	
-	d = add(3.4, 2.0);
-	
-	printf("%f\n", d); 
-	
-	return 0;
-}
-

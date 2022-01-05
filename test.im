@@ -1,0 +1,24 @@
+# 1 "test.cm"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 31 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 32 "<command-line>" 2
+# 1 "test.cm"
+
+void write(int);
+void exit();
+
+void main ()
+{
+ int i, j, k, l;
+
+ i = 1; j = 0; k = 0; l = 1;
+
+ write(i && j);
+ write(i && i);
+ write(k && l);
+ write(k && j);
+
+ exit();
+}

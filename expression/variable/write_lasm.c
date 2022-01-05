@@ -7,14 +7,17 @@
 /*#include <asm/tables/pktors.h>*/
 
 #include <asm/location/struct.h>
-/*#include <asm/writer/comment.h>*/
+#include <asm/writer/comment.h>
 /*#include <asm/writer/write/mov.h>*/
-/*#include <asm/writer/write/push.h>*/
+/*#include <asm/writer/write/pushag.h>*/
 
 /*#include <type/integer/struct.h>*/
 
 #include <asm/writer/write/lea.h>
-#include <asm/writer/write/push.h>
+#include <asm/writer/write/leag.h>
+#include <asm/writer/write/movi.h>
+#include <asm/writer/write/subi.h>
+/*#include <asm/writer/write/push.h>*/
 
 #include <scope/variable.h>
 
@@ -36,10 +39,7 @@ int variable_expression_write_lasm(
 	if (!variable->is_global)
 	{
 		// load effective address
-		asm_writer_write_lea(writer,
-			ASMOFF(variable->offset), working_1);
-		
-		asm_writer_write_push(writer, working_1);
+		asm_writer_write_lea(writer, -variable->offset, baseptr, working_1);
 	}
 	else if (variable->storage_class == sc_static)
 	{
@@ -47,20 +47,23 @@ int variable_expression_write_lasm(
 	}
 	else
 	{
-		TODO;
-		#if 0
-		asm_writer_comment(writer, "... from global:");
-		
-		asm_writer_write(writer,
-			"%s %s@GOTPCREL(%%rip)",
-			instrs1rs[push][quad],
-			variable->name);
-		#endif
+		asm_writer_write_leag(writer, variable->name, working_1);
 	}
+	
+	asm_writer_write_movi_from(writer, working_1, -8, stackptr, ik_unsigned_long);
+	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -8,8 +8,11 @@
 struct binary_expression
 {
 	struct expression super;
+	
 	enum binary_expression_kind kind;
-	bool is_integer_result;
+	
+	bool is_float_result;
+	
 	struct expression* left, *right;
 };
 

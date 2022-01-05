@@ -1,4 +1,6 @@
 
+#ifdef VERBOSE_ASSEMBLY
+
 #include <stdarg.h>
 
 #include <debug.h>
@@ -16,14 +18,26 @@ int asm_writer_comment(struct asm_writer* this, const char* fmt, ...)
 	
 	va_start(args, fmt);
 	
-	for (i = 0, n = this->indent; !error && i < n; i++)
-		fputc(' ', this->out);
+	fprintf(this->stream, "\e[37m/* ");
 	
-	dpvs(fmt);
+	if (this->indent_head)
+	{
+		struct indent_link* link;
+		for (link = this->indent_head; link; link = link->next)
+		{
+			fprintf(this->stream, "%s ", link->value);
+			
+			if (link->next)
+				fprintf(this->stream, "| ");
+		}
+		
+	}
 	
-	fprintf(this->out, "# ");
-	asm_writer_vfprintf(this, fmt, args);
-	fputc('\n', this->out);
+/*	fprintf(this->stream, ":  ");*/
+	
+	asm_writer_vfprintf(this->stream, fmt, args);
+	
+	fprintf(this->stream, " */\e[0m\n");
 	
 	va_end(args);
 	
@@ -31,3 +45,8 @@ int asm_writer_comment(struct asm_writer* this, const char* fmt, ...)
 	return error;
 }
 
+
+
+
+
+#endif

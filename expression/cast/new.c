@@ -35,9 +35,40 @@ int new_cast_expression(
 		// no cast necessary
 		*new = tinc(inner);
 	}
+	#if 0
+	else if (inner->kind == ek_literal)
+	{
+		if (before->kind == tk_integer && after->kind == tk_integer)
+		{
+			TODO;
+		}
+		else if (before->kind == tk_integer && after->kind == tk_float)
+		{
+			struct integer_type* ibt = (typeof(ibt)) before;
+			struct float_type* fat = (typeof(fat)) after;
+			
+			TODO;
+		}
+		else if (before->kind == tk_float && after->kind == tk_integer)
+		{
+			TODO;
+		}
+		else if (before->kind == tk_float && after->kind == tk_float)
+		{
+			TODO;
+		}
+		else
+		{
+			TODO;
+			error = 1;
+		}
+	}
+	#endif
 	else if (
 		false
 		|| (before->kind == tk_integer && after->kind == tk_integer)
+		|| (before->kind == tk_integer && after->kind == tk_float)
+		|| (before->kind == tk_float && after->kind == tk_integer)
 		|| (before->kind == tk_float && after->kind == tk_float))
 	{
 		struct cast_expression* this = NULL;

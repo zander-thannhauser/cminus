@@ -27,6 +27,7 @@ int new_binary_expression(
 {
 	int error = 0;
 /*	enum primitive_kind params_kind;*/
+	struct type* const rtype = right->type;
 	struct type* const ltype = left->type;
 	ENTER;
 	
@@ -61,23 +62,12 @@ int new_binary_expression(
 			}
 			
 			case bek_add:
-			case bek_add_assign:
-			case bek_bitwise_and_assign:
-			case bek_bitwise_or_assign:
-			case bek_bitwise_xor_assign:
 			case bek_divide:
-			case bek_divide_assign:
 			case bek_leftshift:
-			case bek_leftshift_assign:
 			case bek_multiply:
-			case bek_multiply_assign:
 			case bek_rdivide:
-			case bek_rdivide_assign:
 			case bek_rightshift:
-			case bek_rightshift_assign:
-			case bek_regular_assign:
 			case bek_subtract:
-			case bek_subtract_assign:
 				type = tinc(ltype);
 				break;
 			
@@ -97,7 +87,7 @@ int new_binary_expression(
 		{
 			this->kind = kind;
 			
-			this->is_integer_result = type->kind == tk_integer;
+			this->is_float_result = (type->kind == tk_float);
 			
 			this->left = tinc(left);
 			this->right = tinc(right);

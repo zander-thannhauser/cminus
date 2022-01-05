@@ -1,11 +1,11 @@
 
 #include <debug.h>
 
-/*#include "../../tables/intregs.h"*/
+#include "../../tables/floatregs.h"
 
 #include "../../tables/fktors.h"
 
-#include "../../location/write.h"
+/*#include "../../location/write.h"*/
 
 #include "../write.h"
 
@@ -18,19 +18,19 @@ static const char* lookup[number_of_float_kinds] = {
 
 int asm_writer_write_addf(
 	struct asm_writer* this,
-	struct asm_location* src_loc,
-	struct asm_location* dst_loc,
+	enum float_register_id fid1,
+	enum float_register_id fid2,
 	enum float_kind result_kind)
 {
 	int error = 0;
-	char src_buffer[30], dst_buffer[30];
-	enum register_size rs = fktors[result_kind];
+/*	char src_buffer[30], dst_buffer[30];*/
+/*	enum register_size rs = fktors[result_kind];*/
 	ENTER;
 	
 	asm_writer_write(this, "%s %s, %s",
 		lookup[result_kind],
-		write_asm_location(src_loc, rs, src_buffer),
-		write_asm_location(dst_loc, rs, dst_buffer));
+		floatregs[fid1],
+		floatregs[fid2]);
 	
 	EXIT;
 	return error;

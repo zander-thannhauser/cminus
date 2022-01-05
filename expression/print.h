@@ -3,4 +3,4 @@
 
 struct expression;
 
-void expression_print(struct expression* this, FILE* stream);
+int expression_print(struct expression* this, FILE* stream);

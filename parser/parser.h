@@ -44,7 +44,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 42 "parser/parser.y"
+#line 45 "parser/parser.y"
 
 	struct types;
 	struct scope;
@@ -57,7 +57,7 @@ extern int yydebug;
 	#include <enums/storage_class.h>
 	#include <enums/type_qualifier.h>
 	
-	#include <expression/binary/kind.h>
+	#include <expression/assign/kind.h>
 	#include <expression/unary/kind.h>
 
 #line 64 "parser/parser.h"
@@ -137,7 +137,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 65 "parser/parser.y"
+#line 68 "parser/parser.y"
 
 	bool boolean;
 	
@@ -191,7 +191,7 @@ union YYSTYPE
 	enum type_qualifier type_qualifier;
 	enum storage_class storage_class;
 	enum unary_expression_kind unary_expression_kind;
-	enum binary_expression_kind binary_expression_kind;
+	enum assign_expression_kind assign_expression_kind;
 
 #line 197 "parser/parser.h"
 
@@ -204,6 +204,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, unsigned *line, size_t *section_counter);
+int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, char** file, unsigned *line, size_t *section_counter);
 
 #endif /* !YY_YY_PARSER_PARSER_H_INCLUDED  */

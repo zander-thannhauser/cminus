@@ -5,8 +5,9 @@
 #include "inheritance.h"
 #include "print.h"
 
-void type_print(struct type* this, FILE* stream)
+int type_print(struct type* this, char* name, FILE* stream)
 {
+	int error = 0;
 	ENTER;
 	
 	dpv(this);
@@ -16,8 +17,9 @@ void type_print(struct type* this, FILE* stream)
 	
 	assert(this->inheritance->print);
 	
-	(this->inheritance->print)(this, stream);
+	error = (this->inheritance->print)(this, name, stream);
 	
 	EXIT;
+	return error;
 }
 

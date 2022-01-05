@@ -33,10 +33,13 @@
 %parse-param {struct scope *scope}
 %parse-param {struct types *types}
 %parse-param {struct asm_writer* asm_writer}
+%parse-param {char** file}
 %parse-param {unsigned *line}
 %parse-param {size_t *section_counter}
 
+%lex-param {int *error}
 %lex-param {struct scope *scope}
+%lex-param {char** file}
 %lex-param {unsigned *line}
 
 %code requires {
@@ -51,7 +54,7 @@
 	#include <enums/storage_class.h>
 	#include <enums/type_qualifier.h>
 	
-	#include <expression/binary/kind.h>
+	#include <expression/assign/kind.h>
 	#include <expression/unary/kind.h>
 }
 
@@ -115,7 +118,7 @@
 	enum type_qualifier type_qualifier;
 	enum storage_class storage_class;
 	enum unary_expression_kind unary_expression_kind;
-	enum binary_expression_kind binary_expression_kind;
+	enum assign_expression_kind assign_expression_kind;
 };
 
 %destructor { tfree($$); } <*>
@@ -131,7 +134,7 @@
 %destructor {  } <storage_class>
 %destructor {  } <type_qualifier>
 %destructor {  } <unary_expression_kind>
-%destructor {  } <binary_expression_kind>
+%destructor {  } <assign_expression_kind>
 
 %{
 
@@ -286,7 +289,7 @@
 
 struct scope;
 
-int yylex(struct scope *scope, unsigned* line);
+int yylex(int* error, struct scope *scope, char** file, unsigned* line);
 
 %}
 
@@ -321,7 +324,7 @@ int yylex(struct scope *scope, unsigned* line);
 %type <statement> expression_statement
 %type <statement> statement
 %type <statement_ll> statement_list
-%type <binary_expression_kind> assignment_operator
+%type <assign_expression_kind> assignment_operator
 %type <statement_ll> optional_statement_list
 %type <compound_statement> compound_statement
 %type <function_definition> function_definition
@@ -578,24 +581,24 @@ assignment_expression
 	};
 
 assignment_operator
-	: '=' { $$ = bek_regular_assign; }
-	| MUL_ASSIGN { $$ = bek_multiply_assign; }
-	| DIV_ASSIGN { $$ = bek_divide_assign; }
-	| MOD_ASSIGN { $$ = bek_rdivide_assign; }
-	| ADD_ASSIGN { $$ = bek_add_assign; }
-	| SUB_ASSIGN { $$ = bek_subtract_assign; }
-	| LEFT_ASSIGN { $$ = bek_leftshift_assign; }
-	| RIGHT_ASSIGN { $$ = bek_rightshift_assign; }
-	| AND_ASSIGN { $$ = bek_bitwise_and_assign; }
-	| XOR_ASSIGN { $$ = bek_bitwise_xor_assign; }
-	| OR_ASSIGN { $$ = bek_bitwise_or_assign; }
+	: '=' { $$ = aek_regular_assign; }
+	| MUL_ASSIGN { $$ = aek_multiply_assign; }
+	| DIV_ASSIGN { $$ = aek_divide_assign; }
+	| MOD_ASSIGN { $$ = aek_rdivide_assign; }
+	| ADD_ASSIGN { $$ = aek_add_assign; }
+	| SUB_ASSIGN { $$ = aek_subtract_assign; }
+	| LEFT_ASSIGN { $$ = aek_leftshift_assign; }
+	| RIGHT_ASSIGN { $$ = aek_rightshift_assign; }
+	| AND_ASSIGN { $$ = aek_bitwise_and_assign; }
+	| XOR_ASSIGN { $$ = aek_bitwise_xor_assign; }
+	| OR_ASSIGN { $$ = aek_bitwise_or_assign; }
 	;
 
 expression
 	: assignment_expression {
 		$$ = $1;
 	} | expression ',' assignment_expression {
-		if ((*error = expression_comma_callback(&$$, $1, $3)))
+		if ((*error = expression_comma_callback(&$$, $1, $3, types)))
 			YYABORT;
 	} ;
 
@@ -1115,18 +1118,4 @@ function_definition
 	};
 
 %%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

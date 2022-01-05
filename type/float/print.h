@@ -3,6 +3,7 @@
 
 struct type;
 
-void float_type_print(
+int float_type_print(
 	const struct type* super,
+	char* name,
 	FILE* stream);

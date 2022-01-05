@@ -5,6 +5,8 @@
 // order defines type promotion
 // and coercsion, do not change!
 
+// unsigned is odd, signed is even
+
 enum integer_kind
 {
 	ik_signed_char,

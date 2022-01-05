@@ -8,6 +8,6 @@ struct asm_location;
 
 int asm_writer_write_addf(
 	struct asm_writer* this,
-	struct asm_location* src_loc,
-	struct asm_location* dst_loc,
+	enum float_register_id fid1,
+	enum float_register_id fid2,
 	enum float_kind result_kind);

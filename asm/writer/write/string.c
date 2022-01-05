@@ -2,6 +2,7 @@
 #include <debug.h>
 
 #include "../struct.h"
+
 #include "string.h"
 
 int asm_writer_write_string(
@@ -13,15 +14,17 @@ int asm_writer_write_string(
 	unsigned i, n;
 	ENTER;
 	
-	for (i = 0, n = this->indent; !error && i < n; i++)
-		fputc(' ', this->out);
 	
-	fprintf(this->out, ".string_%lu: .ascii \"", string_id);
+	#ifdef VERBOSE_ASSEMBLY
+	assert(!this->indent_head);
+	#endif
+	
+	fprintf(this->stream, ".string_%lu: .ascii \"", string_id);
 	
 	for (i = 0; i < len; i++)
-		fprintf(this->out, "\\x%02hhX", data[i]);
+		fprintf(this->stream, "\\x%02hhX", data[i]);
 	
-	fprintf(this->out, "\"\n");
+	fprintf(this->stream, "\"\n");
 	
 	EXIT;
 	return error;

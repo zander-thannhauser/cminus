@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../struct.h"
@@ -29,3 +30,4 @@ int asm_writer_write_float(
 	EXIT;
 	return error;
 }
+#endif

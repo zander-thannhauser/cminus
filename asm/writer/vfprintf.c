@@ -21,13 +21,12 @@ enum length_modifier {
 	lm_long_double, lm_intmax, lm_size, lm_ptrdiff};
 
 int asm_writer_vfprintf(
-	struct asm_writer* this,
+	FILE* const stream,
 	const char* fmt,
 	va_list vargs)
 {
 	int error = 0;
 	const char* end;
-	FILE* const stream = this->out;
 	enum length_modifier lm;
 	struct { bool pound, zero, minus, space, plus; } flags;
 	struct { bool is_set; unsigned int val; } field_width, digits_of_precision;
@@ -125,42 +124,41 @@ int asm_writer_vfprintf(
 						// printed with an explicit precision 0, the output is
 						// empty.
 					{
-						TODO;
-						#if 0
 						intmax_t value;
-						wchar_t format_string[100], buffer[100];
-						size_t len;
+						char format_string[100];
 						
-						verpv(flags.pound);
-						verpv(flags.zero);
-						verpv(flags.minus);
-						verpv(flags.space);
-						verpv(flags.plus);
+						sprintf(format_string,
+							"%%%.*s%.*s%.*s%.*s%.*s*.*j%c",
+							flags.pound, "#",
+							flags.zero,  "0",
+							flags.minus, "-",
+							flags.space, " ",
+							flags.plus,  "+",
+							*fmt);
 						
-						swprintf(format_string, 100,
-							L"%%%.*s%.*s%.*s%.*s%.*s*.*%c",
-							flags.pound, L"#",
-							flags.zero,  L"0",
-							flags.minus, L"-",
-							flags.space, L" ",
-							flags.plus,  L"+",
-							*format);
+						dpvs(format_string);
 						
-						error = fetch_integer(&value);
+						switch (lm)
+						{
+							case lm_char:      value = va_arg(vargs, unsigned       int); break;
+							case lm_short:     value = va_arg(vargs, unsigned       int); break;
+							case lm_int:       value = va_arg(vargs, unsigned       int); break;
+							case lm_long:      value = va_arg(vargs, unsigned      long); break;
+							case lm_long_long: value = va_arg(vargs, unsigned long long); break;
+							case lm_ptrdiff:   value = va_arg(vargs,          ptrdiff_t); break;
+							case lm_size:      value = va_arg(vargs,            ssize_t); break;
+							case lm_intmax:    value = va_arg(vargs,           intmax_t); break;
+							
+							default: error = e_malformed_format_string; break;
+						}
 						
-						verpv(value);
+						dpv(value);
 						
-						if (!error)
-							len = swprintf(buffer, 100, format_string,
-								field_width.set ? field_width.val : 0,
-								digits_of_precision.set ? digits_of_precision.val : 1,
-								value);
+						fprintf(stream, format_string,
+							field_width.is_set ? field_width.val : 0,
+							digits_of_precision.is_set ? digits_of_precision.val : 1,
+							value);
 						
-						verpv(len);
-						
-						if (!error)
-							error = array_mass_push_n(output, buffer, len);
-						#endif
 						break;
 					}
 					
@@ -179,40 +177,52 @@ int asm_writer_vfprintf(
 						// is 1. When 0 is printed with an explicit precision 0,
 						// the output is empty.
 					{
-						uintmax_t value;
-						char format_string[100];
-						
-						sprintf(format_string,
-							"%%%.*s%.*s%.*s%.*s%.*s*.*j%c",
-							flags.pound, "#",
-							flags.zero,  "0",
-							flags.minus, "-",
-							flags.space, " ",
-							flags.plus,  "+",
-							*fmt);
-						
-						dpvs(format_string);
+						char digits[2 + 2 * 8 + 1];
+						char* e = &digits[2 + 2 * 8 + 1], *m = e;
+						uintmax_t val;
+						unsigned base = *fmt == 'o' ? 8 : *fmt == 'u' ? 10 : 16;
 						
 						switch (lm)
 						{
-							case lm_char:      value = va_arg(vargs,       int); break;
-							case lm_short:     value = va_arg(vargs,       int); break;
-							case lm_int:       value = va_arg(vargs,       int); break;
-							case lm_long:      value = va_arg(vargs,      long); break;
-							case lm_long_long: value = va_arg(vargs, long long); break;
-							case lm_ptrdiff:   value = va_arg(vargs, ptrdiff_t); break;
-							case lm_size:      value = va_arg(vargs,    size_t); break;
-							case lm_intmax:    value = va_arg(vargs,  intmax_t); break;
+							case lm_char:      val = va_arg(vargs, signed       int); break;
+							case lm_short:     val = va_arg(vargs, signed       int); break;
+							case lm_int:       val = va_arg(vargs, signed       int); break;
+							case lm_long:      val = va_arg(vargs, signed      long); break;
+							case lm_long_long: val = va_arg(vargs, signed long long); break;
 							
-							default: error = e_malformed_format_string; break;
+							case lm_intmax:  val = va_arg(vargs,   intmax_t); break;
+							case lm_size:    val = va_arg(vargs,    ssize_t); break;
+							case lm_ptrdiff: val = va_arg(vargs,  ptrdiff_t); break;
+							
+							default:
+								val = 0;
+								error = e_malformed_format_string;
+								break;
 						}
 						
-						dpv(value);
+						if (!val)
+							*--m = '0';
+						else while (val) {
+							*--m = "0123456789ABCDEF"[val % base];
+							val /= base;
+						}
 						
-						fprintf(stream, format_string,
-							field_width.is_set ? field_width.val : 0,
-							digits_of_precision.is_set ? digits_of_precision.val : 1,
-							value);
+						if (flags.pound)
+						{
+							*--m = 'x';
+							*--m = '0';
+						}
+						
+						size_t len = e - m;
+						
+						const char* const padding = flags.zero ? "0" : " ";
+						if (field_width.is_set)
+							while (field_width.val-- > len)
+								if (fwrite(padding, 1, 1, stream) == EOF)
+									return EOF;
+						
+						if (fwrite(m, 1, len, stream) < len)
+							return EOF;
 						
 						break;
 					}
@@ -482,10 +492,18 @@ int asm_writer_vfprintf(
 						break;
 					}
 					
-					case 'T':
+					case 't':
 					{
 						struct type* type = va_arg(vargs, struct type*);
-						type_print(type, stream);
+						type_print(type, NULL, stream);
+						break;
+					}
+					
+					case 'T':
+					{
+						char* name = va_arg(vargs, char*);
+						struct type* type = va_arg(vargs, struct type*);
+						type_print(type, name, stream);
 						break;
 					}
 					

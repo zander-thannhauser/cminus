@@ -1,7 +1,12 @@
 
+#include <stdio.h>
+
 struct asm_writer;
 
 int asm_writer_vfprintf(
-	struct asm_writer* this,
+	FILE* const stream,
 	const char* fmt,
 	va_list vargs);
+
+
+

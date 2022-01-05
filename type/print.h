@@ -3,4 +3,4 @@
 
 struct type;
 
-void type_print(struct type* this, FILE* stream);
+int type_print(struct type* this, char* name, FILE* stream);

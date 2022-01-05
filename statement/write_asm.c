@@ -18,6 +18,11 @@ int statement_write_asm(struct statement* this, struct asm_writer* writer)
 	
 	error = (this->inheritance->write_asm)(this, writer);
 	
+	if (error)
+	{
+		CHECK;
+	}
+	
 	EXIT;
 	return error;
 }

@@ -2,25 +2,32 @@
 #include <stdlib.h>
 #include <debug.h>
 
-#include <macros/min.h>
+/*#include <macros/min.h>*/
 
-#include <type/struct.h>
+#include <type/float/struct.h>
 
 /*#include <asm/tables/instrs.h>*/
 #include <asm/enums/intregs.h>
 #include <asm/enums/floatregs.h>
 
-#include <asm/location/struct.h>
+/*#include <asm/location/struct.h>*/
 
+#ifdef VERBOSE_ASSEMBLY
 #include <asm/writer/comment.h>
-/*#include <asm/writer/indent.h>*/
-#include <asm/writer/write/pop.h>
+#include <asm/writer/indent.h>
+#include <asm/writer/unindent.h>
+#endif
+
+/*#include <asm/writer/write/pop.h>*/
+/*#include <asm/writer/write/push.h>*/
 #include <asm/writer/write/call.h>
 #include <asm/writer/write/mov.h>
-#include <asm/writer/write/add.h>
-#include <asm/writer/write/sub.h>
-#include <asm/writer/write/push.h>
-/*#include <asm/writer/unindent.h>*/
+#include <asm/writer/write/movi.h>
+#include <asm/writer/write/movf.h>
+#include <asm/writer/write/integer.h>
+#include <asm/writer/write/addi.h>
+#include <asm/writer/write/subi.h>
+/*#include <asm/writer/write/push.h>*/
 
 #include <expression/write_rasm.h>
 
@@ -63,11 +70,15 @@ int function_call_expression_write_rasm(
 	if (((1 + this->arguments->n - n_int_params - n_float_params) % 2))
 	{
 		extra_push = true;
+		#ifdef VERBOSE_ASSEMBLY
 		asm_writer_comment(writer, "ensuring the stack frame is 16-byte aligned:");
-		asm_writer_write_sub(writer,
-			ASMLIT(8),
-			ASMREG(stackptr),
-			ik_unsigned_long);
+		#endif
+		
+		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_indent2(writer, "<stack-align>");
+		#endif
 	}
 	
 	// evaluate function pointer
@@ -142,54 +153,79 @@ int function_call_expression_write_rasm(
 	// pop floats off the stack, assigning them registers:
 	for (i = 0, n = n_float_params, reg = first_fparameter; !error && i < n; i++)
 	{
-		asm_writer_write_pop(writer, working_1);
+		asm_writer_write_movf_to(writer,
+			0, stackptr,
+			reg++,
+			fk_double);
 		
-		asm_writer_write_mov(writer,
-			ASMREG(working_1), ik_unsigned_long,
-			ASMFREG(reg++), ik_unsigned_long);
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
 	}
 	
 	// pop integer off the stack, assigning them registers:
 	for (i = 0, n = n_int_params, reg = first_parameter; !error && i < n; i++)
-		asm_writer_write_pop(writer, reg++);
+	{
+		asm_writer_write_movi_to(writer, 0, stackptr, reg++, ik_unsigned_long);
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
+	}
 	
 	// reach for function pointer:
-	asm_writer_write_mov(writer,
-		ASMOFFS(8 * (n_overflow_params)), ik_unsigned_long,
-		ASMREG(reg), ik_unsigned_long);
+	asm_writer_write_movi_to(writer,
+		8 * n_overflow_params, stackptr,
+		reg,
+		ik_unsigned_long);
 	
 	// set rax indicating how many floats.
-	asm_writer_write_mov(writer,
-		ASMLIT(n_float_params), ik_unsigned_int,
-		ASMREG(retval), ik_unsigned_int);
+	asm_writer_write_integer(writer,
+		n_float_params,
+		retval,
+		quadword);
 	
 	asm_writer_write_call(writer, reg);
 	
 	// pop remaining parameters:
 	for (i = 0; !error && i < n_overflow_params; i++)
-		asm_writer_write_pop(writer, working_1);
+	{
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
+	}
 	
 	// pop function pointer:
-	asm_writer_write_pop(writer, working_1);
+	asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+	#ifdef VERBOSE_ASSEMBLY
+	asm_writer_unindent(writer);
+	#endif
 	
 	if (extra_push)
-		asm_writer_write_add(writer,
-			ASMLIT(8),
-			ASMREG(stackptr),
-			ik_unsigned_long);
+	{
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
+	}
 	
 	// push retval register
 	if (super->type->kind == tk_float)
 	{
-		asm_writer_write_mov(writer,
-			ASMFREG(fretval), ik_unsigned_long,
-			ASMREG(working_1), ik_unsigned_long);
+		struct float_type *type = (typeof(type)) super->type;
 		
-		asm_writer_write_push(writer, working_1);
+		asm_writer_write_movf_to(writer, fretval, 0, stackptr, type->kind);
+		
+		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	}
 	else
 	{
-		asm_writer_write_push(writer, retval);
+		asm_writer_write_movi_from(writer, retval, -8, stackptr, ik_unsigned_long);
+		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	}
 	
 	EXIT;

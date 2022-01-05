@@ -11,7 +11,8 @@
 #include <type/struct.h>
 
 #include <expression/struct.h>
-#include <expression/binary/new.h>
+#include <expression/unary/new.h>
+#include <expression/assign/new.h>
 #include <expression/cast/new.h>
 
 #include "assignment.h"
@@ -19,7 +20,7 @@
 int assignment_expression_assignment_callback(
 	struct expression** retval,
 	struct expression* left,
-	enum binary_expression_kind kind,
+	enum assign_expression_kind kind,
 	struct expression* right,
 	struct types* types)
 {
@@ -46,7 +47,7 @@ int assignment_expression_assignment_callback(
 	
 		error = 0
 			?: new_cast_expression(&cast_right, left->type, right, types)
-			?: new_binary_expression(retval, kind, left, cast_right, types);
+			?: new_assign_expression(retval, kind, left, cast_right, types);
 		
 		tfree(cast_right);
 	}

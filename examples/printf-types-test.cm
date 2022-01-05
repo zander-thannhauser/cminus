@@ -1,0 +1,28 @@
+
+int printf(const char*, ...);
+
+typedef char x;
+// typedef short x;
+// typedef int x;
+// typedef long x;
+// typedef float x;
+// typedef double x;
+
+int main(int argc, char* const* argv)
+{
+	x a, b, c, d;
+	
+	a = 1, b = 2.5f, c = 3.0;
+	
+	// d = a;
+	d = a + (b + c);
+	
+	printf("a, b, c, d = %hhi, %hhi, %hhi, %hhi\n", a, b, c, d);
+	// printf("a, b, c, d = %hi, %hi, %hi, %hi\n", a, b, c, d);
+	// printf("a, b, c, d = %i, %i, %i, %i\n", a, b, c, d);
+	// printf("a, b, c, d = %li, %li, %li, %li\n", a, b, c, d);
+	// printf("a, b, c, d = %f, %f, %f, %f\n", a, b, c, d);
+	// printf("a, b, c, d = %lf, %lf, %lf, %lf\n", a, b, c, d);
+	
+	return 0;
+}

@@ -3,6 +3,7 @@
 
 struct type;
 
-void integer_type_print(
+int integer_type_print(
 	const struct type* super,
+	char* name,
 	FILE* stream);

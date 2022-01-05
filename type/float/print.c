@@ -3,6 +3,8 @@
 
 #include <debug.h>
 
+#include <misc/sfprintf.h>
+
 #include "struct.h"
 #include "print.h"
 
@@ -12,26 +14,36 @@ static const char* lookup[number_of_float_kinds] =
 	[fk_double] = "double",
 };
 
-void float_type_print(
+int float_type_print(
 	const struct type* super,
+	char* name,
 	FILE* stream)
 {
+	int error = 0;
 	const struct float_type* const this = (typeof(this)) super;
 	ENTER;
 	
-	if (super->qualifiers[tq_constant]) fputs("const ", stream);
-	if (super->qualifiers[tq_volatile]) fputs("volatile ", stream);
+	if (!error && super->qualifiers[tq_constant])
+		error = sfprintf(stream, "const ");
 	
-	const char* name = lookup[this->kind];
+	if (!error && super->qualifiers[tq_volatile])
+		error = sfprintf(stream, "volatile ");
 	
-	dpvs(name);
+	const char* tname = lookup[this->kind];
 	
-	assert(name);
+	dpvs(tname);
+	assert(tname);
 	
-	fwrite(name, strlen(name), 1, stream);
+	if (!error)
+		error = sfprintf(stream, "%s", tname);
+	
+	if (!error && name)
+		error = sfprintf(stream, " %s", name);
 	
 	EXIT;
+	return error;
 }
+
 
 
 

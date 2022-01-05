@@ -34,6 +34,7 @@ int main(int argc, char* const* argv)
 	struct scope *scope = NULL;
 	struct types* types = NULL;
 	struct asm_writer* asm_writer = NULL;
+	char* file = NULL;
 	unsigned line = 1;
 	size_t section_counter = 0;
 	ENTER;
@@ -59,7 +60,12 @@ int main(int argc, char* const* argv)
 		yyin = fin;
 		
 		// invoke parser:
-		yyparse(&error, scope, types, asm_writer, &line, &section_counter);
+		yyparse(&error, scope, types, asm_writer, &file, &line, &section_counter);
+	}
+	
+	if (error)
+	{
+		CHECK;
 	}
 	
 	tfree(asm_writer);
@@ -74,6 +80,8 @@ int main(int argc, char* const* argv)
 	yylex_destroy();
 	if (fin) fclose(fin);
 	if (fout) fclose(fout);
+	
+	tfree(file);
 	
 	// free cmdln flags:
 	tfree(flags);

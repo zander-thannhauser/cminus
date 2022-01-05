@@ -6,8 +6,9 @@ CFLAGS += -Wfatal-errors
 
 CPPFLAGS += -D _GNU_SOURCE
 CPPFLAGS += -I .
+CPPFLAGS += -isystem ./extern
 
-buildtype = release
+buildtype ?= release
 
 ifeq ($(buildtype), release)
 CPPFLAGS += -D RELEASE
@@ -50,18 +51,22 @@ CFLAGS += -Wno-maybe-uninitialized
 #LDLIBS += -lunwind
 endif
 
+asm ?= quiet
+
+ifeq ($(asm), quiet)
+CPPFLAGS += -D QUIET_ASSEMBLY
+else ifeq ($(asm), verbose)
+CPPFLAGS += -D VERBOSE_ASSEMBLY
+endif
+
 YACC = bison
 YFLAGS += --warnings=error=all
 
 LEX = flex
 
-default: gen/$(buildtype)/cminus
+buildprefix = $(buildtype)/$(asm)
 
-%.c %.h: %.y
-	$(YACC) $(YFLAGS) --output=$*.c --defines=$*.h $< 
-
-%.c %.h: %.l
-	$(LEX) $(LFLAGS) --outfile=$*.c --header-file=$*.h $< 
+default: gen/$(buildprefix)/cminus
 
 .PRECIOUS: %/
 %/:
@@ -73,8 +78,9 @@ gen/srclist.mk: | gen/
 srcs += ./parser/scanner.c ./parser/parser.c
 include gen/srclist.mk
 
-ARGS += ./test.cm
-#ARGS += ./examples/system/helloworld.i
+#ARGS += ./test.cm
+ARGS += ./test.im
+#ARGS += ./examples/system/helloworld.im
 
 #ARGS += ./examples/add.cm
 #ARGS += ./examples/add.float.cm
@@ -170,42 +176,51 @@ ARGS += ./test.cm
 
 ARGS += -o ./test.s
 
-rrun: gen/$(buildtype)/cminus
+rrun: gen/$(buildprefix)/cminus
 	$< ${ARGS}
 
-valrun: gen/$(buildtype)/cminus
+valrun: gen/$(buildprefix)/cminus
 	valgrind -- $< ${ARGS}
 
-valrun-stop: gen/$(buildtype)/cminus
+valrun-stop: gen/$(buildprefix)/cminus
 	valgrind --gen-suppressions=yes -- $< ${ARGS}
 
-valrun-leak: gen/$(buildtype)/cminus
+valrun-leak: gen/$(buildprefix)/cminus
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -- $< ${ARGS}
 
-gen/$(buildtype)/cminus: $(patsubst %.c,gen/$(buildtype)/%.o,$(srcs))
+gen/$(buildprefix)/cminus: $(patsubst %.c,gen/$(buildprefix)/%.o,$(srcs))
 	$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
-gen/$(buildtype)/%.d: %.c | gen/$(buildtype)/%/
+gen/$(buildprefix)/%.d: %.c | gen/$(buildprefix)/%/
 	$(CPP) $(CPPFLAGS) $< -MM -MT $@ -MF $@ || (gedit $<; false)
 
-gen/$(buildtype)/%.o: %.c gen/$(buildtype)/%.d | gen/$(buildtype)/%/
+gen/$(buildprefix)/%.o: %.c gen/$(buildprefix)/%.d | gen/$(buildprefix)/%/
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@ || (gedit $<; false)
 
-test: gen/$(buildtype)/cminus
-	for f in $$(ls examples/*.cm | sort -V); \
-	do echo "testing '$$f'..."; $< $$f || exit 1; done
+%.c %.h: %.y
+	$(YACC) $(YFLAGS) --output=$*.c --defines=$*.h $< 
 
-valtest: gen/$(buildtype)/cminus
-	for f in $$(ls examples/*.cm | sort -V); \
-	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
+%.c %.h: %.l
+	$(LEX) $(LFLAGS) --outfile=$*.c --header-file=$*.h $< 
 
-full-test: gen/$(buildtype)/cminus
-	for f in $$(find examples -name '*.cm' | sort -V); \
-	do echo "testing '$$f'..."; $< $$f || exit 1; done
+%.im: %.cm
+	$(CPP) -x c $< -o $@
 
-full-valtest: gen/$(buildtype)/cminus
-	for f in $$(find examples -name '*.cm' | sort -V); \
-	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
+#test: gen/$(buildprefix)/cminus
+#	for f in $$(ls examples/*.cm | sort -V); \
+#	do echo "testing '$$f'..."; $< $$f || exit 1; done
+
+#valtest: gen/$(buildprefix)/cminus
+#	for f in $$(ls examples/*.cm | sort -V); \
+#	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
+
+#full-test: gen/$(buildprefix)/cminus
+#	for f in $$(find examples -name '*.cm' | sort -V); \
+#	do echo "testing '$$f'..."; $< $$f || exit 1; done
+
+#full-valtest: gen/$(buildprefix)/cminus
+#	for f in $$(find examples -name '*.cm' | sort -V); \
+#	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
 
 CminusTypeChecker.tgz: \
 		.gitignore compile run *.c *.h makefile README.md \
@@ -217,7 +232,7 @@ clean:
 	for l in $$(cat .gitignore); do rm -rvf $$l; done
 
 ifneq "$(MAKECMDGOALS)" "clean"
-include $(patsubst %.c,gen/$(buildtype)/%.d,$(srcs))
+include $(patsubst %.c,gen/$(buildprefix)/%.d,$(srcs))
 endif
 
 

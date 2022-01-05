@@ -11,12 +11,14 @@ IS			(u|U|l|L)*
 #include <stdio.h>
 
 #include <debug.h>
+
 #include <enums/error.h>
 
 #include <defines/argv0.h>
 
 #include <memory/tmalloc.h>
 #include <memory/tstrdup.h>
+#include <memory/tstrndup.h>
 #include <memory/tinc.h>
 #include <memory/tfree.h>
 
@@ -24,13 +26,14 @@ IS			(u|U|l|L)*
 
 #include "parser.h"
 
-static int check_type();
-static int process_integer_literal();
-static int process_character_literal();
-static int process_float_literal();
-static int process_string_literal();
+static int check_type(int*, struct scope*);
+static int handle_cpp_linemarkers(char** file, unsigned* line);
+static int process_integer_literal(int*);
+static int process_character_literal(int*);
+static int process_float_literal(int*);
+static int process_string_literal(int*);
 
-#define YY_DECL int yylex(struct scope *scope, unsigned* line)
+#define YY_DECL int yylex(int* error, struct scope *scope, char** file, unsigned* line)
 
 %}
 
@@ -84,18 +87,18 @@ static int process_string_literal();
 "volatile"		{ return (VOLATILE); }
 "while"			{ return (WHILE); }
 
-{L}({L}|{D})*		{ return (check_type(scope)); }
+{L}({L}|{D})*		{ return check_type(error, scope); }
 
-0[xX]{H}+{IS}?		{ return (process_integer_literal()); }
-0{D}+{IS}?			{ return (process_integer_literal()); }
-{D}+{IS}?			{ return (process_integer_literal()); }
-L?'(\\.|[^\\'])'	{ return (process_character_literal()); }
+0[xX]{H}+{IS}?		{ return (process_integer_literal(error)); }
+0{D}+{IS}?			{ return (process_integer_literal(error)); }
+{D}+{IS}?			{ return (process_integer_literal(error)); }
+L?'(\\.|[^\\'])'	{ return (process_character_literal(error)); }
 
-{D}+{E}{FS}?			{ return (process_float_literal()); }
-{D}*"."{D}+({E})?{FS}?	{ return (process_float_literal()); }
-{D}+"."{D}*({E})?{FS}?	{ return (process_float_literal()); }
+{D}+{E}{FS}?			{ return (process_float_literal(error)); }
+{D}*"."{D}+({E})?{FS}?	{ return (process_float_literal(error)); }
+{D}+"."{D}*({E})?{FS}?	{ return (process_float_literal(error)); }
 
-L?\"(\\.|[^\\"])*\"	{ return (process_string_literal()); }
+L?\"(\\.|[^\\"])*\"	{ return (process_string_literal(error)); }
 
 "..."		{ return (ELLIPSIS); }
 ">>="		{ return (RIGHT_ASSIGN); }
@@ -144,9 +147,19 @@ L?\"(\\.|[^\\"])*\"	{ return (process_string_literal()); }
 "|"			{ return ('|'); }
 "?"			{ return ('?'); }
 
+"#"\ {D}+\ \"([^\\"])*\"(\ [1234])* {
+	if ((*error = handle_cpp_linemarkers(file, line)))
+		return 0;
+}
+
 \n	{ (*line)++; }
+
 [ \t\v\n\f]	{ }
-.			{ /* ignore bad characters */ }
+
+. {
+	fprintf(stderr, "%s: flex: unknown token starting with: '%s'!\n", argv0, yytext);
+	return 0;
+}
 
 %%
 
@@ -156,11 +169,10 @@ int yywrap()
 }
 
 
-static int check_type(struct scope *scope)
+static int check_type(int* error, struct scope *scope)
 {
 	struct type* type = NULL;
 	int retval;
-	int error = 0;
 	ENTER;
 	
 	dpvs(yytext);
@@ -176,36 +188,73 @@ static int check_type(struct scope *scope)
 	{
 		dpvs(yytext);
 		
-		error = tstrdup(&yylval.identifier, yytext);
+		*error = tstrdup(&yylval.identifier, yytext);
 		
 		retval = IDENTIFIER;
-	}
-	
-	if (error)
-	{
-		// how do I pass this back?
-		printf("error == %i\n", error);
-		abort();
 	}
 	
 	tfree(type);
 	
 	EXIT;
-	return retval;
+	return *error ? 0 : retval;
 }
 
-static int process_integer_literal()
+static int handle_cpp_linemarkers(char** out_file, unsigned* out_line)
+{
+	char* m;
+	int error = 0;
+	unsigned long line;
+	char *start, *end;
+	char* newfile;
+	ENTER;
+	
+	dpvs(yytext);
+	
+	// extract line number:
+	if (errno = 0, line = strtoul(yytext + 2, &m, 10),
+		errno || *m != ' ' || line >= UINT_MAX)
+	{
+		fprintf(stderr, "%s: bad cpp #line!\n", argv0);
+		error = e_bad_input_file;
+	}
+	else if (!(end = index((start = m + 2), '\"')))
+	{
+		fprintf(stderr, "%s: bad cpp #line!\n", argv0);
+		error = e_bad_input_file;
+	}
+	
+	if (!error)
+		error = tstrndup(&newfile, start, end - start);
+		
+	if (!error)
+	{
+		dpv(line);
+		dpvsn(start, end - start);
+		
+		char* oldfile = *out_file;
+		dpvs(oldfile);
+		tfree(oldfile);
+		
+		*out_file = newfile;
+		*out_line = line;
+	}
+	
+	EXIT;
+	return error;
+}
+
+static int process_integer_literal(int* error)
 {
 	int retval = SINT_LITERAL;
-	int error = 0;
 	char* m;
 	ENTER;
 	
 	errno = 0, yylval.sintegerlit = strtoul(yytext, &m, 0);
 	
-	if (errno) {
+	if (errno || *m)
+	{
 		fprintf(stderr, "%s: strtoul(\"%s\"): %m\n", argv0, yytext),
-		error = e_bad_input_file;
+		*error = e_bad_input_file;
 	}
 	else
 	{
@@ -230,25 +279,17 @@ static int process_integer_literal()
 		if (*m)
 		{
 			TODO; // "unknown integer suffix!"
-			error = 1;
+			*error = 1;
 		}
 	}
 	
-	if (error)
-	{
-		// how do I pass this back?
-		printf("error == %i\n", error);
-		abort();
-	}
-	
 	EXIT;
-	return retval;
+	return *error ? 0 : retval;
 }
 
-static int process_character_literal()
+static int process_character_literal(int* error)
 {
 	int retval = SINT_LITERAL;
-	int error = 0;
 	ENTER;
 	
 	dpvs(yytext);
@@ -262,21 +303,13 @@ static int process_character_literal()
 			break;
 	}
 	
-	if (error)
-	{
-		// how do I pass this back?
-		printf("error == %i\n", error);
-		abort();
-	}
-	
 	EXIT;
-	return retval;
+	return *error ? 0 : retval;
 }
 
-static int process_float_literal()
+static int process_float_literal(int* error)
 {
 	int retval = DOUBLE_LITERAL;
-	int error = 0;
 	char* m;
 	ENTER;
 	
@@ -285,7 +318,7 @@ static int process_float_literal()
 	if (errno || (*m != '\0' && *m != 'f'))
 	{
 		fprintf(stderr, "%s: strtold(\"%s\"): %m\n", argv0, yytext),
-		error = e_bad_input_file;
+		*error = e_bad_input_file;
 	}
 	else if (*m == 'f')
 	{
@@ -293,21 +326,13 @@ static int process_float_literal()
 		yylval.floatlit = yylval.doublelit;
 	}
 	
-	if (error)
-	{
-		// how do I pass this back?
-		printf("error == %i\n", error);
-		abort();
-	}
-	
 	EXIT;
-	return retval;
+	return *error ? 0 : retval;
 }
 
-static int process_string_literal()
+static int process_string_literal(int* error)
 {
 	int retval = STRING_LITERAL;
-	int error = 0;
 	char *read;
 	char *write;
 	char* data = NULL;
@@ -315,9 +340,9 @@ static int process_string_literal()
 	
 	dpvs(yytext);
 	
-	error = tmalloc((void**) &data, strlen(yytext) + 1, NULL);
+	*error = tmalloc((void**) &data, strlen(yytext) + 1, NULL);
 	
-	for (read = yytext + 1, write = data; !error && *read != '\"'; )
+	for (read = yytext + 1, write = data; !*error && *read != '\"'; )
 		if (*read != '\\')
 			*write++ = *read++;
 		else switch (*++read)
@@ -328,20 +353,14 @@ static int process_string_literal()
 			
 			default:
 				TODO;
-				error = e_bad_input_file;
+				*error = e_bad_input_file;
 				break;
 		}
 	
-	if (!error)
+	if (!*error)
 		*write++ = '\0';
 	
-	if (error)
-	{
-		// how do I pass this back?
-		printf("error == %i\n", error);
-		abort();
-	}
-	else
+	if (!*error)
 	{
 		dpvs(data);
 		
@@ -352,7 +371,7 @@ static int process_string_literal()
 	tfree(data);
 	
 	EXIT;
-	return retval;
+	return *error ? 0 : retval;
 }
 
 

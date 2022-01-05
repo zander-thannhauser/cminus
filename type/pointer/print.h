@@ -1,6 +1,7 @@
 
 struct type;
 
-void pointer_type_print(
+int pointer_type_print(
 	const struct type* super,
+	char* name,
 	FILE* stream);

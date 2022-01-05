@@ -5,8 +5,9 @@
 #include "inheritance.h"
 #include "print.h"
 
-void expression_print(struct expression* this, FILE* stream)
+int expression_print(struct expression* this, FILE* stream)
 {
+	int error = 0;
 	ENTER;
 	
 	dpv(this);
@@ -16,8 +17,9 @@ void expression_print(struct expression* this, FILE* stream)
 	
 	assert(this->inheritance->print);
 	
-	(this->inheritance->print)(this, stream);
+	error = (this->inheritance->print)(this, stream);
 	
 	EXIT;
+	return error;
 }
 

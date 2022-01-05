@@ -1,9 +1,6 @@
 
 #include <debug.h>
 
-#include <asm/writer/indent.h>
-#include <asm/writer/unindent.h>
-
 #include <parser/statement_ll/struct.h>
 
 #include <statement/write_asm.h>
@@ -18,8 +15,6 @@ int compound_statement_write_asm(
 	struct statement_link* slink;
 	ENTER;
 	
-	asm_writer_indent(writer);
-	
 	for (slink = this->statements->head; !error && slink; slink = slink->next)
 	{
 		struct statement* const statement = slink->element;
@@ -27,7 +22,10 @@ int compound_statement_write_asm(
 		error = statement_write_asm(statement, writer);
 	}
 	
-	asm_writer_unindent(writer);
+	if (error)
+	{
+		CHECK;
+	}
 	
 	EXIT;
 	return error;

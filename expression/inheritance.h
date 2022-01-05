@@ -10,7 +10,7 @@ struct expression_inheritance
 	int (*write_rasm)(struct expression*, struct asm_writer*);
 	int (*write_lasm)(struct expression*, struct asm_writer*);
 	
-	void (*print)(struct expression*, FILE* stream);
+	int (*print)(struct expression*, FILE* stream);
 	
 	void (*free)(struct expression*);
 };

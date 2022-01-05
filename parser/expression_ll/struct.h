@@ -1,4 +1,6 @@
 
+#include <stdlib.h>
+
 struct expression_link
 {
 	struct expression* element;

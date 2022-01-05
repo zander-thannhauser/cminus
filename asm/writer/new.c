@@ -19,11 +19,11 @@
 int new_asm_writer(struct asm_writer** new, const char* path)
 {
 	int error = 0;
-	FILE* out = NULL;
+	FILE* stream = NULL;
 	struct asm_writer* this = NULL;
 	ENTER;
 	
-	if (!(out = fopen(path, "w")))
+	if (!(stream = fopen(path, "w")))
 		fprintf(stderr, "%s: fopen(\"%s\", \"w\") failed: %m\n", argv0, path),
 		error = e_syscall_failed;
 	
@@ -33,16 +33,34 @@ int new_asm_writer(struct asm_writer** new, const char* path)
 	
 	if (!error)
 	{
-		this->out = out, out = NULL;
-		this->indent = 0;
+		this->stream = stream, stream = NULL;
+		
+		#ifdef VERBOSE_ASSEMBLY
+		this->indent_head = NULL;
+		this->indent_tail = NULL;
+		#endif
 		
 		*new = this;
 	}
 	
-	if (out)
-		fclose(out);
+	if (stream)
+		fclose(stream);
 	
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

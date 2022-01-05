@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdio.h>
 #include <string.h>
 
@@ -17,6 +18,8 @@ char* write_asm_location(
 {
 	ENTER;
 	
+	TODO;
+	#if 0
 	switch (this->kind)
 	{
 		case al_global:
@@ -74,6 +77,7 @@ char* write_asm_location(
 	}
 	
 	dpvs(buffer);
+	#endif
 	
 	EXIT;
 	return buffer;
@@ -91,4 +95,4 @@ char* write_asm_location(
 
 
 
-
+#endif

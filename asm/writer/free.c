@@ -6,6 +6,14 @@
 
 void free_asm_writer(struct asm_writer* this)
 {
-	fclose(this->out);
+	ENTER;
+	
+	#ifdef VERBOSE_ASSEMBLY
+	assert(!this->indent_head);
+	#endif
+	
+	fclose(this->stream);
+	
+	EXIT;
 }
 

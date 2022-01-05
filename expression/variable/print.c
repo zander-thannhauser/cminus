@@ -1,5 +1,6 @@
 
 #include <debug.h>
+#include <enums/error.h>
 
 #include <scope/variable.h>
 
@@ -8,15 +9,20 @@
 #include "struct.h"
 #include "print.h"
 
-void variable_expression_print(
+int variable_expression_print(
 	struct expression* super,
 	FILE* stream)
 {
+	int error = 0;
 	struct variable_expression* const this = (typeof(this)) super;
 	ENTER;
 	
-	fputs(this->variable->name, stream);
+	dpvs(this->variable->name);
+	
+	if (fputs(this->variable->name, stream) < 0)
+		error = e_syscall_failed;
 	
 	EXIT;
+	return error;
 }
 

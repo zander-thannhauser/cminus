@@ -26,10 +26,8 @@ int tstrdup(char** out, const char* string)
 	{
 		memcpy(new, string, len + 1);
 		
-		*out = tinc(new);
+		*out = new;
 	}
-	
-	tfree(new);
 	
 	EXIT;
 	return error;

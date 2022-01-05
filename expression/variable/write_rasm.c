@@ -1,18 +1,24 @@
 
+#include <stdlib.h>
+
 #include <stdio.h>
 #include <debug.h>
 
+#include <asm/enums/intregs.h>
 /*#include <asm/tables/instrs.h>*/
 /*#include <asm/tables/intregs.h>*/
-/*#include <asm/tables/pktors.h>*/
+#include <asm/tables/fktors.h>
+#include <asm/tables/iktors.h>
 
+/*#include <asm/location/struct.h>*/
 
-#include <asm/location/struct.h>
-
-#include <asm/writer/comment.h>
+/*#include <asm/writer/comment.h>*/
+#include <asm/writer/indent.h>
 #include <asm/writer/write/mov.h>
-#include <asm/writer/write/movf.h>
-#include <asm/writer/write/push.h>
+#include <asm/writer/write/subi.h>
+#include <asm/writer/write/pushg.h>
+/*#include <asm/writer/write/movf.h>*/
+/*#include <asm/writer/write/push.h>*/
 
 #include <type/integer/struct.h>
 #include <type/float/struct.h>
@@ -40,17 +46,15 @@ int variable_expression_write_rasm(
 		
 		switch (type->kind)
 		{
-			case tk_struct: TODO; break;
-			
-			case tk_array: TODO; break;
-			
 			case tk_float:
 			{
 				struct float_type* ftype = (typeof(ftype)) type;
 				
-				asm_writer_write_movf(writer,
-					ASMOFF(variable->offset), ftype->kind,
-					ASMREG(working_1), ftype->kind);
+				asm_writer_write_mov(writer,
+					-variable->offset, baseptr,
+					-8, stackptr,
+					fktors[ftype->kind]);
+				
 				break;
 			}
 			
@@ -59,8 +63,9 @@ int variable_expression_write_rasm(
 				struct integer_type* itype = (typeof(itype)) type;
 				
 				asm_writer_write_mov(writer,
-					ASMOFF(variable->offset), itype->kind,
-					ASMREG(working_1), itype->kind);
+					-variable->offset, baseptr,
+					-8, stackptr,
+					iktors[itype->kind]);
 				
 				break;
 			}
@@ -69,23 +74,22 @@ int variable_expression_write_rasm(
 				TODO;
 				break;
 			
+			case tk_array:
+			case tk_struct:
 			case tk_function:
 			case tk_void:
 				abort();
 		}
-	}
-	else if (variable->storage_class == sc_static)
-	{
-		TODO;
+		
+		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	}
 	else
 	{
-		asm_writer_write_mov(writer,
-			ASMGLO(variable->name), ik_unsigned_long,
-			ASMREG(working_1), ik_unsigned_long);
+		TODO;
+		#if 0
+		asm_writer_write_pushg(writer, variable->name);
+		#endif
 	}
-	
-	asm_writer_write_push(writer, working_1);
 	
 	EXIT;
 	return error;

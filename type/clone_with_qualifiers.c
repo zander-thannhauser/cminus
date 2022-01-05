@@ -10,7 +10,7 @@
 #include "clone_with_qualifiers.h"
 
 #ifdef DEBUGGING
-const char* lookup[] = {
+static const char* lookup[] = {
 	[tq_constant] = "constant",
 	[tq_volatile] = "volatile",
 };

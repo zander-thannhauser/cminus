@@ -1,4 +1,6 @@
 
+#include <stdlib.h>
+
 #include <debug.h>
 
 #include <type/integer/struct.h>
@@ -6,8 +8,12 @@
 
 #include <asm/location/struct.h>
 
-#include <asm/writer/write/push.h>
+#include <asm/writer/write/pushi.h>
+#include <asm/writer/write/pushd.h>
+#include <asm/writer/write/pushf.h>
 #include <asm/writer/write/mov.h>
+#include <asm/writer/indent.h>
+#include <asm/writer/comment.h>
 
 #include "struct.h"
 #include "write_rasm.h"
@@ -44,9 +50,7 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 		
 		dpv(literal);
 		
-		asm_writer_write_mov(writer,
-			ASMLIT(literal), ik_unsigned_long,
-			ASMREG(working_1), ik_unsigned_long);
+		asm_writer_write_pushi(writer, literal);
 	}
 	else
 	{
@@ -55,36 +59,16 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 		switch (ftype->kind)
 		{
 			case fk_float:
-			{
-				ddprintf("fk_float\n");
-				
-				uint32_t temp = *((typeof(temp)*) &this->value._float);
-				
-				asm_writer_write_mov(writer,
-					ASMLIT(temp), ik_unsigned_int,
-					ASMREG(working_1), ik_unsigned_int);
-				
+				asm_writer_write_pushf(writer, this->value._float);
 				break;
-			}
 			
 			case fk_double:
-			{
-				ddprintf("fk_double\n");
-				
-				uint64_t temp = *((typeof(temp)*) &this->value._double);
-				
-				asm_writer_write_mov(writer,
-					ASMLIT(temp), ik_unsigned_long,
-					ASMREG(working_1), ik_unsigned_long);
-				
+				asm_writer_write_pushd(writer, this->value._double);
 				break;
-			}
 			
 			case number_of_float_kinds: abort();
 		}
 	}
-	
-	asm_writer_write_push(writer, working_1);
 	
 	EXIT;
 	return error;

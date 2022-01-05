@@ -6,38 +6,39 @@
 
 #include <parser/expression_ll/struct.h>
 
+#include <misc/sfprintf.h>
+
 #include "../print.h"
 
 #include "struct.h"
 #include "print.h"
 
-void function_call_expression_print(
+int function_call_expression_print(
 	struct expression* super,
 	FILE* stream)
 {
+	int error = 0;
 	struct expression_link* alink;
 	struct function_call_expression* const this = (typeof(this)) super;
 	ENTER;
 	
-	expression_print(this->function, stream);
+	error = 0
+		?: expression_print(this->function, stream)
+		?: sfprintf(stream, "(");
 	
-	putc('(', stream);
-	
-	for (alink = this->arguments->head; alink; alink = alink->next)
+	for (alink = this->arguments->head; !error && alink; alink = alink->next)
 	{
-		expression_print(alink->element, stream);
+		error = expression_print(alink->element, stream);
 		
-		if (alink->next)
-		{
-			fputs(", ", stream);
-		}
+		if (!error && alink->next)
+			error = sfprintf(stream, ", ");
 	}
 	
-	putc(')', stream);
-
-/*	TODO;*/
+	if (!error)
+		error = sfprintf(stream, ")");
 	
 	EXIT;
+	return error;
 }
 
 

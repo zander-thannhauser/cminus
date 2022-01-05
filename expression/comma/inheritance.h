@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance comma_expression_inheritance;
