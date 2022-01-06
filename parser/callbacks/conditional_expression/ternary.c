@@ -9,6 +9,8 @@
 #include <expression/struct.h>
 #include <expression/ternary/new.h>
 
+#include <parser/yylloc/new.h>
+
 #include "ternary.h"
 
 int conditional_expression_ternary_callback(
@@ -49,7 +51,7 @@ int conditional_expression_ternary_callback(
 					break;
 				
 				case tk_pointer:
-					if (!compare_types(true_expression->type, false_expression->type))
+					if (!!compare_types(true_expression->type, false_expression->type))
 					{
 						// cast them both to void*
 						TODO;
@@ -77,17 +79,25 @@ int conditional_expression_ternary_callback(
 			error = 1;
 		}
 		
+		struct yylloc* loc = NULL;
+		
 		if (!error)
-			error = new_ternary_expression(
-				(struct ternary_expression**) out_expression,
-				first_line, first_column,
-				last_line, last_column,
-				conditional_expression,
-				casted_true ?: true_expression,
-				casted_false ?: false_expression);
+		{
+			error = 0
+				?: new_yyloc(&loc,
+					first_line, first_column,
+					last_line, last_column)
+				?: new_ternary_expression(
+					(struct ternary_expression**) out_expression,
+					loc,
+					conditional_expression,
+					casted_true ?: true_expression,
+					casted_false ?: false_expression);
+		}
 		
 		tfree(casted_true);
 		tfree(casted_false);
+		tfree(loc);
 	}
 	
 	tfree(conditional_expression);

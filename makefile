@@ -79,15 +79,24 @@ srcs += ./parser/scanner.c ./parser/parser.c
 include gen/srclist.mk
 
 ARGS += -p ./test.cm
-#ARGS += ./test.im
-#ARGS += ./examples/system/helloworld.im
+#ARGS +=    ./test.im
+#ARGS +=    ./examples/system/helloworld.im
 #ARGS += -p ./examples/system/helloworld.cm
 
-#ARGS += ./examples/add.cm
-#ARGS += ./examples/add.float.cm
+#ARGS += ./examples/more/hard-stuff.cm
+#ARGS += ./examples/more/enums.cm
+#ARGS += ./examples/more/typ3.cm
+#ARGS += ./examples/more/typecasts1.cm
+
+#ARGS += ./examples/system/unistd.cm
+#ARGS += ./examples/system/stdio.cm
+#ARGS += ./examples/system/inttypes.cm
+
+#ARGS += -p ./examples/add.cm
+#ARGS += -p ./examples/add.float.cm
 #ARGS += ./examples/and.cm
 #ARGS += ./examples/and.float.cm
-#ARGS += ./examples/arith.cm
+#ARGS += -p ./examples/arith.cm
 #ARGS += ./examples/arith2.cm
 #ARGS += ./examples/array.cm
 #ARGS += ./examples/array.float.cm
@@ -162,20 +171,8 @@ ARGS += -p ./test.cm
 #ARGS += ./examples/while3.cm
 #ARGS += ./examples/while_array.cm
 
-# not entirely working just yet:
 
-#ARGS += ./examples/more/enums.cm
-#ARGS += ./examples/more/old-functions.cm
-#ARGS += ./examples/more/struct1.cm
-#ARGS += ./examples/more/struct2.cm
-#ARGS += ./examples/more/typ3.cm
-#ARGS += ./examples/more/typecasts1.cm
-
-#ARGS += ./examples/system/unistd.cm
-#ARGS += ./examples/system/stdio.cm
-#ARGS += ./examples/system/inttypes.cm
-
-ARGS += -o ./test.s
+ARGS += -o /tmp/test.s
 
 rrun: gen/$(buildprefix)/cminus
 	$< ${ARGS}

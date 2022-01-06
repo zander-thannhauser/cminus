@@ -29,10 +29,8 @@
 /*#include <asm/writer/write/pop.h>*/
 
 #include <type/integer/struct.h>
-
 #include <type/float/struct.h>
-
-#include <type/struct.h>
+#include <type/get_rs.h>
 
 #include <scope/variable.h>
 
@@ -105,80 +103,53 @@ int function_definition_write_asm(
 			variable->name, type, type->size);
 		#endif
 		
-		switch (type->kind)
+		if (type->kind == tk_float)
 		{
 			enum float_kind fkind;
+			fkind = ((struct float_type*) type)->kind;
 			
-			case tk_float:
+			if (fparam <= first_fparameter + number_of_float_parameters)
 			{
-				fkind = ((struct float_type*) type)->kind;
-				
-				if (fparam <= first_fparameter + number_of_float_parameters)
-				{
-					asm_writer_write_movf_from(writer,
-						fparam++,
-						-variable->offset, baseptr,
-						fkind);
-				}
-				else
-				{
-					asm_writer_write_mov(writer,
-						regoff, baseptr,
-						-variable->offset, baseptr,
-						fktors[fkind]);
-					
-					regoff += 8;
-				}
-				break;
+				asm_writer_write_movf_from(writer,
+					fparam++,
+					-variable->offset, baseptr,
+					fkind);
 			}
-			
-/*			enum integer_kind ikind;*/
-			
-			case tk_struct:
-				TODO;
-				// fallthrough
-			case tk_array:
-				TODO;
-				// fallthrough
-			case tk_pointer:
-/*				ikind = ik_unsigned_long;*/
-				goto after_ikind;
-			case tk_integer:
+			else
 			{
-/*				ikind = ((struct integer_type*) type)->kind;*/
-				after_ikind:
+				asm_writer_write_mov(writer,
+					regoff, baseptr,
+					-variable->offset, baseptr,
+					fktors[fkind]);
 				
-				if (iparam <= first_parameter + number_of_integer_parameters)
-				{
-					TODO;
-					#if 0
-					asm_writer_write_movi_from(
-						writer,
-						/* from: */ iparam,
-						/* to:   */ -variable->offset, baseptr,
-						ikind);
-					#endif
-					
-					iparam++;
-				}
-				else
-				{
-					TODO;
-					#if 0
-					asm_writer_write_mov(writer,
-						ASMOFF(regoff), ikind,
-						ASMOFF(variable->offset), ikind);
-				
-					regoff += 8;
-					#endif
-				}
-				break;
+				regoff += 8;
 			}
+		}
+		else
+		{
+			enum register_size rs = type_get_rs(type);
 			
-			case tk_void:
-			case tk_function:
-				abort();
-				break;
+			if (iparam <= first_parameter + number_of_integer_parameters)
+			{
+				asm_writer_write_movi_from_v2(
+					writer,
+					/* from: */ iparam,
+					/* to:   */ -variable->offset, baseptr,
+					rs);
+				
+				iparam++;
+			}
+			else
+			{
+				TODO;
+				#if 0
+				asm_writer_write_mov(writer,
+					ASMOFF(regoff), ikind,
+					ASMOFF(variable->offset), ikind);
+			
+				regoff += 8;
+				#endif
+			}
 		}
 	}
 	

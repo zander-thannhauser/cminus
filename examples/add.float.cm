@@ -6,11 +6,11 @@ void main ()
 {
 	float i, j, k, l;
 	
-	printf("%f\n", 10.0 + 20.0);
+	printf("%f\n", 10.0 + 20.0); // 30.0
 	
 	i = 1.2; k = 3.3; l = 4.1;
 	j = i + k + l;
-	printf("%f\n", j);
+	printf("%f\n", j); // 8.6
 	
 	exit(0);
 }

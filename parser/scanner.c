@@ -2533,42 +2533,75 @@ static int handle_cpp_linemarkers(char** out_file)
 
 static int process_integer_literal(int* error)
 {
-	int retval = SINT_LITERAL;
+	int retval = 0;
+	uintmax_t value;
 	char* m;
 	ENTER;
 	
-	errno = 0, yylval.sintegerlit = strtoul(yytext, &m, 0);
+	errno = 0, value = strtoumax(yytext, &m, 0);
 	
-	if (errno || *m)
+	dpv(value);
+	
+	// check for suffix? maybe limit the type?
+	// literals could then have various-sized types,
+	// not just {unsigned,} long
+	
+	bool is_unsigned = 0;
+	int long_level = 0;
+	
+	for (; *m; m++)
 	{
-		fprintf(stderr, "%s: strtoul(\"%s\"): %m\n", argv0, yytext),
+		switch (*m)
+		{
+			case 'u':
+			case 'U':
+				is_unsigned = 1;
+				break;
+				
+			case 'l':
+			case 'L':
+				if (long_level++ == 1)
+				{
+					TODO; // "too many 'L's!"
+					*error = 1;
+				}
+				break;
+			
+			default:
+			{
+				TODO; // "unknown integer suffix!"
+				*error = 1;
+			}
+		}
+	}
+	
+	if (errno)
+	{
+		fprintf(stderr, "%s: strtoumax(\"%s\"): %m\n", argv0, yytext),
 		*error = e_bad_input_file;
 	}
-	else
+	
+	static const int lookup[2][3] = {
+		[0][0] = SINT_LITERAL,
+		[0][1] = SLONG_LITERAL,
+		[1][0] = UINT_LITERAL,
+		[1][1] = ULONG_LITERAL,
+	};
+	
+	if (!*error)
 	{
-		// check for suffix? maybe limit the type?
-		// literals could then have various-sized types,
-		// not just {unsigned,} long
-		
-		if (*m && index("uU", *m))
-			retval = UINT_LITERAL, m++,
-			yylval.uintegerlit = yylval.sintegerlit;
-		
-		if (*m && index("lL", *m))
+		switch (retval = lookup[is_unsigned][long_level])
 		{
-			TODO;
+			case  SINT_LITERAL: yylval.sintlit  = value; break;
+			case  UINT_LITERAL: yylval.uintlit  = value; break;
+			case SLONG_LITERAL: yylval.slonglit = value; break;
+			case ULONG_LITERAL: yylval.ulonglit = value; break;
+			
+			default:
+				TODO;
+				break;
 		}
-		
-		if (*m && index("lL", *m))
-		{
-			TODO;
-		}
-		
-		if (*m)
-		{
-			TODO; // "unknown integer suffix!"
-			*error = 1;
-		}
+	
 	}
 	
 	EXIT;
@@ -2583,7 +2616,7 @@ static int process_character_literal(int* error)
 	dpvs(yytext);
 	
 	if (yytext[1] != '\\')
-		yylval.sintegerlit = yytext[1];
+		yylval.sintlit = yytext[1];
 	else switch (yytext[2])
 	{
 		default:

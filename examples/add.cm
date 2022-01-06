@@ -5,11 +5,11 @@ void main ()
 {
 	int i, j, k, l;
 	
-	printf("%i\n", 10 + 20);
+	printf("%i\n", 10 + 20); // 30
 	
-	i = 1; k = 3; l = 4;
+	i = 1; k = 3U; l = 4UL; // added suffixes
 	j = i + k + l;
-	printf("%i\n", j);
+	printf("%i\n", j); // 8
 	
 	exit(0);
 }

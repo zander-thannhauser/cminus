@@ -47,8 +47,6 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 	
 	if (this->is_float_result)
 	{
-		TODO;
-		#if 0
 		struct float_type *type = (typeof(type)) super->type;
 		
 		error = 0
@@ -70,7 +68,7 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 		
 		switch (this->kind)
 		{
-			case bek_add:
+			case aek_add:
 				asm_writer_write_addf(writer, working_f1, working_f2, type->kind);
 				break;
 			
@@ -80,7 +78,6 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 		}
 		
 		asm_writer_write_movf_from(writer, working_f2, -8, stackptr, type->kind);
-		#endif
 	}
 	else
 	{

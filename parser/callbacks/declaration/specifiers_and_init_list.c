@@ -7,8 +7,10 @@
 #include <memory/tinc.h>
 #include <memory/tfree.h>
 
+#include <type/struct.h>
 #include <type/clone_with_qualifiers.h>
 
+#include <scope/variable.h>
 #include <scope/declare/type.h>
 #include <scope/declare/variable.h>
 
@@ -75,19 +77,54 @@ int declaration_specifiers_and_init_list_callback(
 			}
 			else
 			{
-				error = scope_declare_variable(scope,
-					identifier, type, specifiers->storage_class, NULL);
+				struct variable* variable = NULL;
 				
-				if (!error && init->initializer)
+				error = scope_declare_variable(scope,
+					identifier, type, specifiers->storage_class, &variable);
+				
+				if (!error)
 				{
-					// curly brackets lead to
-					// many sub-assignments
-					// and possibly casts
-					// new_expression_statement();
-					
-					// statement_ll_append();
-					TODO;
+					if (!variable->is_global)
+					{
+						if (init->initializer)
+						{
+							// curly brackets lead to
+							// many sub-assignments
+							// and possibly casts
+							// new_expression_statement();
+							
+							// statement_ll_append();
+							TODO;
+						}
+					}
+					else if (true
+						&& specifiers->storage_class != sc_extern
+						&& type->kind != tk_function)
+					{
+						TODO;
+						#if 0
+						if (init->initializer)
+						{
+							TODO;
+						}
+						else
+						{
+							TODO;
+						}
+						
+						int asm_writer_write_global(
+							struct asm_writer* writer,
+							const char* name,
+							bool is_static,
+							void* value,
+							size_t size);
+						#endif
+						TODO;
+					}
 				}
+				
+				
+				tfree(variable);
 			}
 		}
 		

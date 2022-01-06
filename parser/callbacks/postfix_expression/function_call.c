@@ -92,13 +92,10 @@ int postfix_expression_function_call_callback(
 			{
 				struct expression* ce = NULL;
 				
-				TODO;
-				#if 0
 				error = 0
-					?: new_cast_expression(&ce, 0, 0, 0, 0,
+					?: new_cast_expression(&ce, NULL,
 						types->floats[fk_double], alink->element, types)
 					?: expression_ll_append(casted_args, ce);
-				#endif
 				
 				tfree(ce);
 			}

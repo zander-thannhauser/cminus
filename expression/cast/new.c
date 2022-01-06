@@ -85,17 +85,13 @@ int new_cast_expression(
 	{
 		struct cast_expression* this = NULL;
 		
-		TODO;
-		#if 0
 		error = new_expression(
 			(struct expression**) &this,
 			ek_cast,
 			&cast_expression_inheritance,
-			first_line, first_column,
-			last_line, last_column,
+			loc,
 			after,
 			sizeof(*this));
-		#endif
 		
 		if (!error)
 		{

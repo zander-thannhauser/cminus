@@ -19,8 +19,7 @@
 
 int new_logical_and_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct expression* left,
 	struct expression* right,
 	struct types* types)
@@ -31,8 +30,6 @@ int new_logical_and_expression(
 /*	struct type* const ltype = left->type;*/
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (!left->type->is_complete || !right->type->is_complete)
 	{
 		TODO;
@@ -55,13 +52,13 @@ int new_logical_and_expression(
 	{
 		struct logical_and_expression* this = NULL;
 		
-			error = new_expression(
-				(struct expression**) &this,
-				ek_logical_and,
-				&logical_and_expression_inheritance,
-				first_line, first_column,
-				last_line, last_column,
-				types->integers[ik_bool], sizeof(*this));
+		error = new_expression(
+			(struct expression**) &this,
+			ek_logical_and,
+			&logical_and_expression_inheritance,
+			loc,
+			types->integers[ik_signed_int],
+			sizeof(*this));
 		
 		if (!error)
 		{
@@ -71,7 +68,6 @@ int new_logical_and_expression(
 			*new = (struct expression*) this;
 		}
 	}
-	#endif
 	
 	EXIT;
 	return error;

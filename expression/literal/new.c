@@ -234,16 +234,13 @@ int new_literal_expression_as_double(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
 		(struct expression**) &this,
 		ek_literal,
 		&literal_expression_inheritance,
-		first_line, first_column,
-		last_line, last_column,
+		loc,
 		double_type,
 		sizeof(*this));
 	
@@ -255,7 +252,6 @@ int new_literal_expression_as_double(
 		
 		*new = (struct expression*) this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

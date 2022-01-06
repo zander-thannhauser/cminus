@@ -1,7 +1,7 @@
 
 %token<identifier> IDENTIFIER
-%token<sintegerlit> SINT_LITERAL
-%token<uintegerlit> UINT_LITERAL
+%token<sintlit> SINT_LITERAL
+%token<uintlit> UINT_LITERAL
 %token<slonglit> SLONG_LITERAL
 %token<ulonglit> ULONG_LITERAL
 %token<floatlit> FLOAT_LITERAL
@@ -68,9 +68,9 @@
 %union {
 	bool boolean;
 	
-	signed int sintegerlit;
-	unsigned int uintegerlit;
-	signed long slonglit;
+	  signed int  sintlit;
+	unsigned int  uintlit;
+	  signed long slonglit;
 	unsigned long ulonglit;
 	
 	float floatlit;
@@ -121,8 +121,8 @@
 
 %destructor { tfree($$); } <*>
 %destructor { tfree($$.data); } <string>
-%destructor {  } <sintegerlit>
-%destructor {  } <uintegerlit>
+%destructor {  } <sintlit>
+%destructor {  } <uintlit>
 %destructor {  } <slonglit>
 %destructor {  } <ulonglit>
 %destructor {  } <floatlit>
@@ -792,7 +792,6 @@ struct_declarator_list
 		if ((*error = struct_declarator_list_head_callback(&$$, $1)))
 			YYABORT;
 	} | struct_declarator_list ',' struct_declarator {
-		TODO;
 		if ((*error = struct_declarator_list_append_callback(&$$, $1, $3)))
 			YYABORT;
 	} ;
@@ -1164,7 +1163,7 @@ external_declaration
 	};
 
 function_definition
-	: declaration_specifiers declarator <function_definition>{
+	: declaration_specifiers declarator <function_definition> {
 		if ((*error = function_definition_prebody(&$$, $1, $2, scope, &rettype, &funcname)))
 			YYABORT;
 	} compound_statement {
@@ -1181,4 +1180,28 @@ function_definition
 	};
 
 %%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

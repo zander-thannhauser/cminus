@@ -40,6 +40,8 @@
 #include <asm/writer/unindent.h>
 #endif
 
+#include <parser/yylloc/struct.h>
+
 #include "../write_rasm.h"
 
 #include "struct.h"
@@ -50,19 +52,17 @@ int ternary_expression_write_rasm(
 {
 	struct ternary_expression* const this = (typeof(this)) super;
 	int error = 0;
-/*	enum register_size rs;*/
+	enum register_size rs;
 	ENTER;
 	
-/*	char* prefix_label = NULL;*/
-/*	char* false_label = NULL;*/
-/*	char* after_label = NULL;*/
+	char* prefix_label = NULL;
+	char* false_label = NULL;
+	char* after_label = NULL;
 	
-	TODO;
-	#if 0
 	if (false
 		|| asprintf(&prefix_label, "%uto%u_%uto%u",
-			super->first_line, super->last_line,
-			super->first_column, super->last_column) < 0
+			super->loc->first_line, super->loc->last_line,
+			super->loc->first_column, super->loc->last_column) < 0
 		|| asprintf(&false_label, "%s_false", prefix_label) < 0
 		|| asprintf(&after_label, "%s_after", prefix_label) < 0)
 	{
@@ -104,7 +104,6 @@ int ternary_expression_write_rasm(
 	free(prefix_label);
 	free(false_label);
 	free(after_label);
-	#endif
 	
 	EXIT;
 	return error;

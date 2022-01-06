@@ -1,9 +1,13 @@
 
 #include <debug.h>
 
+#include <memory/tfree.h>
+
 #include <types/struct.h>
 
 #include <expression/literal/new.h>
+
+#include <parser/yylloc/new.h>
 
 #include "double.h"
 
@@ -15,19 +19,20 @@ int primary_expression_double_callback(
 	double doublelit)
 {
 	int error = 0;
+	struct yylloc* loc = NULL;
 	ENTER;
 	
 	dpv(doublelit);
 	
-	TODO;
-	#if 0
-	error = new_literal_expression_as_double(
-		(struct expression**) retval,
-		first_line, first_column,
-		last_line, last_column,
-		types->floats[fk_double],
-		doublelit);
-	#endif
+	error = 0
+		?: new_yyloc(&loc,
+			first_line, first_column,
+			last_line, last_column)
+		?: new_literal_expression_as_double(
+			(struct expression**) retval,
+			loc, types->floats[fk_double], doublelit);
+	
+	tfree(loc);
 	
 	EXIT;
 	return error;

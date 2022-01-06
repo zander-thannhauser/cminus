@@ -141,9 +141,9 @@ union YYSTYPE
 
 	bool boolean;
 	
-	signed int sintegerlit;
-	unsigned int uintegerlit;
-	signed long slonglit;
+	  signed int  sintlit;
+	unsigned int  uintlit;
+	  signed long slonglit;
 	unsigned long ulonglit;
 	
 	float floatlit;

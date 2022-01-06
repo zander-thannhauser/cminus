@@ -21,19 +21,16 @@
 
 int new_ternary_expression(
 	struct ternary_expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line,  unsigned last_column,
+	struct yylloc* loc,
 	struct expression* conditional,
 	struct expression* true_expression,
 	struct expression* false_expression)
 {
 	int error = 0;
 /*	struct type* type = NULL;*/
-/*	struct ternary_expression* this = NULL;*/
+	struct ternary_expression* this = NULL;
 	ENTER;
 	
-	TODO;
-	#if 0
 	// at this point true_expression and false_expression
 	// are assumed to produce the same type
 	
@@ -41,8 +38,7 @@ int new_ternary_expression(
 		(struct expression**) &this,
 		/* kind: */ ek_variable,
 		/* inheritance: */ &ternary_expression_inheritance,
-		/* first location: */ first_line, first_column,
-		/* last location: */ last_line, last_column,
+		/* location: */ loc,
 		/* type: */ true_expression->type,
 		sizeof(*this));
 	
@@ -54,7 +50,6 @@ int new_ternary_expression(
 		
 		*new = this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

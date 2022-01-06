@@ -43,6 +43,8 @@
 #include <asm/writer/unindent.h>
 #endif
 
+#include <parser/yylloc/struct.h>
+
 #include "../write_rasm.h"
 
 #include "struct.h"
@@ -51,19 +53,17 @@
 int logical_and_expression_write_rasm(struct expression* super, struct asm_writer* writer)
 {
 	int error = 0;
-/*	char* prefix_label = NULL;*/
-/*	char* false_label = NULL;*/
-/*	char* after_label = NULL;*/
+	char* prefix_label = NULL;
+	char* false_label = NULL;
+	char* after_label = NULL;
 	struct logical_and_expression* const this = (typeof(this)) super;
-/*	enum register_size rs;*/
+	enum register_size rs;
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (false
 		|| asprintf(&prefix_label, "%uto%u_%uto%u",
-			super->first_line, super->last_line,
-			super->first_column, super->last_column) < 0
+			super->loc->first_line, super->loc->last_line,
+			super->loc->first_column, super->loc->last_column) < 0
 		|| asprintf(&false_label, "%s_false", prefix_label) < 0
 		|| asprintf(&after_label, "%s_after", prefix_label) < 0)
 	{
@@ -97,23 +97,21 @@ int logical_and_expression_write_rasm(struct expression* super, struct asm_write
 	
 	asm_writer_write_on_zjmp(writer, working_1, rs, false_label);
 	
-	asm_writer_write_movi_const_v2(writer, true, working_1, iktors[ik_bool]);
+	rs = iktors[ik_signed_int];
+	
+	asm_writer_write_movi_const_v2(writer, true, working_1, rs);
 	asm_writer_write_jmp(writer, after_label);
 	
 	asm_writer_write_label(writer, false_label);
-	asm_writer_write_movi_const_v2(writer, false, working_1, iktors[ik_bool]);
+	asm_writer_write_movi_const_v2(writer, false, working_1, rs);
 	
 	asm_writer_write_label(writer, after_label);
-	TODO;
-	#if 0
-	asm_writer_write_movi_from(writer, working_1, -8, stackptr, ik_bool);
-	#endif
+	asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, rs);
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	
 	free(prefix_label);
 	free(false_label);
 	free(after_label);
-	#endif
 	
 	EXIT;
 	return error;
