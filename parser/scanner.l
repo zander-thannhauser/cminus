@@ -6,9 +6,11 @@ E			[Ee][+-]?{D}+
 FS			(f|F|l|L)
 IS			(u|U|l|L)*
 
+
 %{
 
 #include <stdio.h>
+#include <limits.h>
 
 #include <debug.h>
 
@@ -27,30 +29,51 @@ IS			(u|U|l|L)*
 #include "parser.h"
 
 static int check_type(int*, struct scope*);
-static int handle_cpp_linemarkers(char** file, unsigned* line);
+static int handle_cpp_linemarkers(char** file);
 static int process_integer_literal(int*);
 static int process_character_literal(int*);
 static int process_float_literal(int*);
 static int process_string_literal(int*);
 
-#define YY_DECL int yylex(int* error, struct scope *scope, char** file, unsigned* line)
+#define YY_DECL \
+	int yylex(\
+		int* error, \
+		struct scope *scope, \
+		char** file)
+
+#define YY_USER_ACTION \
+	yylloc.first_line = yylloc.last_line; \
+	yylloc.first_column = yylloc.last_column; \
+	for (char* i = yytext; *i; i++) { \
+		switch (*i) { \
+			case '\n':  \
+				yylloc.last_line++; \
+				yylloc.last_column = 0; \
+				break; \
+			case '\t': \
+				yylloc.last_column += 8; \
+				break; \
+			case '\v': \
+			case '\f': \
+				yylloc.last_line++; \
+				break; \
+			case ' ': \
+			default: \
+				yylloc.last_column++; \
+				break; \
+		} \
+	}
 
 %}
-
-%x COMMENT
 
 %option nounput
 %option noinput
 
+%option yylineno
+
 %%
 
  // From http://westes.github.io/flex/manual/Start-Conditions.html: //
-
-"/*"                    BEGIN(COMMENT);
-<COMMENT>[^*\n]*        /* eat anything that's not a '*' */
-<COMMENT>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
-<COMMENT>\n             ;
-<COMMENT>"*"+"/"        BEGIN(INITIAL);
 
  /* https://www.lysator.liu.se/c/ANSI-C-grammar-l.html */
 
@@ -148,13 +171,15 @@ L?\"(\\.|[^\\"])*\"	{ return (process_string_literal(error)); }
 "?"			{ return ('?'); }
 
 "#"\ {D}+\ \"([^\\"])*\"(\ [1234])* {
-	if ((*error = handle_cpp_linemarkers(file, line)))
+	if ((*error = handle_cpp_linemarkers(file)))
 		return 0;
+		
+	dpv(yylloc.last_line);
+	dpv(yylloc.last_column);
+//	CHECK_NTH(5);
 }
 
-\n	{ (*line)++; }
-
-[ \t\v\n\f]	{ }
+[\ \n\t\v\f] {}
 
 . {
 	fprintf(stderr, "%s: flex: unknown token starting with: '%s'!\n", argv0, yytext);
@@ -199,7 +224,7 @@ static int check_type(int* error, struct scope *scope)
 	return *error ? 0 : retval;
 }
 
-static int handle_cpp_linemarkers(char** out_file, unsigned* out_line)
+static int handle_cpp_linemarkers(char** out_file)
 {
 	char* m;
 	int error = 0;
@@ -236,7 +261,9 @@ static int handle_cpp_linemarkers(char** out_file, unsigned* out_line)
 		tfree(oldfile);
 		
 		*out_file = newfile;
-		*out_line = line;
+		
+		yylloc.last_line = line - 1; // the '\n' right after will fix it
+		yylloc.last_column = 1;
 	}
 	
 	EXIT;

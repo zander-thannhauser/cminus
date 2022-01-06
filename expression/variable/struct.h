@@ -8,7 +8,5 @@ struct variable_expression
 	struct expression super;
 	
 	struct variable* variable;
-	
-	bool is_array;
 };
 

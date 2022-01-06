@@ -4,23 +4,25 @@
 #include <error.h>
 #include <debug.h>
 
-#include <defines/argv0.h>
+/*#include <defines/argv0.h>*/
 
 #include <memory/tinc.h>
 
 #include <type/struct.h>
 /*#include <type/primitive/struct.h>*/
-#include <type/is_equal.h>
+#include <type/compare.h>
 
 #include "../new.h"
 
-#include "constfolders.h"
+/*#include "constfolders.h"*/
 #include "inheritance.h"
 #include "struct.h"
 #include "new.h"
 
 int new_cast_expression(
 	struct expression** new,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct type* after,
 	struct expression* inner,
 	struct types* types)
@@ -30,14 +32,18 @@ int new_cast_expression(
 	
 	struct type* const before = inner->type;
 	
-	if (type_is_equal(after, before))
+	if (!compare_types(after, before))
 	{
 		// no cast necessary
 		*new = tinc(inner);
 	}
-	#if 0
-	else if (inner->kind == ek_literal)
+	else if (true
+		&& inner->kind == ek_literal
+		&& after->kind == tk_integer
+		&& before->kind == tk_integer)
 	{
+		TODO;
+		#if 0
 		if (before->kind == tk_integer && after->kind == tk_integer)
 		{
 			TODO;
@@ -62,8 +68,8 @@ int new_cast_expression(
 			TODO;
 			error = 1;
 		}
+		#endif
 	}
-	#endif
 	else if (
 		false
 		|| (before->kind == tk_integer && after->kind == tk_integer)
@@ -77,6 +83,8 @@ int new_cast_expression(
 			(struct expression**) &this,
 			ek_cast,
 			&cast_expression_inheritance,
+			first_line, first_column,
+			last_line, last_column,
 			after,
 			sizeof(*this));
 		
@@ -93,37 +101,6 @@ int new_cast_expression(
 		error = 1;
 		TODO;
 	}
-	
-	#if 0
-	else if (false
-		|| (after->kind != tk_primitive && after->kind != tk_pointer)
-		|| (before->kind != tk_primitive && before->kind != tk_pointer))
-	{
-		TODO;
-		error = 1;
-	}
-	else if (true
-		&& inner->kind == ek_literal
-		&& after->kind == tk_primitive
-		&& before->kind == tk_primitive)
-	{
-		struct primitive_type const* pt = (typeof(pt)) after;
-		
-		dpv(pt->kind);
-		
-		assert(cast_constfolders[pt->kind]);
-		
-		error = cast_constfolders[pt->kind](
-			(struct literal_expression**) new,
-			(struct literal_expression*) inner,
-			types);
-	}
-	else
-	{
-		// gareenteed to be primitive or pointer?
-		
-	}
-	#endif
 	
 	EXIT;
 	return error;

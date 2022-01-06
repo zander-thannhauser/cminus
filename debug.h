@@ -34,7 +34,7 @@
 	#define TODO \
 	{\
 		assert(debug_depth >= 0); \
-		printf("%*sTODO: File: %s: Line: %i\n", debug_depth, "", \
+		printf("%*s""TODO: File: %s: Line: %i\n", debug_depth, "", \
 			__FILE__, __LINE__);\
 		char buffer[100];\
 		sprintf(buffer, "+%i", __LINE__);\
@@ -43,8 +43,39 @@
 		assert(!"TODO"); \
 	}
 	
-	#define CHECK TODO
-	#define NOPE CHECK
+	#define CHECK \
+	{\
+		assert(debug_depth >= 0); \
+		printf("%*s""CHECK: File: %s: Line: %i\n", debug_depth, "", \
+			__FILE__, __LINE__);\
+		char buffer[100];\
+		sprintf(buffer, "+%i", __LINE__);\
+		if (!fork()) \
+			execlp("gedit", "gedit", __FILE__, buffer, NULL);\
+		assert(!"CHECK"); \
+	}
+	
+	#define NOPE \
+	{\
+		assert(debug_depth >= 0); \
+		printf("%*s""NOPE: File: %s: Line: %i\n", debug_depth, "", \
+			__FILE__, __LINE__);\
+		char buffer[100];\
+		sprintf(buffer, "+%i", __LINE__);\
+		if (!fork()) \
+			execlp("gedit", "gedit", __FILE__, buffer, NULL);\
+		assert(!"NOPE"); \
+	}
+	
+	#define CHECK_NTH(n) \
+	{ \
+		static unsigned counter = 1; \
+		if (counter++ == n) \
+		{ \
+			CHECK; \
+		} \
+	} \
+	
 	#define HERE \
 		printf("%*sHERE: File: %s: Line: %i\n", debug_depth, "", __FILE__, __LINE__);
 	

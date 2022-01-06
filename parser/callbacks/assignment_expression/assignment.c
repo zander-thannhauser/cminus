@@ -19,6 +19,8 @@
 
 int assignment_expression_assignment_callback(
 	struct expression** retval,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct expression* left,
 	enum assign_expression_kind kind,
 	struct expression* right,
@@ -31,7 +33,13 @@ int assignment_expression_assignment_callback(
 	
 	assert(type->kind != tk_array);
 	
-	if (!type->is_complete)
+	if (type->kind == tk_array)
+	{
+		// arrays are read-only things
+		TODO;
+		error = 1;
+	}
+	else if (!type->is_complete)
 	{
 		fprintf(stderr, "%s: assignment to incomplete type!\n", argv0),
 		error = e_bad_input_file;
@@ -46,8 +54,12 @@ int assignment_expression_assignment_callback(
 		struct expression* cast_right = NULL;
 	
 		error = 0
-			?: new_cast_expression(&cast_right, left->type, right, types)
-			?: new_assign_expression(retval, kind, left, cast_right, types);
+			?: new_cast_expression(&cast_right,
+				0, 0, 0, 0, left->type, right, types)
+			?: new_assign_expression(retval, 
+				first_line, first_column,
+				last_line, last_column,
+				kind, left, cast_right, types);
 		
 		tfree(cast_right);
 	}

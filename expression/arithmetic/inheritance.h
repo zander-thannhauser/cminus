@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance arithmetic_expression_inheritance;

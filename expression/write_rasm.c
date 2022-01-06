@@ -18,6 +18,9 @@ int expression_write_rasm(struct expression* this, struct asm_writer* writer)
 	int error = 0;
 	ENTER;
 	
+	dpv(this);
+	dpv(this->type->kind);
+	
 	switch (this->type->kind)
 	{
 		case tk_array:

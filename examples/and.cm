@@ -1,6 +1,6 @@
 
-void write(int);
-void exit();
+void printf(const char*, ...);
+void exit(int);
 
 void main ()
 {
@@ -8,10 +8,10 @@ void main ()
 	
 	i = 1; j = 0; k = 0; l = 1;
 	
-	write(i && j);
-	write(i && i);
-	write(k && l);
-	write(k && j);
+	printf("i && j == %s\n", i && j ? "true" : "false");
+	printf("i && i == %s\n", i && i ? "true" : "false");
+	printf("k && l == %s\n", k && l ? "true" : "false");
+	printf("k && j == %s\n", k && j ? "true" : "false");
 	
-	exit();
+	exit(0);
 }

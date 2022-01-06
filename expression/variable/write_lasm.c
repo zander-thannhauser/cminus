@@ -50,7 +50,7 @@ int variable_expression_write_lasm(
 		asm_writer_write_leag(writer, variable->name, working_1);
 	}
 	
-	asm_writer_write_movi_from(writer, working_1, -8, stackptr, ik_unsigned_long);
+	asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, quadword);
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	
 	EXIT;

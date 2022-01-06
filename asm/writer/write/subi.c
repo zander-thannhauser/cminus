@@ -31,21 +31,34 @@ int asm_writer_write_subi_const(
 	return 0;
 }
 
-#if 0
-int asm_writer_write_sub(
+int asm_writer_write_subi(
 	struct asm_writer* this,
-	struct asm_location* src_loc,
-	struct asm_location* dst_loc,
-	enum integer_kind result_kind)
+	enum integer_register_id a,
+	enum integer_register_id b,
+	enum register_size rsize)
 {
-	int error = 0;
-	char src_buffer[30], dst_buffer[30];
 	ENTER;
 	
-		write_asm_location(src_loc, rs, src_buffer),
-		write_asm_location(dst_loc, rs, dst_buffer));
+	asm_writer_write(this, "%s %s, %s",
+		lookup[rsize],
+		intregs[a][rsize],
+		intregs[b][rsize]);
 	
 	EXIT;
-	return error;
+	return 0;
 }
-#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

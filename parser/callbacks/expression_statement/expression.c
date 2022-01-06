@@ -9,14 +9,18 @@
 
 int expression_statement_expression_callback(
 	struct statement** retval,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct expression* expression)
 {
 	int error = 0;
 	ENTER;
 	
 	error = new_expression_statement(
-		(struct expression_statement**) retval, line, expression);
+		(struct expression_statement**) retval, 
+		first_line, first_column,
+		last_line, last_column,
+		expression);
 	
 	tfree(expression);
 	

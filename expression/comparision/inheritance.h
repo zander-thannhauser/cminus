@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance comparision_expression_inheritance;

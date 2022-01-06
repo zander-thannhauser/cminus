@@ -149,8 +149,6 @@ union YYSTYPE
 	float floatlit;
 	double doublelit;
 	
-	unsigned line;
-	
 	char* identifier;
 	
 	struct {
@@ -193,7 +191,7 @@ union YYSTYPE
 	enum unary_expression_kind unary_expression_kind;
 	enum assign_expression_kind assign_expression_kind;
 
-#line 197 "parser/parser.h"
+#line 195 "parser/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -201,9 +199,23 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 extern YYSTYPE yylval;
-
-int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, char** file, unsigned *line, size_t *section_counter);
+extern YYLTYPE yylloc;
+int yyparse (int *error, struct scope *scope, struct types *types, struct asm_writer* asm_writer, char** file, size_t *section_counter);
 
 #endif /* !YY_YY_PARSER_PARSER_H_INCLUDED  */

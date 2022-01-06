@@ -22,8 +22,13 @@ enum integer_register_id
 	working_5,
 	working_6,
 	
+	divr_reg,
+	
 	number_of_integer_registers,
 };
+
+#define divn_reg (retval)
+#define divq_reg (retval)
 
 #define number_of_integer_parameters (6)
 

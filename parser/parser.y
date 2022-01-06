@@ -24,6 +24,8 @@
 
 %start start
 
+%locations
+
 %define parse.error verbose
 
 // https://stackoverflow.com/questions/12731922/reforming-the-grammar-to-remove-shift-reduce-conflict-in-if-then-else:
@@ -34,13 +36,11 @@
 %parse-param {struct types *types}
 %parse-param {struct asm_writer* asm_writer}
 %parse-param {char** file}
-%parse-param {unsigned *line}
 %parse-param {size_t *section_counter}
 
 %lex-param {int *error}
 %lex-param {struct scope *scope}
 %lex-param {char** file}
-%lex-param {unsigned *line}
 
 %code requires {
 	struct types;
@@ -75,8 +75,6 @@
 	
 	float floatlit;
 	double doublelit;
-	
-	unsigned line;
 	
 	char* identifier;
 	
@@ -130,7 +128,6 @@
 %destructor {  } <floatlit>
 %destructor {  } <doublelit>
 %destructor {  } <boolean>
-%destructor {  } <line>
 %destructor {  } <storage_class>
 %destructor {  } <type_qualifier>
 %destructor {  } <unary_expression_kind>
@@ -289,7 +286,7 @@
 
 struct scope;
 
-int yylex(int* error, struct scope *scope, char** file, unsigned* line);
+int yylex(int* error, struct scope *scope, char** file);
 
 %}
 
@@ -360,10 +357,16 @@ int yylex(int* error, struct scope *scope, char** file, unsigned* line);
 
 primary_expression
 	: IDENTIFIER {
-		if ((*error = primary_expression_identifier_callback(&$$, scope, $1)))
+		if ((*error = primary_expression_identifier_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			scope, $1)))
 			YYABORT;
 	} | SINT_LITERAL {
-		if ((*error = primary_expression_sinteger_callback(&$$, types, $1)))
+		if ((*error = primary_expression_sinteger_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | UINT_LITERAL {
 		if ((*error = primary_expression_uinteger_callback(&$$, types, $1)))
@@ -378,13 +381,21 @@ primary_expression
 		if ((*error = primary_expression_float_callback(&$$, types, $1)))
 			YYABORT;
 	} | DOUBLE_LITERAL {
-		if ((*error = primary_expression_double_callback(&$$, types, $1)))
+		if ((*error = primary_expression_double_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | STRING_LITERAL {
-		if ((*error = primary_expression_string_callback(&$$, $1.data, $1.strlen, types, section_counter, asm_writer)))
+		if ((*error = primary_expression_string_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1.data, $1.strlen, types, section_counter, asm_writer)))
 			YYABORT;
 	} | '(' expression ')' {
-		if ((*error = primary_expression_parentheses_callback(&$$, $2)))
+		if ((*error = primary_expression_parentheses_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column, $2)))
 			YYABORT;
 	};
 
@@ -395,10 +406,16 @@ postfix_expression
 		if ((*error = postfix_expression_array_index_callback(&$$, $1, $3, types)))
 			YYABORT;
 	} | postfix_expression '(' ')' {
-		if ((*error = postfix_expression_empty_function_call_callback(&$$, $1, types)))
+		if ((*error = postfix_expression_empty_function_call_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1)))
 			YYABORT;
 	} | postfix_expression '(' argument_expression_list ')' {
-		if ((*error = postfix_expression_function_call_callback(&$$, $1, $3, types)))
+		if ((*error = postfix_expression_function_call_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | postfix_expression '.' IDENTIFIER {
 		if ((*error = postfix_expression_field_access_callback(&$$, $1, $3)))
@@ -464,13 +481,22 @@ multiplicative_expression
 	: cast_expression {
 		$$ = $1;
 	} | multiplicative_expression '*' cast_expression {
-		if ((*error = multiplicative_expression_multiply_callback(&$$, $1, $3, types)))
+		if ((*error = multiplicative_expression_multiply_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | multiplicative_expression '/' cast_expression {
-		if ((*error = multiplicative_expression_divide_callback(&$$, $1, $3, types)))
+		if ((*error = multiplicative_expression_divide_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | multiplicative_expression '%' cast_expression {
-		if ((*error = multiplicative_expression_rdivide_callback(&$$, $1, $3)))
+		if ((*error = multiplicative_expression_rdivide_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 
@@ -478,10 +504,16 @@ additive_expression
 	: multiplicative_expression {
 		$$ = $1;
 	} | additive_expression '+' multiplicative_expression {
-		if ((*error = additive_expression_add_callback(&$$, $1, $3, types)))
+		if ((*error = additive_expression_add_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | additive_expression '-' multiplicative_expression {
-		if ((*error = additive_expression_subtract_callback(&$$, $1, $3, types)))
+		if ((*error = additive_expression_subtract_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 
@@ -552,7 +584,10 @@ logical_and_expression
 	: inclusive_or_expression {
 		$$ = $1;
 	} | logical_and_expression AND_OP inclusive_or_expression {
-		if ((*error = logical_and_expression_and_callback(&$$, $1, $3, types)))
+		if ((*error = logical_and_expression_and_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 
@@ -568,7 +603,10 @@ conditional_expression
 	: logical_or_expression {
 		$$ = $1;
 	} | logical_or_expression '?' expression ':' conditional_expression {
-		if ((*error = conditional_expression_ternary(&$$, $1, $3, $5)))
+		if ((*error = conditional_expression_ternary_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, $5)))
 			YYABORT;
 	} ;
 
@@ -576,7 +614,10 @@ assignment_expression
 	: conditional_expression {
 		$$ = $1;
 	} | unary_expression assignment_operator assignment_expression {
-		if ((*error = assignment_expression_assignment_callback(&$$, $1, $2, $3, types)))
+		if ((*error = assignment_expression_assignment_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $2, $3, types)))
 			YYABORT;
 	};
 
@@ -999,17 +1040,18 @@ optional_statement_list
 	};
 
 compound_statement
-	: '{' <line> {
-			$$ = *line;
-			if ((*error = compound_statement_open_callback(scope)))
-				YYABORT;
-		} optional_declaration_list optional_statement_list {
-			compound_statement_close_callback(scope);
-		} '}' {
-			if ((*error = compound_statement_statements_callback(&$$, $2, $3, $4)))
-				YYABORT;
-		};
-	;
+	: '{' {
+		if ((*error = compound_statement_open_callback(scope)))
+			YYABORT;
+	} optional_declaration_list optional_statement_list {
+		compound_statement_close_callback(scope);
+	} '}' {
+		if ((*error = compound_statement_statements_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$3, $4)))
+			YYABORT;
+	};
 
 declaration_list
 	: declaration {
@@ -1029,9 +1071,14 @@ statement_list
 
 expression_statement
 	: ';' {
-		$$ = NULL;
-	} | expression <line> { $$ = *line; } ';' {
-		if ((*error = expression_statement_expression_callback(&$$, $2, $1)))
+		if ((*error = expression_statement_expression_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column, NULL)))
+			YYABORT;
+	} | expression ';' {
+		if ((*error = expression_statement_expression_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column, $1)))
 			YYABORT;
 	};
 
@@ -1072,11 +1119,17 @@ jump_statement
 	} | BREAK ';' {
 		if ((*error = jump_statement_break_callback(&$$)))
 			YYABORT;
-	} | RETURN <line> {$$ = *line; } ';' {
-		if ((*error = jump_statement_return_callback(&$$, $2, NULL, NULL, NULL, funcname)))
+	} | RETURN ';' {
+		if ((*error = jump_statement_return_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			NULL, NULL, NULL, funcname)))
 			YYABORT;
-	} | RETURN <line> {$$ = *line; } expression ';' {
-		if ((*error = jump_statement_return_callback(&$$, $2, rettype, $3, types, funcname)))
+	} | RETURN expression ';' {
+		if ((*error = jump_statement_return_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			rettype, $2, types, funcname)))
 			YYABORT;
 	};
 

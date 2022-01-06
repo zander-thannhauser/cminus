@@ -1,24 +1,26 @@
 
 #include <debug.h>
 
-#include <macros/max.h>
+/*#include <macros/max.h>*/
 
 #include <memory/tfree.h>
 
-/*#include <type/primitive/struct.h>*/
+#include <type/compare.h>
+#include <type/integer/struct.h>
+#include <type/float/struct.h>
 
-#include <types/struct.h>
+/*#include <types/struct.h>*/
 
 #include <expression/struct.h>
-/*#include <expression/literal/struct.h>*/
 #include <expression/cast/new.h>
-/*#include <expression/literal/coerce/as_ulong.h>*/
-#include <expression/binary/new.h>
+#include <expression/arithmetic/new.h>
 
 #include "multiply.h"
 
 int multiplicative_expression_multiply_callback(
 	struct expression** retval,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct expression* left,
 	struct expression* right,
 	struct types* types)
@@ -26,39 +28,36 @@ int multiplicative_expression_multiply_callback(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
-	if (false
-		|| left->type->kind != tk_primitive
-		|| right->type->kind != tk_primitive)
+	if (true
+		&& ( left->type->kind == tk_integer ||  left->type->kind == tk_float)
+		&& (right->type->kind == tk_integer || right->type->kind == tk_float))
+	{
+		struct type* lt = left->type, *rt = right->type, *ht;
+		struct expression *cast_left = NULL, *cast_right = NULL;
+		
+		ht = compare_types(lt, rt) > 0 ? lt : rt;
+		
+		error = 0
+			?: new_cast_expression(&cast_left,
+				left->first_line, left->first_column,
+				left->first_line, left->first_column,
+				ht, left, types)
+			?: new_cast_expression(&cast_right,
+				right->first_line, right->first_column,
+				right->first_line, right->first_column,
+				ht, right, types)
+			?: new_arithmetic_expression(retval,
+				first_line, first_column,
+				last_line, last_column,
+				aek_multiply, cast_left, cast_right, types);
+		
+		tfree(cast_left), tfree(cast_right);
+	}
+	else
 	{
 		TODO;
 		error = 1;
 	}
-	else
-	{
-		struct type* result_type;
-		struct primitive_type *lt = (typeof(lt)) left->type, *rt = (typeof(rt)) right->type;
-		struct expression* cast_left = NULL;
-		struct expression* cast_right = NULL;
-		
-		dpv(lt->kind);
-		dpv(rt->kind);
-		dpv(max(lt->kind, rt->kind));
-		
-		result_type = types->primitives[max(lt->kind, rt->kind)];
-		
-		error = 0
-			?: new_cast_expression(&cast_left, result_type, left, types)
-			?: new_cast_expression(&cast_right, result_type, right, types)
-			?: new_binary_expression(
-				retval, bek_multiply, cast_left, cast_right, types);
-		
-		tfree(cast_left), tfree(cast_right);
-	}
-	
-	tfree(left), tfree(right);
-	#endif
 	
 	EXIT;
 	return error;

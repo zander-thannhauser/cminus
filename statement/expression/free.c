@@ -13,10 +13,6 @@ void free_expression_statement(struct statement* super)
 	struct expression_statement* this = (typeof(this)) super;
 	ENTER;
 	
-	dpv(super->kind);
-	dpv(this->expression);
-	dpv(this->expression->kind);
-	
 	tfree(this->expression);
 	
 	EXIT;

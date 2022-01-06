@@ -35,7 +35,6 @@ int main(int argc, char* const* argv)
 	struct types* types = NULL;
 	struct asm_writer* asm_writer = NULL;
 	char* file = NULL;
-	unsigned line = 1;
 	size_t section_counter = 0;
 	ENTER;
 	
@@ -60,7 +59,7 @@ int main(int argc, char* const* argv)
 		yyin = fin;
 		
 		// invoke parser:
-		yyparse(&error, scope, types, asm_writer, &file, &line, &section_counter);
+		yyparse(&error, scope, types, asm_writer, &file, &section_counter);
 	}
 	
 	if (error)

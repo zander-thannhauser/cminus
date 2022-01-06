@@ -11,7 +11,8 @@
 
 int new_expression_statement(
 	struct expression_statement** new,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct expression* expression)
 {
 	int error = 0;
@@ -23,7 +24,8 @@ int new_expression_statement(
 		(struct statement**) &this,
 		sk_expression,
 		&expression_statement_inheritance,
-		line,
+		first_line, first_column,
+		last_line, last_column,
 		sizeof(*this));
 	
 	if (!error)

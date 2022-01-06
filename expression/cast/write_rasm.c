@@ -39,7 +39,7 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 		struct integer_type* const ibt = (typeof(ibt)) bt;
 		struct integer_type* const iat = (typeof(iat)) at;
 		
-		asm_writer_write_movi_to(writer, 0, stackptr, working_1, ibt->kind);
+		asm_writer_write_movi_to_v2(writer, 0, stackptr, working_1, iktors[ibt->kind]);
 		
 		if ((ibt->kind & ~1) == (iat->kind & ~1))
 		{
@@ -103,7 +103,10 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 			}
 		}
 		
+		TODO;
+		#if 0
 		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
+		#endif
 	}
 	else if (bt->kind == tk_integer && at->kind == tk_float)
 	{
@@ -119,9 +122,12 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 		struct float_type* const fbt = (typeof(fbt)) bt;
 		struct integer_type* const iat = (typeof(iat)) at;
 		
-		asm_writer_write_ftoi(writer, 0, stackptr, fbt->kind, working_1);
+		asm_writer_write_ftoi(writer, 0, stackptr, fbt->kind, working_1, iat->kind);
 		
+		TODO;
+		#if 0
 		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
+		#endif
 	}
 	else if (bt->kind == tk_float && at->kind == tk_float)
 	{

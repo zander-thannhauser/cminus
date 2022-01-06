@@ -11,5 +11,6 @@ int new_statement(
 	struct statement** new,
 	enum statement_kind kind,
 	struct statement_inheritance* inheritance,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	size_t alloc_size);

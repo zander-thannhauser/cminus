@@ -24,8 +24,6 @@ struct literal_expression
 		float _float;
 		double _double;
 	} value;
-	
-	bool is_integer_result;
 };
 
 

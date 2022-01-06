@@ -13,7 +13,8 @@
 
 int jump_statement_return_callback(
 	struct statement** out,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct type* rettype,
 	struct expression* expression,
 	struct types* types,
@@ -23,9 +24,10 @@ int jump_statement_return_callback(
 	ENTER;
 	
 	dpvs(name);
-	
 	assert(name);
 	
+	TODO;
+	#if 0
 	bool is_float_result = (rettype->kind == tk_float);
 	
 	struct expression* casted = NULL;
@@ -37,6 +39,7 @@ int jump_statement_return_callback(
 	
 	tfree(casted);
 	tfree(expression);
+	#endif
 	
 	EXIT;
 	return error;

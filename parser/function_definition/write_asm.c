@@ -73,7 +73,7 @@ int function_definition_write_asm(
 	asm_writer_indent2(writer, "%s", "<old-rbp>");
 	#endif
 	
-	asm_writer_write_movi_between(writer, stackptr, baseptr, ik_unsigned_long);
+	asm_writer_write_movi_between_v2(writer, stackptr, baseptr, quadword);
 	
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_comment(writer, "allocate new stack space:");
@@ -149,11 +149,14 @@ int function_definition_write_asm(
 				
 				if (iparam <= first_parameter + number_of_integer_parameters)
 				{
+					TODO;
+					#if 0
 					asm_writer_write_movi_from(
 						writer,
 						/* from: */ iparam,
 						/* to:   */ -variable->offset, baseptr,
 						ikind);
+					#endif
 					
 					iparam++;
 				}

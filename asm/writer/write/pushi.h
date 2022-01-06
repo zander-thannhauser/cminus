@@ -1,8 +1,6 @@
 
-#include <inttypes.h>
+#include <stdint.h>
 
 struct asm_writer;
 
-void asm_writer_write_pushi(
-	struct asm_writer* this,
-	uintmax_t val);
+void asm_writer_write_pushi(struct asm_writer* this, uint64_t val);

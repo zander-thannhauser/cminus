@@ -12,7 +12,8 @@
 
 int compound_statement_statements_callback(
 	struct compound_statement** retval,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	struct statement_ll* declarations,
 	struct statement_ll* statements)
 {
@@ -30,7 +31,10 @@ int compound_statement_statements_callback(
 	
 	if (!error)
 		error = new_compound_statement(
-			(struct compound_statement**) retval, line, declarations);
+			(struct compound_statement**) retval,
+			first_line, first_column,
+			last_line, last_column,
+			declarations);
 	
 	tfree(declarations);
 	tfree(statements);

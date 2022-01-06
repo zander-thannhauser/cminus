@@ -25,5 +25,7 @@ const char* intregs[number_of_integer_registers][number_of_register_sizes] =
 	[ working_5] = {"%r14b", "%r14w", "%r14d", "%r14"},
 	[ working_6] = {"%r15b", "%r15w", "%r15d", "%r15"},
 	
+	[ divr_reg] = {"%ah", "%dx", "%edx", "%rdx"},
+	
 };
 

@@ -1,4 +1,5 @@
 
+struct types;
 struct expression;
 
 int postfix_expression_array_index_callback(

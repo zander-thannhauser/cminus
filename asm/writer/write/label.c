@@ -1,6 +1,8 @@
 
 #include <debug.h>
 
+#include "../write.h"
+
 #include "label.h"
 
 int asm_writer_write_label(
@@ -10,7 +12,7 @@ int asm_writer_write_label(
 	int error = 0;
 	ENTER;
 	
-	TODO;
+	asm_writer_write(this, ".%s:", label);
 	
 	EXIT;
 	return error;

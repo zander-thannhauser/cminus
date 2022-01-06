@@ -15,3 +15,9 @@ int asm_writer_write_subi_const(
 	uintmax_t val,
 	enum integer_register_id id,
 	enum register_size rsize);
+
+int asm_writer_write_subi(
+	struct asm_writer* this,
+	enum integer_register_id a,
+	enum integer_register_id b,
+	enum register_size rsize);

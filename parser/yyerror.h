@@ -6,5 +6,4 @@ int yyerror(
 	void* ___,
 	void* ____,
 	void* _____,
-	void* ______,
 	const char* s);

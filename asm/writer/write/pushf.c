@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdint.h>
 
 #include <debug.h>
@@ -22,4 +23,4 @@ void asm_writer_write_pushf(
 	
 	EXIT;
 }
-
+#endif

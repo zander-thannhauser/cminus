@@ -4,7 +4,8 @@
 
 enum expression_kind
 {
-	ek_binary,
+	ek_arithmetic,
+	ek_logical_and,
 	ek_cast,
 	ek_literal,
 	ek_function_call,

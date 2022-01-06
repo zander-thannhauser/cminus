@@ -10,6 +10,8 @@ int statement_write_asm(struct statement* this, struct asm_writer* writer)
 	int error = 0;
 	ENTER;
 	
+	dpv(this);
+	
 	dpv(this->kind);
 	
 	dpv(this->inheritance->write_asm);

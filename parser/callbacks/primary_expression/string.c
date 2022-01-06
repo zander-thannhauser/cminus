@@ -16,6 +16,8 @@
 
 int primary_expression_string_callback(
 	struct expression** out,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	char* string_data,
 	size_t string_strlen,
 	struct types* types,
@@ -33,6 +35,8 @@ int primary_expression_string_callback(
 	
 	error = new_string_expression(
 		(struct string_expression**) out,
+		first_line, first_column,
+		last_line, last_column,
 		(*string_counter)++,
 		tinc(string_data), string_strlen,
 		types->charptr_type);

@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #include <enums/error.h>
-#include <debug.h>
 
 #include <defines/argv0.h>
 
@@ -15,10 +14,6 @@ int tmalloc(void** retval, size_t size, void (*destructor)(void*))
 {
 	int error = 0;
 	struct memory_header* header;
-	ENTER;
-	
-	dpv(size);
-	dpv(destructor);
 	
 	header = malloc(sizeof(*header) + size);
 	
@@ -33,6 +28,5 @@ int tmalloc(void** retval, size_t size, void (*destructor)(void*))
 		*retval = header + 1;
 	}
 	
-	EXIT;
 	return error;
 }

@@ -25,6 +25,8 @@ int new_unary_expression(
 	struct type* type = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	switch (kind)
 	{
 		case uek_address_of:
@@ -58,6 +60,7 @@ int new_unary_expression(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	tfree(type);
 	

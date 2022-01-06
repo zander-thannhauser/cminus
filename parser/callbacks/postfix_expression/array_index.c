@@ -1,22 +1,22 @@
 
 #include <stdio.h>
 
-#include <error.h>
+/*#include <error.h>*/
 #include <debug.h>
 
-#include <defines/argv0.h>
+/*#include <defines/argv0.h>*/
 
-#include <memory/tfree.h>
+/*#include <memory/tfree.h>*/
 
-#include <type/struct.h>
+/*#include <type/struct.h>*/
 
-#include <types/struct.h>
+/*#include <types/struct.h>*/
 
-#include <expression/struct.h>
-#include <expression/cast/new.h>
-#include <expression/literal/new.h>
-#include <expression/binary/new.h>
-#include <expression/unary/new.h>
+/*#include <expression/struct.h>*/
+/*#include <expression/cast/new.h>*/
+/*#include <expression/literal/new.h>*/
+/*#include <expression/binary/new.h>*/
+/*#include <expression/unary/new.h>*/
 
 #include "array_index.h"
 
@@ -34,6 +34,8 @@ int postfix_expression_array_index_callback(
 	struct expression* sum = NULL;
 	struct expression* casted_sum = NULL;
 	ENTER;
+	
+	// needs to use array_index_expression instead,
 	
 	TODO;
 	#if 0

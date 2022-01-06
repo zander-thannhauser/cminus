@@ -19,6 +19,8 @@
 
 int new_assign_expression(
 	struct expression** new,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	enum assign_expression_kind kind,
 	struct expression* left,
 	struct expression* right,
@@ -31,11 +33,12 @@ int new_assign_expression(
 	
 	struct assign_expression* this = NULL;
 	
-	if (!error)
-		error = new_expression(
-			(struct expression**) &this,
-			kind, &assign_expression_inheritance,
-			ltype, sizeof(*this));
+	error = new_expression(
+		(struct expression**) &this,
+		kind, &assign_expression_inheritance,
+		first_line, first_column,
+		last_line, last_column,
+		ltype, sizeof(*this));
 	
 	if (!error)
 	{
@@ -46,7 +49,7 @@ int new_assign_expression(
 		
 		*new = (struct expression*) this;
 	}
-
+	
 	EXIT;
 	return error;
 }

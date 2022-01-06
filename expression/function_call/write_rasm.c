@@ -4,6 +4,7 @@
 
 /*#include <macros/min.h>*/
 
+#include <type/get_rs.h>
 #include <type/float/struct.h>
 
 /*#include <asm/tables/instrs.h>*/
@@ -128,8 +129,6 @@ int function_call_expression_write_rasm(
 	
 	dpv(elink);
 	
-	assert(elink);
-	
 	dpv(ilink);
 	
 	// push all integer arguments that do get a register:
@@ -167,7 +166,7 @@ int function_call_expression_write_rasm(
 	// pop integer off the stack, assigning them registers:
 	for (i = 0, n = n_int_params, reg = first_parameter; !error && i < n; i++)
 	{
-		asm_writer_write_movi_to(writer, 0, stackptr, reg++, ik_unsigned_long);
+		asm_writer_write_movi_to_v2(writer, 0, stackptr, reg++, quadword);
 		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
 		#ifdef VERBOSE_ASSEMBLY
 		asm_writer_unindent(writer);
@@ -175,10 +174,8 @@ int function_call_expression_write_rasm(
 	}
 	
 	// reach for function pointer:
-	asm_writer_write_movi_to(writer,
-		8 * n_overflow_params, stackptr,
-		reg,
-		ik_unsigned_long);
+	asm_writer_write_movi_to_v2(writer,
+		8 * n_overflow_params, stackptr, reg, quadword);
 	
 	// set rax indicating how many floats.
 	asm_writer_write_integer(writer,
@@ -214,7 +211,11 @@ int function_call_expression_write_rasm(
 	}
 	
 	// push retval register
-	if (super->type->kind == tk_float)
+	if (super->type->kind == tk_void)
+	{
+		// do nothing
+	}
+	else if (super->type->kind == tk_float)
 	{
 		struct float_type *type = (typeof(type)) super->type;
 		
@@ -224,9 +225,13 @@ int function_call_expression_write_rasm(
 	}
 	else
 	{
-		asm_writer_write_movi_from(writer, retval, -8, stackptr, ik_unsigned_long);
-		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+		dpv(super->type->kind);
+		
+		asm_writer_write_movi_from_v2(writer, retval, -8, stackptr,
+			type_get_rs(super->type));
 	}
+	
+	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	
 	EXIT;
 	return error;

@@ -3,18 +3,18 @@
 
 #include <debug.h>
 
-#include <memory/tinc.h>
+/*#include <memory/tinc.h>*/
 #include <memory/tfree.h>
 
-#include <statement/struct.h>
-#include <statement/expression/struct.h>
+/*#include <statement/struct.h>*/
+/*#include <statement/expression/struct.h>*/
 
-#include <expression/struct.h>
-#include <expression/variable/struct.h>
-#include <expression/binary/struct.h>
+/*#include <expression/struct.h>*/
+/*#include <expression/variable/struct.h>*/
+/*#include <expression/binary/struct.h>*/
 
 #include <parser/statement_ll/struct.h>
-#include <parser/declaration_ll/struct.h>
+/*#include <parser/declaration_ll/struct.h>*/
 
 /*#include <parser/translation_unit_ll/new.h>*/
 /*#include <parser/translation_unit_ll/append.h>*/

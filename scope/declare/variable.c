@@ -14,7 +14,7 @@
 #include <avl/avl.h>
 
 #include <type/struct.h>
-#include <type/is_equal.h>
+/*#include <type/compare.h>*/
 
 #include "../struct.h"
 #include "../variable.h"
@@ -77,6 +77,8 @@ int scope_declare_variable(
 			assert(node);
 			oldvar = node->item;
 			
+			TODO;
+			#if 0
 			if (false
 				|| this->stackhead
 				|| !type_is_equal(type, oldvar->type)
@@ -86,6 +88,7 @@ int scope_declare_variable(
 					"with as different type!\n", argv0, identifier);
 				error = e_bad_input_file;
 			}
+			#endif
 		}
 		else
 		{

@@ -1,4 +1,5 @@
 
+#if 0
 #include <inttypes.h>
 
 #include <debug.h>
@@ -43,4 +44,4 @@ void asm_writer_write_pushd(
 
 
 
-
+#endif

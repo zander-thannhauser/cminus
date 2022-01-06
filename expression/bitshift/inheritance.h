@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance bitshift_expression_inheritance;

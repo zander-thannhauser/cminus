@@ -17,10 +17,13 @@ int primary_expression_float_callback(
 	
 	dpv(floatlit);
 	
+	TODO;
+	#if 0
 	error = new_literal_expression_as_float(
 		(struct expression**) retval,
 		types->floats[fk_float],
 		floatlit);
+	#endif
 	
 	EXIT;
 	return error;

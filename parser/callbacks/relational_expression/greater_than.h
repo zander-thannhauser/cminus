@@ -1,4 +1,5 @@
 
+struct types;
 struct expression;
 
 int relational_expression_greater_than_callback(

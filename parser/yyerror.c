@@ -14,7 +14,6 @@ int yyerror(
 	void* ___,
 	void* ____,
 	void* _____,
-	void* ______,
 	const char* s)
 {
 	fprintf(stderr, "%s: bison: %s\n", argv0, s);

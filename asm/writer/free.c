@@ -8,7 +8,7 @@ void free_asm_writer(struct asm_writer* this)
 {
 	ENTER;
 	
-	#ifdef VERBOSE_ASSEMBLY
+	#if defined VERBOSE_ASSEMBLY && !(defined DEBUGGING)
 	assert(!this->indent_head);
 	#endif
 	

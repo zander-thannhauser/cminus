@@ -26,6 +26,8 @@ int new_comma_expression(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct comma_expression* this = NULL;
 		
 	error = new_expression(
@@ -40,6 +42,7 @@ int new_comma_expression(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;

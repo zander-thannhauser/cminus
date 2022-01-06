@@ -11,7 +11,8 @@
 
 int new_return_statement(
 	struct return_statement** new,
-	unsigned line,
+	unsigned first_line, unsigned first_column,
+	unsigned last_line, unsigned last_column,
 	bool is_float_result,
 	char* funcname,
 	struct expression* return_value)
@@ -21,6 +22,7 @@ int new_return_statement(
 	
 	dpvb(is_float_result);
 	
+	#if 0
 	struct return_statement* this = NULL;
 	
 	error = new_statement(
@@ -39,6 +41,7 @@ int new_return_statement(
 		
 		*new = this;
 	}
+	#endif
 	
 	EXIT;
 	return error;
