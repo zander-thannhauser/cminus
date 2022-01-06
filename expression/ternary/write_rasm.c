@@ -1,4 +1,5 @@
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -49,13 +50,15 @@ int ternary_expression_write_rasm(
 {
 	struct ternary_expression* const this = (typeof(this)) super;
 	int error = 0;
-	enum register_size rs;
+/*	enum register_size rs;*/
 	ENTER;
 	
-	char* prefix_label = NULL;
-	char* false_label = NULL;
-	char* after_label = NULL;
+/*	char* prefix_label = NULL;*/
+/*	char* false_label = NULL;*/
+/*	char* after_label = NULL;*/
 	
+	TODO;
+	#if 0
 	if (false
 		|| asprintf(&prefix_label, "%uto%u_%uto%u",
 			super->first_line, super->last_line,
@@ -101,6 +104,7 @@ int ternary_expression_write_rasm(
 	free(prefix_label);
 	free(false_label);
 	free(after_label);
+	#endif
 	
 	EXIT;
 	return error;

@@ -9,7 +9,7 @@
 int asm_writer_write(struct asm_writer* this, const char* fmt, ...)
 {
 	int error = 0;
-	unsigned i, n;
+/*	unsigned i, n;*/
 	va_list args;
 	ENTER;
 	

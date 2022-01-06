@@ -31,8 +31,7 @@
 
 int new_function_call_expression(
 	struct function_call_expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct expression* fe,
 	struct expression_ll* casted_args)
 {
@@ -42,15 +41,13 @@ int new_function_call_expression(
 	assert(fe->type->kind == tk_function);
 	
 	struct function_call_expression* this = NULL;
-	
 	struct function_type* spef = (typeof(spef)) fe->type;
 	
 	error = new_expression(
 		(struct expression**) &this,
 		/* kind:        */ ek_function_call,
 		/* inheritance: */ &function_call_expression_inheritance,
-		/* first:       */ first_line, first_column,
-		/* last:        */ last_line, last_column,
+		/* location:    */ loc,
 		/* type:        */ spef->return_type,
 		sizeof(*this));
 	

@@ -9,9 +9,6 @@
 
 struct type* type_specifier_unsigned_callback(struct types* types)
 {
-	TODO;
-	#if 0
-	return tinc(types->primitives[pk_unsigned_int]);
-	#endif
+	return tinc(types->integers[ik_unsigned_int]);
 }
 

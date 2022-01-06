@@ -9,6 +9,8 @@
 
 #include <statement/return/new.h>
 
+#include <parser/yylloc/new.h>
+
 #include "return.h"
 
 int jump_statement_return_callback(
@@ -26,24 +28,35 @@ int jump_statement_return_callback(
 	dpvs(name);
 	assert(name);
 	
-	TODO;
-	#if 0
 	bool is_float_result = (rettype->kind == tk_float);
 	
 	struct expression* casted = NULL;
+	struct yylloc* loc = NULL;
 	
 	error = 0
-		?: new_cast_expression(&casted, rettype, expression, types)
+		?: new_yyloc(&loc,
+			first_line, first_column,
+			last_line, last_column)
+		?: new_cast_expression(&casted, NULL, rettype, expression, types)
 		?: new_return_statement(
-			(struct return_statement**) out, line, is_float_result, name, casted);
+			(struct return_statement**) out, loc, is_float_result, name, casted);
 	
+	tfree(loc);
 	tfree(casted);
 	tfree(expression);
-	#endif
 	
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
+
 
 
 

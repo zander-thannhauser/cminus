@@ -40,6 +40,8 @@ int variable_expression_write_rasm(
 	
 	dpvs(variable->name);
 	
+	assert(variable->type->is_complete);
+	
 	if (!variable->is_global)
 	{
 		struct type* const type = variable->type;

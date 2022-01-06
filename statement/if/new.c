@@ -22,7 +22,7 @@ int new_if_statement(
 	struct types* types)
 {
 	int error = 0;
-	struct expression* casted_conditional = NULL;
+/*	struct expression* casted_conditional = NULL;*/
 	ENTER;
 	
 	TODO;

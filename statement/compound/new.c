@@ -11,8 +11,7 @@
 
 int new_compound_statement(
 	struct compound_statement** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct statement_ll* statements)
 {
 	int error = 0;
@@ -24,8 +23,7 @@ int new_compound_statement(
 		(struct statement**) &this,
 		sk_compound,
 		&compound_statement_inheritance,
-		first_line, first_column,
-		last_line, last_column,
+		loc,
 		sizeof(*this));
 	
 	if (!error)

@@ -14,7 +14,7 @@
 #include <avl/avl.h>
 
 #include <type/struct.h>
-/*#include <type/compare.h>*/
+#include <type/compare.h>
 
 #include "../struct.h"
 #include "../variable.h"
@@ -77,18 +77,15 @@ int scope_declare_variable(
 			assert(node);
 			oldvar = node->item;
 			
-			TODO;
-			#if 0
 			if (false
 				|| this->stackhead
-				|| !type_is_equal(type, oldvar->type)
+				|| compare_types(type, oldvar->type)
 				|| storage_class != oldvar->storage_class)
 			{
 				fprintf(stderr, "%s: variable '%s' redeclared in same scope "
 					"with as different type!\n", argv0, identifier);
 				error = e_bad_input_file;
 			}
-			#endif
 		}
 		else
 		{

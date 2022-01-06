@@ -20,8 +20,7 @@
 
 int new_arithmetic_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	enum arithmetic_expression_kind kind,
 	struct expression* left,
 	struct expression* right,
@@ -46,8 +45,7 @@ int new_arithmetic_expression(
 			(struct literal_expression**) new,
 			(struct literal_expression*) left,
 			(struct literal_expression*) right,
-			first_line, first_column,
-			last_line, last_column,
+			loc,
 			types);
 	}
 	else
@@ -56,8 +54,7 @@ int new_arithmetic_expression(
 			(struct expression**) &this,
 			ek_arithmetic,
 			&arithmetic_expression_inheritance,
-			first_line, first_column,
-			last_line, last_column,
+			loc,
 			ltype, sizeof(*this));
 		
 		if (!error)

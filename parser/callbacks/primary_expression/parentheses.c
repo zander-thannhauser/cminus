@@ -1,8 +1,12 @@
 
 #include <debug.h>
 
+#include <memory/tfree.h>
+
 #include <expression/parentheses/new.h>
 #include <expression/free.h>
+
+#include <parser/yylloc/new.h>
 
 #include <types/struct.h>
 
@@ -15,15 +19,18 @@ int primary_expression_parentheses_callback(
 	struct expression* inner)
 {
 	int error = 0;
+	struct yylloc* loc = NULL;
 	ENTER;
 	
-	error = new_parentheses_expression(
-		(struct expression**) retval,
-		first_line, first_column,
-		last_line, last_column,
-		inner);
+	error = 0
+		?: new_yyloc(&loc,
+			first_line, first_column,
+			last_line, last_column)
+		?: new_parentheses_expression(
+			(struct expression**) retval, loc, inner);
 	
 	free_expression(inner);
+	tfree(loc);
 	
 	EXIT;
 	return error;

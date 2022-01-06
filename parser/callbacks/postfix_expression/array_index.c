@@ -27,12 +27,12 @@ int postfix_expression_array_index_callback(
 	struct types* types)
 {
 	int error = 0;
-	struct expression* casted_array = NULL;
-	struct expression* casted_index = NULL;
-	struct expression* sizeof_literal = NULL;
-	struct expression* product = NULL;
-	struct expression* sum = NULL;
-	struct expression* casted_sum = NULL;
+/*	struct expression* casted_array = NULL;*/
+/*	struct expression* casted_index = NULL;*/
+/*	struct expression* sizeof_literal = NULL;*/
+/*	struct expression* product = NULL;*/
+/*	struct expression* sum = NULL;*/
+/*	struct expression* casted_sum = NULL;*/
 	ENTER;
 	
 	// needs to use array_index_expression instead,

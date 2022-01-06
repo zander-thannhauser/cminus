@@ -29,9 +29,7 @@ typedef unsigned long  unsigned_long;
 		type x = l->value._##type, y = r->value._##type; \
 		dpv(x); dpv(y); \
 		error = new_literal_expression_as_##type(\
-			(struct expression**) out, \
-			first_line, first_column, \
-			last_line, last_column, \
+			(struct expression**) out, loc, \
 			types->integers[ik_##type], (operation)); \
 		break; \
 	}
@@ -45,8 +43,7 @@ typedef unsigned long  unsigned_long;
 #define A(funcname, operation) \
 	static int funcname( \
 		exp** out, exp* l, exp* r, \
-		unsigned first_line, unsigned first_column, \
-		unsigned last_line, unsigned last_column, \
+		struct yylloc* loc, \
 		struct types* types) \
 	{ \
 		int error = 0; \
@@ -65,7 +62,7 @@ A(fold_rdivide, (x % y));
 
 int (*arithmetic_constfolders[N])(
 	exp**, exp*, exp*,
-	unsigned, unsigned, unsigned, unsigned,
+	struct yylloc*,
 	struct types*) =
 {
 	[aek_add] = fold_add,

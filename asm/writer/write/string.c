@@ -11,7 +11,7 @@ int asm_writer_write_string(
 	char* data, size_t len)
 {
 	int error = 0;
-	unsigned i, n;
+	unsigned i;
 	ENTER;
 	
 	

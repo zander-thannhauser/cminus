@@ -2,6 +2,7 @@
 #include <debug.h>
 
 #include <memory/tmalloc.h>
+#include <memory/tinc.h>
 
 #include "struct.h"
 #include "free.h"
@@ -11,8 +12,7 @@ int new_statement(
 	struct statement** new,
 	enum statement_kind kind,
 	struct statement_inheritance* inheritance,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	size_t alloc_size)
 {
 	int error = 0;
@@ -30,10 +30,7 @@ int new_statement(
 		
 		this->inheritance = inheritance;
 		
-		this->first_line = first_line;
-		this->first_column = first_column;
-		this->last_line = last_line;
-		this->last_column = last_column;
+		this->loc = tinc(loc);
 		
 		*new = this;
 	}

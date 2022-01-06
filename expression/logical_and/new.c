@@ -27,10 +27,12 @@ int new_logical_and_expression(
 {
 	int error = 0;
 /*	enum primitive_kind params_kind;*/
-	struct type* const rtype = right->type;
-	struct type* const ltype = left->type;
+/*	struct type* const rtype = right->type;*/
+/*	struct type* const ltype = left->type;*/
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (!left->type->is_complete || !right->type->is_complete)
 	{
 		TODO;
@@ -69,6 +71,7 @@ int new_logical_and_expression(
 			*new = (struct expression*) this;
 		}
 	}
+	#endif
 	
 	EXIT;
 	return error;

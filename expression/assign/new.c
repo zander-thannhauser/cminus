@@ -19,16 +19,13 @@
 
 int new_assign_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	enum assign_expression_kind kind,
 	struct expression* left,
 	struct expression* right,
 	struct types* types)
 {
 	int error = 0;
-	struct type* const rtype = right->type;
-	struct type* const ltype = left->type;
 	ENTER;
 	
 	struct assign_expression* this = NULL;
@@ -36,9 +33,9 @@ int new_assign_expression(
 	error = new_expression(
 		(struct expression**) &this,
 		kind, &assign_expression_inheritance,
-		first_line, first_column,
-		last_line, last_column,
-		ltype, sizeof(*this));
+		loc,
+		left->type,
+		sizeof(*this));
 	
 	if (!error)
 	{

@@ -2,14 +2,17 @@
 #include <stdio.h>
 
 #include <debug.h>
-#include <error.h>
+
+#include <enums/error.h>
 
 #include <defines/argv0.h>
 
 #include <memory/tfree.h>
 
-#include <expression/struct.h>
 #include <expression/literal/struct.h>
+#include <expression/cast/new.h>
+
+#include <types/struct.h>
 
 #include <parser/ptree/declarator/array/new.h>
 
@@ -18,38 +21,37 @@
 int direct_declarator_array_callback(
 	struct declarator** new,
 	struct declarator* inner,
-	struct expression* size_expression)
+	struct expression* size_expression,
+	struct types* types)
 {
 	int error = 0;
+	struct expression* casted = NULL;
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (size_expression->kind != ek_literal)
 		fprintf(stderr, "%s: array size not constant!\n", argv0),
 		error = e_bad_input_file;
-	else
+	
+	if (!error)
+		error = new_cast_expression(&casted, NULL,
+			types->integers[ik_unsigned_long], size_expression, types);
+	
+	if (!error)
 	{
 		size_t size;
-		struct literal_expression* lit = (typeof(lit)) size_expression;
+		struct literal_expression* lit = (typeof(lit)) casted;
 		
-		switch (lit->kind)
-		{
-			case pk_unsigned_long: size = lit->value._unsigned_long; break;
-			
-			default:
-				TODO;
-				break;
-		}
+		size = lit->value._unsigned_long;
 		
-		if (!error)
-			error = new_array_declarator(
-				(struct array_declarator**) new, inner, size);
+		dpv(size);
+		
+		error = new_array_declarator(
+			(struct array_declarator**) new, inner, size);
 	}
 	
 	tfree(inner);
 	tfree(size_expression);
-	#endif
+	tfree(casted);
 	
 	EXIT;
 	return error;

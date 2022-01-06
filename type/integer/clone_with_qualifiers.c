@@ -16,8 +16,6 @@ int integer_type_clone_with_qualifiers(
 	const struct integer_type* this = (typeof(this)) tthis;
 	ENTER;
 	
-	TODO;
-	#if 0
 	struct integer_type* that = NULL;
 	
 	error = new_type(
@@ -39,7 +37,6 @@ int integer_type_clone_with_qualifiers(
 		
 		*new = that;
 	}
-	#endif
 	
 	EXIT;
 	return error;

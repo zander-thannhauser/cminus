@@ -9,7 +9,7 @@ int compare_integer_types(
 	const struct type* _a,
 	const struct type* _b)
 {
-	bool retval = true;
+	int retval = 0;
 	const struct integer_type* a = (typeof(a)) _a;
 	const struct integer_type* b = (typeof(b)) _b;
 	ENTER;
@@ -17,10 +17,10 @@ int compare_integer_types(
 	dpv(a->kind);
 	dpv(b->kind);
 	
-	TODO;
-	#if 0
-	retval = a->kind == b->kind;
-	#endif
+	if (a->kind < b->kind)
+		retval = -1;
+	else if (a->kind > b->kind)
+		retval = +1;
 	
 	EXIT;
 	return retval;

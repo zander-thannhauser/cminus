@@ -13,6 +13,8 @@
 
 #include <expression/write_rasm.h>
 
+#include <parser/yylloc/struct.h>
+
 #include "struct.h"
 #include "write_asm.h"
 
@@ -24,21 +26,20 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 	
 	if (this->expression)
 	{
-		dpv(super->first_line);
-		dpv(super->last_line);
-		dpv(super->first_column);
-		dpv(super->last_column);
-		
 		#ifdef VERBOSE_ASSEMBLY
-		if (super->first_line == super->last_line)
+		if (!super->loc);
+		else if (super->loc->first_line == super->loc->last_line)
 			asm_writer_comment(writer, "line %u, col %u-%u: %E;",
-				super->first_line,
-				super->first_column, super->last_column,
+				super->loc->first_line,
+				super->loc->first_column,
+				super->loc->last_column,
 				this->expression);
 		else
 			asm_writer_comment(writer, "lines %u-%u, col %u-%u: %E;",
-				super->first_line,
-				super->first_column, super->last_column,
+				super->loc->first_line,
+				super->loc->last_line,
+				super->loc->first_column,
+				super->loc->last_column,
 				this->expression);
 		#endif
 		
@@ -49,6 +50,7 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 		#ifdef VERBOSE_ASSEMBLY
 		asm_writer_unindent(writer);
 		#endif
+		
 	}
 	
 	EXIT;

@@ -44,6 +44,8 @@ int declaration_specifiers_and_init_list_callback(
 	// shortcuts:
 	is_typedef = (specifiers->storage_class == sc_typedef);
 	
+	dpv(specifiers->type);
+	
 	error = 0
 		?: type_clone_with_qualifiers(&base_type, specifiers->type, specifiers->qualifiers->qualifiers)
 		?: new_statement_ll(&statements);

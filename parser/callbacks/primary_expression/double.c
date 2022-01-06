@@ -19,12 +19,15 @@ int primary_expression_double_callback(
 	
 	dpv(doublelit);
 	
+	TODO;
+	#if 0
 	error = new_literal_expression_as_double(
 		(struct expression**) retval,
 		first_line, first_column,
 		last_line, last_column,
 		types->floats[fk_double],
 		doublelit);
+	#endif
 	
 	EXIT;
 	return error;

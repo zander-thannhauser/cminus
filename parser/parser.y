@@ -456,7 +456,10 @@ unary_expression
 		if ((*error = unary_expression_sizeof_expression_callback(&$$, $2)))
 			YYABORT;
 	} | SIZEOF '(' type_name ')' {
-		if ((*error = unary_expression_sizeof_type_callback(&$$, $3, types)))
+		if ((*error = unary_expression_sizeof_type_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$3, types)))
 			YYABORT;
 	} ;
 
@@ -662,21 +665,27 @@ declaration
 
 declaration_specifiers
 	: storage_class_specifier {
+		HERE;
 		if ((*error = declaration_specifiers_storage_class_callback(&$$, $1, NULL)))
 			YYABORT;
 	} | storage_class_specifier declaration_specifiers {
+		HERE;
 		if ((*error = declaration_specifiers_storage_class_callback(&$$, $1, $2)))
 			YYABORT;
 	} | type_specifier {
+		HERE;
 		if ((*error = declaration_specifiers_type_specifier_callback(&$$, $1, NULL, types)))
 			YYABORT;
 	} | type_specifier declaration_specifiers {
+		HERE;
 		if ((*error = declaration_specifiers_type_specifier_callback(&$$, $1, $2, types)))
 			YYABORT;
 	} | type_qualifier {
+		HERE;
 		if ((*error = declaration_specifiers_type_qualifier_callback(&$$, $1, NULL)))
 			YYABORT;
 	} | type_qualifier declaration_specifiers {
+		HERE;
 		if ((*error = declaration_specifiers_type_qualifier_callback(&$$, $1, $2)))
 			YYABORT;
 	};
@@ -692,6 +701,7 @@ init_declarator_list
 
 init_declarator
 	: declarator {
+		HERE;
 		if ((*error = init_declarator_just_declarator_callback(&$$, $1)))
 			YYABORT;
 	} | declarator '=' initializer {
@@ -853,7 +863,7 @@ direct_declarator
 	} | '(' declarator ')' {
 		$$ = $2;
 	} | direct_declarator '[' constant_expression ']' {
-		if ((*error = direct_declarator_array_callback(&$$, $1, $3)))
+		if ((*error = direct_declarator_array_callback(&$$, $1, $3, types)))
 			YYABORT;
 	} | direct_declarator '[' ']' {
 		// can only be the outer-most brackets

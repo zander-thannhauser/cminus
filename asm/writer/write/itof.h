@@ -1,4 +1,6 @@
 
+#include <sys/types.h>
+
 /*#include <stdlib.h>*/
 
 #include <asm/enums/intregs.h>

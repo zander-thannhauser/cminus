@@ -54,9 +54,13 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 		
 		switch (ftype->kind)
 		{
+			#pragma GCC diagnostic push
+			#pragma GCC diagnostic ignored "-Wstrict-aliasing"
 			case fk_float:
+			{
 				literal = *((uint32_t*) &this->value._float);
 				break;
+			}
 			
 			case fk_double:
 			{
@@ -65,6 +69,7 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 			}
 			
 			case number_of_float_kinds: abort();
+			#pragma GCC diagnostic pop
 		}
 	}
 	

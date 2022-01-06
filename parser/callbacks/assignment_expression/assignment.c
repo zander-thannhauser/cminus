@@ -15,6 +15,8 @@
 #include <expression/assign/new.h>
 #include <expression/cast/new.h>
 
+#include <parser/yylloc/new.h>
+
 #include "assignment.h"
 
 int assignment_expression_assignment_callback(
@@ -52,15 +54,19 @@ int assignment_expression_assignment_callback(
 	else 
 	{
 		struct expression* cast_right = NULL;
-	
+		struct yylloc* loc = NULL;
+		
 		error = 0
-			?: new_cast_expression(&cast_right,
-				0, 0, 0, 0, left->type, right, types)
-			?: new_assign_expression(retval, 
+			?: new_yyloc(&loc,
 				first_line, first_column,
-				last_line, last_column,
+				last_line, last_column)
+			?: new_cast_expression(&cast_right,
+				NULL, left->type, right, types)
+			?: new_assign_expression(retval, 
+				loc,
 				kind, left, cast_right, types);
 		
+		tfree(loc);
 		tfree(cast_right);
 	}
 	

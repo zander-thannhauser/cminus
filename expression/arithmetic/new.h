@@ -7,8 +7,7 @@ struct types;
 
 int new_arithmetic_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	enum arithmetic_expression_kind kind,
 	struct expression* left,
 	struct expression* right,

@@ -24,6 +24,9 @@ int type_clone_with_qualifiers(
 	int error = 0;
 	ENTER;
 	
+	dpv(this);
+	assert(this);
+	
 	int i, n;
 	bool all_qualifiers_met = true;
 	// do we already have all qualifiers met?

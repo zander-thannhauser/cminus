@@ -26,8 +26,8 @@ int new_comparision_expression(
 {
 	int error = 0;
 /*	enum primitive_kind params_kind;*/
-	struct type* const rtype = right->type;
-	struct type* const ltype = left->type;
+/*	struct type* const rtype = right->type;*/
+/*	struct type* const ltype = left->type;*/
 	ENTER;
 	
 	TODO;

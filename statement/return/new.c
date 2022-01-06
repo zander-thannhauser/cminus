@@ -11,8 +11,7 @@
 
 int new_return_statement(
 	struct return_statement** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	bool is_float_result,
 	char* funcname,
 	struct expression* return_value)
@@ -22,14 +21,13 @@ int new_return_statement(
 	
 	dpvb(is_float_result);
 	
-	#if 0
 	struct return_statement* this = NULL;
 	
 	error = new_statement(
 		(struct statement**) &this,
 		sk_return,
 		&return_statement_inheritance,
-		line,
+		loc,
 		sizeof(*this));
 	
 	if (!error)
@@ -41,7 +39,6 @@ int new_return_statement(
 		
 		*new = this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

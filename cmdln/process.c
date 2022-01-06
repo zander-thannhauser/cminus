@@ -23,20 +23,27 @@ int process_cmdln(struct cmdln_flags** retval, int argc, char* const* argv)
 	int error = 0;
 	ENTER;
 	
+	bool preprocess = false;
+	
 	const char* input_path = NULL;
 	const char* output_path = NULL;
 	
 	// for getopt:
 	int opt, option_index;
 	const struct option long_options[] = {
-		{"output", required_argument, 0, 'o'},
+		{"preprocess",       no_argument, 0, 'p'},
+		{"output",     required_argument, 0, 'o'},
 		{0, 0, 0, 0}
 	};
 	
-	while (!error && (opt = getopt_long(argc, argv, "o:", long_options, &option_index)) >= 0)
+	while (!error && (opt = getopt_long(argc, argv, "po:", long_options, &option_index)) >= 0)
 	{
 		switch (opt)
 		{
+			case 'p':
+				preprocess = true;
+				break;
+			
 			case 'o':
 				output_path = optarg;
 				break;
@@ -74,6 +81,8 @@ int process_cmdln(struct cmdln_flags** retval, int argc, char* const* argv)
 	
 	if (!error)
 	{
+		flags->preprocess = preprocess;
+		
 		flags->input_path = input_path;
 		flags->output_path = output_path;
 		

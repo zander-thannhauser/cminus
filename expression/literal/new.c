@@ -9,10 +9,10 @@
 #include "struct.h"
 #include "new.h"
 
+#if 0
 int new_literal_expression_as__Bool(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* bool_type,
 	bool boollit)
 {
@@ -44,11 +44,11 @@ int new_literal_expression_as__Bool(
 	EXIT;
 	return error;
 }
+#endif
 
 int new_literal_expression_as_signed_char(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* sint_type,
 	signed char scharlit)
 {
@@ -83,8 +83,7 @@ int new_literal_expression_as_signed_char(
 
 int new_literal_expression_as_unsigned_char(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	unsigned char floatlit)
 {
@@ -93,8 +92,7 @@ int new_literal_expression_as_unsigned_char(
 
 int new_literal_expression_as_signed_short(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	signed short floatlit)
 {
@@ -103,8 +101,7 @@ int new_literal_expression_as_signed_short(
 
 int new_literal_expression_as_unsigned_short(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	unsigned short floatlit)
 {
@@ -113,8 +110,7 @@ int new_literal_expression_as_unsigned_short(
 
 int new_literal_expression_as_signed_int(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* sint_type,
 	signed int sintlit)
 {
@@ -129,8 +125,7 @@ int new_literal_expression_as_signed_int(
 		/* return value: */ (struct expression**) &this,
 		/* expression kind: */ ek_literal,
 		/* inheritance*/ &literal_expression_inheritance,
-		/* first: */ first_line, first_column,
-		/* last:  */ last_line, last_column,
+		/* location: */ loc,
 		/* type: */ sint_type,
 		/* alloc_size: */ sizeof(*this));
 	
@@ -147,8 +142,7 @@ int new_literal_expression_as_signed_int(
 
 int new_literal_expression_as_unsigned_int(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	unsigned int floatlit)
 {
@@ -157,8 +151,7 @@ int new_literal_expression_as_unsigned_int(
 
 int new_literal_expression_as_signed_long(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	signed long floatlit)
 {
@@ -167,8 +160,7 @@ int new_literal_expression_as_signed_long(
 
 int new_literal_expression_as_unsigned_long(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* ulong_type,
 	unsigned long ulong_value)
 {
@@ -177,25 +169,22 @@ int new_literal_expression_as_unsigned_long(
 	
 	dpv(ulong_value);
 	
-	TODO;
-	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
 		/* return value: */ (struct expression**) &this,
 		/* expression kind: */ ek_literal,
 		/* inheritance*/ &literal_expression_inheritance,
+		/* location: */ loc,
 		/* type: */ ulong_type,
 		/* alloc_size: */ sizeof(*this));
 	
 	if (!error)
 	{
-		this->kind = pk_unsigned_long,
 		this->value._unsigned_long = ulong_value;
 		
 		*new = (struct expression*) this;
 	}
-	#endif
 	
 	EXIT;
 	return error;
@@ -203,8 +192,7 @@ int new_literal_expression_as_unsigned_long(
 
 int new_literal_expression_as_float(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* float_type,
 	float floatlit)
 {
@@ -239,14 +227,15 @@ int new_literal_expression_as_float(
 
 int new_literal_expression_as_double(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* double_type,
 	double doublelit)
 {
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
@@ -266,6 +255,7 @@ int new_literal_expression_as_double(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;

@@ -1,9 +1,13 @@
 
 #include <debug.h>
 
-#include <expression/literal/new.h>
+#include <memory/tfree.h>
 
 #include <types/struct.h>
+
+#include <expression/literal/new.h>
+
+#include <parser/yylloc/new.h>
 
 #include "sinteger.h"
 
@@ -15,14 +19,20 @@ int primary_expression_sinteger_callback(
 	signed int sintegerlit)
 {
 	int error = 0;
+	struct yylloc* location = NULL;
 	ENTER;
 	
-	error = new_literal_expression_as_signed_int(
-		(struct expression**) retval,
-		first_line, first_column,
-		last_line, last_column,
-		types->integers[ik_signed_int],
-		sintegerlit);
+	error = 0
+		?: new_yyloc(&location,
+			first_line, first_column,
+			last_line, last_column)
+		?: new_literal_expression_as_signed_int(
+			(struct expression**) retval,
+			location,
+			types->integers[ik_signed_int],
+			sintegerlit);
+	
+	tfree(location);
 	
 	EXIT;
 	return error;

@@ -10,8 +10,7 @@ struct expression
 	
 	struct expression_inheritance* inheritance;
 	
-	unsigned first_line, first_column;
-	unsigned  last_line,  last_column;
+	struct yylloc* loc;
 	
 	struct type* type;
 };

@@ -20,6 +20,7 @@
 #include <parser/expression_ll/new.h>
 #include <parser/expression_ll/append.h>
 
+#include <parser/yylloc/new.h>
 
 #include <expression/struct.h>
 #include <expression/function_call/new.h>
@@ -70,7 +71,7 @@ int postfix_expression_function_call_callback(
 		struct expression* ce = NULL;
 		
 		error = 0
-			?: new_cast_expression(&ce, 0, 0, 0, 0, plink->element->type, alink->element, types)
+			?: new_cast_expression(&ce, NULL, plink->element->type, alink->element, types)
 			?: expression_ll_append(casted_args, ce);
 		
 		tfree(ce);
@@ -91,10 +92,13 @@ int postfix_expression_function_call_callback(
 			{
 				struct expression* ce = NULL;
 				
+				TODO;
+				#if 0
 				error = 0
 					?: new_cast_expression(&ce, 0, 0, 0, 0,
 						types->floats[fk_double], alink->element, types)
 					?: expression_ll_append(casted_args, ce);
+				#endif
 				
 				tfree(ce);
 			}
@@ -108,13 +112,21 @@ int postfix_expression_function_call_callback(
 		error = 1;
 	}
 	
+	struct yylloc* loc = NULL;
 	
-	error = new_function_call_expression(
-		(struct function_call_expression**) retval,
-		first_line, first_column,
-		last_line, last_column,
-		fe, casted_args);
+	if (!error)
+	{
+		error = 0
+			?: new_yyloc(&loc,
+				first_line, first_column,
+				last_line, last_column)
+			?: new_function_call_expression(
+				(struct function_call_expression**) retval,
+				loc,
+				fe, casted_args);
+	}
 	
+	tfree(loc);
 	tfree(fe);
 	tfree(ae_ll);
 	tfree(casted_args);
@@ -122,4 +134,26 @@ int postfix_expression_function_call_callback(
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

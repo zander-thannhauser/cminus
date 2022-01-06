@@ -41,7 +41,7 @@ int function_call_expression_write_rasm(
 	struct expression* super, struct asm_writer* writer)
 {
 	int error = 0;
-	size_t i, n, m;
+	size_t i, n; // , m;
 	struct function_call_expression* const this = (typeof(this)) super;
 	ENTER;
 	

@@ -21,12 +21,11 @@
 
 int new_variable_expression(
 	struct variable_expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line,  unsigned last_column,
+	struct yylloc* loc,
 	struct variable* variable)
 {
 	int error = 0;
-	struct type* type = NULL;
+/*	struct type* type = NULL;*/
 	struct variable_expression* this = NULL;
 	ENTER;
 	
@@ -34,8 +33,7 @@ int new_variable_expression(
 		(struct expression**) &this,
 		/* kind: */ ek_variable,
 		/* inheritance: */ &variable_expression_inheritance,
-		/* first location: */ first_line, first_column,
-		/* last location: */ last_line, last_column,
+		/* location: */ loc,
 		/* type: */ variable->type,
 		sizeof(*this));
 	

@@ -11,8 +11,6 @@
 
 static size_t lookup[] =
 {
-	[ik_bool] = sizeof(bool),
-	
 	[ik_signed_char] = sizeof(char),
 	[ik_signed_short] = sizeof(short),
 	[ik_signed_int] = sizeof(int),

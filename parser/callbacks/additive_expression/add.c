@@ -15,6 +15,8 @@
 #include <expression/cast/new.h>
 #include <expression/arithmetic/new.h>
 
+#include <parser/yylloc/new.h>
+
 #include "add.h"
 
 int additive_expression_add_callback(
@@ -32,26 +34,23 @@ int additive_expression_add_callback(
 		&& ( left->type->kind == tk_integer ||  left->type->kind == tk_float)
 		&& (right->type->kind == tk_integer || right->type->kind == tk_float))
 	{
+		struct yylloc* loc = NULL;
 		struct type* lt = left->type, *rt = right->type, *ht;
 		struct expression *cast_left = NULL, *cast_right = NULL;
 		
 		ht = compare_types(lt, rt) > 0 ? lt : rt;
 		
 		error = 0
-			?: new_cast_expression(&cast_left,
-				left->first_line, left->first_column,
-				left->first_line, left->first_column,
-				ht, left, types)
-			?: new_cast_expression(&cast_right,
-				right->first_line, right->first_column,
-				right->first_line, right->first_column,
-				ht, right, types)
-			?: new_arithmetic_expression(retval,
+			?: new_yyloc(&loc,
 				first_line, first_column,
-				last_line, last_column,
-				aek_add, cast_left, cast_right, types);
+				last_line, last_column)
+			?: new_cast_expression(&cast_left, NULL, ht, left, types)
+			?: new_cast_expression(&cast_right, NULL, ht, right, types)
+			?: new_arithmetic_expression(retval,
+				loc, aek_add, cast_left, cast_right, types);
 		
 		tfree(cast_left), tfree(cast_right);
+		tfree(loc);
 	}
 	else
 	{

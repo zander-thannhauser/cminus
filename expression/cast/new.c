@@ -1,4 +1,5 @@
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include <error.h>
@@ -8,9 +9,11 @@
 
 #include <memory/tinc.h>
 
-#include <type/struct.h>
-/*#include <type/primitive/struct.h>*/
+#include <type/integer/struct.h>
 #include <type/compare.h>
+
+#include <expression/literal/struct.h>
+#include <expression/literal/new.h>
 
 #include "../new.h"
 
@@ -21,8 +24,7 @@
 
 int new_cast_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct type* after,
 	struct expression* inner,
 	struct types* types)
@@ -42,33 +44,37 @@ int new_cast_expression(
 		&& after->kind == tk_integer
 		&& before->kind == tk_integer)
 	{
-		TODO;
-		#if 0
-		if (before->kind == tk_integer && after->kind == tk_integer)
+		uintmax_t val;
+		struct literal_expression* spef = (typeof(spef)) inner;
+		struct integer_type* bspef = (typeof(bspef)) before;
+		struct integer_type* aspef = (typeof(aspef)) after;
+		
+		switch (bspef->kind)
 		{
-			TODO;
-		}
-		else if (before->kind == tk_integer && after->kind == tk_float)
-		{
-			struct integer_type* ibt = (typeof(ibt)) before;
-			struct float_type* fat = (typeof(fat)) after;
+			case ik_signed_int:
+				val = (uintmax_t) spef->value._signed_int;
+				break;
 			
-			TODO;
+			default:
+				// fill out the rest
+				TODO;
+				break;
 		}
-		else if (before->kind == tk_float && after->kind == tk_integer)
+		
+		dpv(val);
+		
+		switch (aspef->kind)
 		{
-			TODO;
+			case ik_unsigned_long:
+				error = new_literal_expression_as_unsigned_long(new,
+					inner->loc, after, val);
+				break;
+			
+			default:
+				// fill out the rest
+				TODO;
+				break;
 		}
-		else if (before->kind == tk_float && after->kind == tk_float)
-		{
-			TODO;
-		}
-		else
-		{
-			TODO;
-			error = 1;
-		}
-		#endif
 	}
 	else if (
 		false
@@ -79,6 +85,8 @@ int new_cast_expression(
 	{
 		struct cast_expression* this = NULL;
 		
+		TODO;
+		#if 0
 		error = new_expression(
 			(struct expression**) &this,
 			ek_cast,
@@ -87,6 +95,7 @@ int new_cast_expression(
 			last_line, last_column,
 			after,
 			sizeof(*this));
+		#endif
 		
 		if (!error)
 		{

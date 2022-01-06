@@ -16,6 +16,7 @@ void free_expression(struct expression* this)
 	assert(this->inheritance->free);
 	
 	tfree(this->type);
+	tfree(this->loc);
 	
 	(this->inheritance->free)(this);
 	

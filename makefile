@@ -78,9 +78,10 @@ gen/srclist.mk: | gen/
 srcs += ./parser/scanner.c ./parser/parser.c
 include gen/srclist.mk
 
-#ARGS += ./test.cm
-ARGS += ./test.im
+ARGS += -p ./test.cm
+#ARGS += ./test.im
 #ARGS += ./examples/system/helloworld.im
+#ARGS += -p ./examples/system/helloworld.cm
 
 #ARGS += ./examples/add.cm
 #ARGS += ./examples/add.float.cm

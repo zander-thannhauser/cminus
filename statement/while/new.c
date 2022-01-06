@@ -21,7 +21,7 @@ int new_while_statement(
 	struct types* types)
 {
 	int error = 0;
-	struct expression* casted_conditional = NULL;
+/*	struct expression* casted_conditional = NULL;*/
 	ENTER;
 	
 	TODO;

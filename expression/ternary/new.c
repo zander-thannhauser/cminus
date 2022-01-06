@@ -28,10 +28,12 @@ int new_ternary_expression(
 	struct expression* false_expression)
 {
 	int error = 0;
-	struct type* type = NULL;
-	struct ternary_expression* this = NULL;
+/*	struct type* type = NULL;*/
+/*	struct ternary_expression* this = NULL;*/
 	ENTER;
 	
+	TODO;
+	#if 0
 	// at this point true_expression and false_expression
 	// are assumed to produce the same type
 	
@@ -52,6 +54,7 @@ int new_ternary_expression(
 		
 		*new = this;
 	}
+	#endif
 	
 	EXIT;
 	return error;

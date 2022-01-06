@@ -24,7 +24,7 @@ enum integer_kind
 	number_of_integer_kinds,
 };
 
-#define ik_bool (ik_signed_int)
-#define pk__Bool (ik_signed_int)
+/*#define ik_bool (ik_signed_int)*/
+/*#define pk__Bool (ik_signed_int)*/
 
 #endif

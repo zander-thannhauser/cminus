@@ -25,6 +25,7 @@
 #include <asm/writer/write/subi.h>
 #include <asm/writer/write/addi.h>
 #include <asm/writer/write/push.h>
+#include <asm/writer/write/label.h>
 /*#include <asm/writer/write/pop.h>*/
 
 #include <type/integer/struct.h>
@@ -47,7 +48,6 @@ int function_definition_write_asm(
 	struct asm_writer* writer)
 {
 	int error = 0;
-	struct function_type *const ftype = this->ftype;
 	ENTER;
 	
 	if (this->storage_class != sc_static)
@@ -56,6 +56,7 @@ int function_definition_write_asm(
 	asm_writer_write(writer, ".type %s @function", this->name);
 	
 	#ifdef VERBOSE_ASSEMBLY
+	struct function_type *const ftype = this->ftype;
 	asm_writer_comment(writer, "function %T", this->name, ftype);
 	#endif
 	
@@ -131,7 +132,7 @@ int function_definition_write_asm(
 				break;
 			}
 			
-			enum integer_kind ikind;
+/*			enum integer_kind ikind;*/
 			
 			case tk_struct:
 				TODO;
@@ -140,11 +141,11 @@ int function_definition_write_asm(
 				TODO;
 				// fallthrough
 			case tk_pointer:
-				ikind = ik_unsigned_long;
+/*				ikind = ik_unsigned_long;*/
 				goto after_ikind;
 			case tk_integer:
 			{
-				ikind = ((struct integer_type*) type)->kind;
+/*				ikind = ((struct integer_type*) type)->kind;*/
 				after_ikind:
 				
 				if (iparam <= first_parameter + number_of_integer_parameters)
@@ -184,7 +185,21 @@ int function_definition_write_asm(
 	if (!error)
 		error = compound_statement_write_asm(this->body, writer);
 	
-	asm_writer_write(writer, "%s_return:", this->name);
+	char* return_label = NULL;
+	
+	if (!error)
+	{
+		asprintf(&return_label, "%s_return", this->name);
+		
+		if (!return_label)
+		{
+			TODO;
+			error = 1;
+		}
+	}
+	
+	if (!error)
+		asm_writer_write_label(writer, return_label);
 	
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_comment(writer, "deallocate stack space:");
@@ -203,6 +218,8 @@ int function_definition_write_asm(
 	#endif
 	
 	asm_writer_write(writer, "ret");
+	
+	free(return_label);
 	
 	EXIT;
 	return error;

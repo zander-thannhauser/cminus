@@ -17,8 +17,7 @@
 
 int new_parentheses_expression(
 	struct expression** new,
-	unsigned first_line, unsigned first_column,
-	unsigned last_line, unsigned last_column,
+	struct yylloc* loc,
 	struct expression* inner)
 {
 	int error = 0;
@@ -29,9 +28,7 @@ int new_parentheses_expression(
 	error = new_expression(
 		(struct expression**) &this,
 		ek_parentheses, &parentheses_expression_inheritance,
-		first_line, first_column,
-		last_line, last_column,
-		inner->type, sizeof(*this));
+		loc, inner->type, sizeof(*this));
 	
 	if (!error)
 	{
