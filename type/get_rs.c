@@ -41,8 +41,10 @@ enum register_size type_get_rs(struct type* const this)
 		
 		case tk_array:
 		case tk_struct:
-			TODO;
+		{
+			retval = quadword;
 			break;
+		}
 		
 		case tk_function:
 		case tk_void:
@@ -52,4 +54,22 @@ enum register_size type_get_rs(struct type* const this)
 	EXIT;
 	return retval;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

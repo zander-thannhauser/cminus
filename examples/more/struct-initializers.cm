@@ -1,0 +1,18 @@
+
+int printf(const char*, ...);
+
+int main()
+{
+	struct point {
+		int x, y;
+	};
+	
+	struct point  a =  (struct point) {1, 2};
+	struct point *b = &(struct point) {2, 3};
+	struct point  c = *b;
+	
+	printf("a + c = {%i, %i}\n", a.x + c.x, a.y + c.y);
+	
+	return 0;
+}
+

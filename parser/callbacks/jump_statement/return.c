@@ -19,7 +19,6 @@ int jump_statement_return_callback(
 	unsigned last_line, unsigned last_column,
 	struct type* rettype,
 	struct expression* expression,
-	struct types* types,
 	char* name)
 {
 	int error = 0;
@@ -37,7 +36,7 @@ int jump_statement_return_callback(
 		?: new_yyloc(&loc,
 			first_line, first_column,
 			last_line, last_column)
-		?: new_cast_expression(&casted, NULL, rettype, expression, types)
+		?: new_cast_expression(&casted, NULL, rettype, expression)
 		?: new_return_statement(
 			(struct return_statement**) out, loc, is_float_result, name, casted);
 	

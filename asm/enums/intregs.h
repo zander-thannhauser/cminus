@@ -4,14 +4,14 @@
 
 enum integer_register_id
 {
-	retval,
+	rax,
 	baseptr,
 	stackptr,
 	
-	first_parameter,
-	second_parameter,
+	rdi,
+	rsi,
 	third_parameter,
-	fourth_parameter,
+	rcx,
 	fifth_parameter,
 	sixth_parameter,
 	
@@ -26,6 +26,12 @@ enum integer_register_id
 	
 	number_of_integer_registers,
 };
+
+#define retval (rax)
+
+#define first_parameter (rdi)
+#define second_parameter (rsi)
+#define fourth_parameter (rcx)
 
 #define divn_reg (retval)
 #define divq_reg (retval)

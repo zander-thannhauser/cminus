@@ -44,6 +44,7 @@ int type_clone_with_qualifiers(
 	// if so:
 	if (all_qualifiers_met)
 	{
+		HERE;
 		*outgoing = tinc(this);
 	}
 	else

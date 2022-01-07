@@ -5,15 +5,15 @@
 const char* intregs[number_of_integer_registers][number_of_register_sizes] =
 {
 	//              byte,  word,   long,  quad
-	[  retval] = { "%al", "%ax", "%eax", "%rax"},
+	[  rax] = { "%al", "%ax", "%eax", "%rax"},
 	[ baseptr] = {"%bpl", "%bp", "%ebp", "%rbp"},
 	[stackptr] = {"%spl", "%sp", "%esp", "%rsp"},
 	
 	//                      byte,   word,  long,   quad
-	[ first_parameter] = {"%dil",  "%di", "%edi", "%rdi"},
-	[second_parameter] = {"%sil",  "%si", "%esi", "%rsi"},
+	[ rdi] = {"%dil",  "%di", "%edi", "%rdi"},
+	[rsi] = {"%sil",  "%si", "%esi", "%rsi"},
 	[ third_parameter] = { "%dl",  "%di", "%edx", "%rdx"},
-	[fourth_parameter] = { "%cl",  "%ci", "%ecx", "%rcx"},
+	[rcx] = { "%cl",  "%ci", "%ecx", "%rcx"},
 	[ fifth_parameter] = {"%r8b", "%r8w", "%r8d",  "%r8"},
 	[ sixth_parameter] = {"%r9b", "%r9w", "%r9d",  "%r9"},
 	

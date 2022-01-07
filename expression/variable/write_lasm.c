@@ -41,10 +41,6 @@ int variable_expression_write_lasm(
 		// load effective address
 		asm_writer_write_lea(writer, -variable->offset, baseptr, working_1);
 	}
-	else if (variable->storage_class == sc_static)
-	{
-		TODO;
-	}
 	else
 	{
 		asm_writer_write_leag(writer, variable->name, working_1);

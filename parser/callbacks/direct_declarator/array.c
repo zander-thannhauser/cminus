@@ -34,7 +34,7 @@ int direct_declarator_array_callback(
 	
 	if (!error)
 		error = new_cast_expression(&casted, NULL,
-			types->integers[ik_unsigned_long], size_expression, types);
+			types->integers[ik_unsigned_long], size_expression);
 	
 	if (!error)
 	{

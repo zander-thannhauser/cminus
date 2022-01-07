@@ -1,10 +1,23 @@
 
 #include <debug.h>
 
+#include <parser/ptree/init_declarator/new.h>
+
 #include "declarator_and_initializer.h"
 
-int init_declarator_declarator_and_initializer_callback()
+int init_declarator_declarator_and_initializer_callback(
+	struct init_declarator** out,
+	struct declarator* declarator,
+	struct initializer* initializer)
 {
-	TODO;
+	int error = 0;
+	ENTER;
+	
+	error = new_init_declarator(out, declarator, initializer);
+	
+	tfree(declarator), tfree(initializer);
+	
+	EXIT;
+	return error;
 }
 

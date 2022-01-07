@@ -22,9 +22,12 @@ int struct_or_union_specifier_just_identifier_callback(
 	struct type* stype = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = 0
 		?: new_incomplete_struct_type((struct struct_type**) &stype, struct_or_union)
 		?: scope_declare_struct(scope, identifier, stype);
+	#endif
 	
 	if (!error)
 		*outgoing = tinc(stype);

@@ -59,10 +59,10 @@ int literal_expression_print(
 				break;
 			
 			case ik_signed_long:
-				error = sfprintf(stream, "%li", this->value._signed_long);
+				error = sfprintf(stream, "%liL", this->value._signed_long);
 				break;
 			case ik_unsigned_long:
-				error = sfprintf(stream, "%lu", this->value._signed_long);
+				error = sfprintf(stream, "%luUL", this->value._signed_long);
 				break;
 			
 			case number_of_integer_kinds: abort();

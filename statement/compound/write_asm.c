@@ -22,11 +22,6 @@ int compound_statement_write_asm(
 		error = statement_write_asm(statement, writer);
 	}
 	
-	if (error)
-	{
-		CHECK;
-	}
-	
 	EXIT;
 	return error;
 }

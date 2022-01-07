@@ -33,8 +33,6 @@ int assignment_expression_assignment_callback(
 	
 	struct type const* type = left->type;
 	
-	assert(type->kind != tk_array);
-	
 	if (type->kind == tk_array)
 	{
 		// arrays are read-only things
@@ -57,14 +55,9 @@ int assignment_expression_assignment_callback(
 		struct yylloc* loc = NULL;
 		
 		error = 0
-			?: new_yyloc(&loc,
-				first_line, first_column,
-				last_line, last_column)
-			?: new_cast_expression(&cast_right,
-				NULL, left->type, right, types)
-			?: new_assign_expression(retval, 
-				loc,
-				kind, left, cast_right, types);
+			?: new_yyloc(&loc, first_line, first_column, last_line, last_column)
+			?: new_cast_expression(&cast_right, NULL, left->type, right)
+			?: new_assign_expression(retval, loc, kind, left, cast_right, types);
 		
 		tfree(loc);
 		tfree(cast_right);

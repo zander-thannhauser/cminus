@@ -182,6 +182,7 @@ union YYSTYPE
 	struct identifier_ll* identifier_ll;
 	struct abstract_declarator* abstract_declarator;
 	struct initializer* initializer;
+	struct initializer_ll* initializer_ll;
 	struct struct_declarator_ll* struct_declarator_ll;
 	struct struct_declarator* struct_declarator;
 	struct type_qualifiers* type_qualifier_list;
@@ -191,7 +192,7 @@ union YYSTYPE
 	enum unary_expression_kind unary_expression_kind;
 	enum assign_expression_kind assign_expression_kind;
 
-#line 195 "parser/parser.h"
+#line 196 "parser/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

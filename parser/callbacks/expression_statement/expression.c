@@ -21,13 +21,8 @@ int expression_statement_expression_callback(
 	ENTER;
 	
 	error = 0
-		?: new_yyloc(&loc,
-			first_line, first_column,
-			last_line, last_column)
-		?: new_expression_statement(
-			(struct expression_statement**) retval, 
-			loc,
-			expression);
+		?: new_yyloc(&loc, first_line, first_column, last_line, last_column)
+		?: new_expression_statement(retval, loc, expression);
 	
 	tfree(loc);
 	tfree(expression);

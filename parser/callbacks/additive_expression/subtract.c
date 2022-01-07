@@ -44,10 +44,8 @@ int additive_expression_subtract_callback(
 			?: new_yyloc(&loc,
 				first_line, first_column,
 				last_line, last_column)
-			?: new_cast_expression(&cast_left,
-				NULL, ht, left, types)
-			?: new_cast_expression(&cast_right,
-				NULL, ht, right, types)
+			?: new_cast_expression(&cast_left, NULL, ht, left)
+			?: new_cast_expression(&cast_right, NULL, ht, right)
 			?: new_arithmetic_expression(retval,
 				loc, aek_subtract, cast_left, cast_right, types);
 		

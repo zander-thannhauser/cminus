@@ -26,8 +26,7 @@ int new_cast_expression(
 	struct expression** new,
 	struct yylloc* loc,
 	struct type* after,
-	struct expression* inner,
-	struct types* types)
+	struct expression* inner)
 {
 	int error = 0;
 	ENTER;
@@ -65,6 +64,11 @@ int new_cast_expression(
 		
 		switch (aspef->kind)
 		{
+			case ik_signed_long:
+				error = new_literal_expression_as_signed_long(new,
+					inner->loc, after, val);
+				break;
+			
 			case ik_unsigned_long:
 				error = new_literal_expression_as_unsigned_long(new,
 					inner->loc, after, val);

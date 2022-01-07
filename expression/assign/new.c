@@ -32,7 +32,7 @@ int new_assign_expression(
 	
 	error = new_expression(
 		(struct expression**) &this,
-		kind, &assign_expression_inheritance,
+		ek_assign, &assign_expression_inheritance,
 		loc,
 		left->type,
 		sizeof(*this));

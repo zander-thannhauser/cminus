@@ -7,6 +7,7 @@
 #include "free.h"
 
 struct expression_inheritance assign_expression_inheritance = {
+	.write_lasm = assign_expression_write_rasm,
 	.write_rasm = assign_expression_write_rasm,
 	.print = assign_expression_print,
 	.free = free_assign_expression

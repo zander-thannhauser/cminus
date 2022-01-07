@@ -17,7 +17,11 @@ int type_name_just_qualifier_list(
 	int error = 0;
 	ENTER;
 	
+	dpv(sq->type);
+	
 	error = type_clone_with_qualifiers(out, sq->type, sq->qualifiers->qualifiers);
+	
+	dpv(*out);
 	
 	tfree(sq);
 	

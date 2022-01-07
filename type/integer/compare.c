@@ -2,7 +2,7 @@
 #include <debug.h>
 
 #include "struct.h"
-#include "inheritance.h"
+/*#include "inheritance.h"*/
 #include "compare.h"
 
 int compare_integer_types(

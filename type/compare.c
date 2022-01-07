@@ -27,7 +27,11 @@ int compare_types(
 		else if (a->kind < b->kind)
 			cmp = -1;
 		else
+		{
+			assert(a->inheritance->compare);
+			
 			cmp = a->inheritance->compare(a, b);
+		}
 		
 		for (i = 0, n = number_of_type_qualifiers; !cmp && i < n; i++)
 			if (a->qualifiers[i] > b->qualifiers[i])

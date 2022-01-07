@@ -1,10 +1,29 @@
 
 #include <debug.h>
 
+#include <parser/initializer_ll/append.h>
+
 #include "append.h"
 
-int initializer_list_append_callback()
+int initializer_list_append_callback(
+	struct initializer_ll** out,
+	struct initializer_ll* list,
+	struct initializer* element)
 {
-	TODO;
+	int error = 0;
+	ENTER;
+	
+	error = initializer_ll_append(list, element);
+	
+	if (!error)
+	{
+		*out = tinc(list);
+	}
+	
+	tfree(list);
+	tfree(element);
+	
+	EXIT;
+	return error;
 }
 

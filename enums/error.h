@@ -1,4 +1,7 @@
 
+#ifndef ENUM_ERROR_H
+#define ENUM_ERROR_H
+
 enum error
 {
 	e_success,
@@ -13,3 +16,4 @@ enum error
 	e_malformed_format_string,
 };
 
+#endif

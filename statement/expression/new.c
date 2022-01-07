@@ -10,7 +10,7 @@
 #include "new.h"
 
 int new_expression_statement(
-	struct expression_statement** new,
+	struct statement** new,
 	struct yylloc* loc,
 	struct expression* expression)
 {
@@ -30,7 +30,7 @@ int new_expression_statement(
 	{
 		this->expression = tinc(expression);
 		
-		*new = this;
+		*new = (struct statement*) this;
 	}
 	
 	EXIT;

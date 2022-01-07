@@ -25,6 +25,12 @@
 	#include <sys/wait.h>
 	#include <stdbool.h>
 	#include <linux/limits.h>
+	
+	#include <enums/error.h>
+	
+	#include <memory/tmalloc.h>
+	#include <memory/tinc.h>
+	#include <memory/tfree.h>
 #endif
 
 #ifdef DEBUGGING

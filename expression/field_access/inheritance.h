@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance field_access_expression_inheritance;

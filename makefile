@@ -84,6 +84,7 @@ ARGS += -p ./test.cm
 #ARGS += -p ./examples/system/helloworld.cm
 
 #ARGS += ./examples/more/hard-stuff.cm
+#ARGS += ./examples/more/struct-initializers.cm
 #ARGS += ./examples/more/enums.cm
 #ARGS += ./examples/more/typ3.cm
 #ARGS += ./examples/more/typecasts1.cm

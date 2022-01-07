@@ -185,7 +185,8 @@ int function_definition_write_asm(
 	asm_writer_write(writer, "leave");
 	
 	#ifdef VERBOSE_ASSEMBLY
-	asm_writer_unindent(writer);
+	if (!error)
+		asm_writer_unindent(writer);
 	#endif
 	
 	asm_writer_write(writer, "ret");

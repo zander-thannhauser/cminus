@@ -152,10 +152,33 @@ int new_literal_expression_as_unsigned_int(
 int new_literal_expression_as_signed_long(
 	struct expression** new,
 	struct yylloc* loc,
-	struct type* double_type,
-	signed long floatlit)
+	struct type* slong_type,
+	signed long slong_value)
 {
-	TODO;
+	int error = 0;
+	ENTER;
+	
+	dpv(slong_value);
+	
+	struct literal_expression* this = NULL;
+	
+	error = new_expression(
+		/* return value: */ (struct expression**) &this,
+		/* expression kind: */ ek_literal,
+		/* inheritance*/ &literal_expression_inheritance,
+		/* location: */ loc,
+		/* type: */ slong_type,
+		/* alloc_size: */ sizeof(*this));
+	
+	if (!error)
+	{
+		this->value._signed_long = slong_value;
+		
+		*new = (struct expression*) this;
+	}
+	
+	EXIT;
+	return error;
 }
 
 int new_literal_expression_as_unsigned_long(
@@ -199,26 +222,22 @@ int new_literal_expression_as_float(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
 		(struct expression**) &this,
 		ek_literal,
 		&literal_expression_inheritance,
-		line, column,
+		loc,
 		float_type,
 		sizeof(*this));
 	
 	if (!error)
 	{
-		this->is_integer_result = false;
 		this->value._float = floatlit;
 		
 		*new = (struct expression*) this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

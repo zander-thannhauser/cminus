@@ -24,8 +24,9 @@
 #include <asm/writer/write/movi.h>
 /*#include <asm/writer/write/addf.h>*/
 #include <asm/writer/write/movf.h>
+#include <asm/writer/write.h>
 
-/*#include <type/primitive/struct.h>*/
+#include <type/get_rs.h>
 
 /*#include <expression/write_rasm.h>*/
 /*#include <expression/write_lasm.h>*/
@@ -46,7 +47,66 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 		?: expression_write_lasm(this->left, writer)
 		?: expression_write_rasm(this->right, writer);
 	
-	switch (super->type->kind)
+	if (this->kind == aek_regular_assign)
+	{
+		switch (super->type->kind)
+		{
+			case tk_float:
+			case tk_integer:
+			{
+				enum register_size rs = type_get_rs(super->type);
+				
+				asm_writer_write_movi_to_v2(writer, 0, stackptr, working_2, rs);
+				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+				#ifdef VERBOSE_ASSEMBLY
+				asm_writer_unindent(writer);
+				#endif
+				
+				asm_writer_write_movi_to_v2(writer, 0, stackptr, working_1, quadword);
+				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+				
+				#ifdef VERBOSE_ASSEMBLY
+				asm_writer_unindent(writer);
+				#endif
+				
+				asm_writer_write_movi_from_v2(writer, working_2,  0, working_1, rs);
+				asm_writer_write_movi_from_v2(writer, working_2, -8, stackptr, rs);
+				asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+				break;
+			}
+			
+			case tk_struct:
+			{
+				enum register_size rs = type_get_rs(super->type);
+				
+				asm_writer_write_movi_to_v2(writer, 0, stackptr, rsi, quadword);
+				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+				#ifdef VERBOSE_ASSEMBLY
+				asm_writer_unindent(writer);
+				#endif
+				
+				asm_writer_write_movi_to_v2(writer, 0, stackptr, rdi, quadword);
+				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+				
+				#ifdef VERBOSE_ASSEMBLY
+				asm_writer_unindent(writer);
+				#endif
+				
+				asm_writer_write_movi_const_v2(writer, super->type->size, rcx, quadword);
+				
+				asm_writer_write(writer, "rep movsb");
+				
+				asm_writer_write_movi_from_v2(writer, rsi, -8, stackptr, rs);
+				asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+				break;
+			}
+			
+			default:
+				TODO;
+				break;
+		}
+	}
+	else switch (super->type->kind)
 	{
 		case tk_float:
 		{
@@ -67,9 +127,6 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			
 			switch (this->kind)
 			{
-				case aek_regular_assign:
-					break;
-				
 				default:
 					TODO;
 					break;
@@ -101,9 +158,6 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			
 			switch (this->kind)
 			{
-				case aek_regular_assign:
-					break;
-				
 				default:
 					TODO;
 					break;

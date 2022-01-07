@@ -1,6 +1,4 @@
 
-#include <stdbool.h>
-
 #include "../struct.h"
 
 struct variable_expression

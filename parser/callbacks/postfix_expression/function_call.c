@@ -71,7 +71,7 @@ int postfix_expression_function_call_callback(
 		struct expression* ce = NULL;
 		
 		error = 0
-			?: new_cast_expression(&ce, NULL, plink->element->type, alink->element, types)
+			?: new_cast_expression(&ce, NULL, plink->element->type, alink->element)
 			?: expression_ll_append(casted_args, ce);
 		
 		tfree(ce);
@@ -94,7 +94,7 @@ int postfix_expression_function_call_callback(
 				
 				error = 0
 					?: new_cast_expression(&ce, NULL,
-						types->floats[fk_double], alink->element, types)
+						types->floats[fk_double], alink->element)
 					?: expression_ll_append(casted_args, ce);
 				
 				tfree(ce);

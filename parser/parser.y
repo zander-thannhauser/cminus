@@ -109,6 +109,7 @@
 	struct identifier_ll* identifier_ll;
 	struct abstract_declarator* abstract_declarator;
 	struct initializer* initializer;
+	struct initializer_ll* initializer_ll;
 	struct struct_declarator_ll* struct_declarator_ll;
 	struct struct_declarator* struct_declarator;
 	struct type_qualifiers* type_qualifier_list;
@@ -232,6 +233,7 @@
 #include "callbacks/postfix_expression/field_access.h"
 #include "callbacks/postfix_expression/function_call.h"
 #include "callbacks/postfix_expression/increment.h"
+#include "callbacks/postfix_expression/initializer.h"
 #include "callbacks/primary_expression/sinteger.h"
 #include "callbacks/primary_expression/uinteger.h"
 #include "callbacks/primary_expression/slong.h"
@@ -335,7 +337,7 @@ int yylex(int* error, struct scope *scope, char** file);
 %type <unary_expression_kind> unary_operator
 %type <statement> labeled_statement
 %type <initializer> initializer
-%type <initializer> initializer_list
+%type <initializer_ll> initializer_list
 %type <declarator> direct_abstract_declarator
 %type <declarator> abstract_declarator
 %type <pointer> pointer
@@ -378,7 +380,10 @@ primary_expression
 		if ((*error = primary_expression_ulong_callback(&$$, types, $1)))
 			YYABORT;
 	} | FLOAT_LITERAL {
-		if ((*error = primary_expression_float_callback(&$$, types, $1)))
+		if ((*error = primary_expression_float_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | DOUBLE_LITERAL {
 		if ((*error = primary_expression_double_callback(&$$,
@@ -403,7 +408,10 @@ postfix_expression
 	: primary_expression {
 		$$ = $1;
 	} | postfix_expression '[' expression ']' {
-		if ((*error = postfix_expression_array_index_callback(&$$, $1, $3, types)))
+		if ((*error = postfix_expression_array_index_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | postfix_expression '(' ')' {
 		if ((*error = postfix_expression_empty_function_call_callback(&$$,
@@ -418,7 +426,9 @@ postfix_expression
 			$1, $3, types)))
 			YYABORT;
 	} | postfix_expression '.' IDENTIFIER {
-		if ((*error = postfix_expression_field_access_callback(&$$, $1, $3)))
+		if ((*error = postfix_expression_field_access_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column, $1, $3)))
 			YYABORT;
 	} | postfix_expression PTR_OP IDENTIFIER {
 		if ((*error = postfix_expression_arrow_access_callback(&$$, $1, $3)))
@@ -429,7 +439,19 @@ postfix_expression
 	} | postfix_expression DEC_OP {
 		if ((*error = postfix_expression_decrement_callback(&$$, $1)))
 			YYABORT;
-	} ;
+	} | '(' type_name ')' '{' initializer_list '}' {
+		if ((*error = postfix_expression_initializer_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			scope, $2, $5)))
+			YYABORT;
+	} | '(' type_name ')' '{' initializer_list ',' '}' {
+		if ((*error = postfix_expression_initializer_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			scope, $2, $5)))
+			YYABORT;
+	};
 
 argument_expression_list
 	: assignment_expression {
@@ -659,7 +681,7 @@ declaration
 	} | declaration_specifiers init_declarator_list ';' {
 		// these two TODOs are gonna possibly push into type name.
 		// is the point where the two sides that make up a type collide:
-		if ((*error = declaration_specifiers_and_init_list_callback(&$$, $1, $2, scope)))
+		if ((*error = declaration_specifiers_and_init_list_callback(&$$, $1, $2, scope, asm_writer)))
 			YYABORT;
 	};
 
@@ -994,13 +1016,22 @@ direct_abstract_declarator
 
 initializer
 	: assignment_expression {
-		if ((*error = initializer_expression_callback(&$$, $1)))
+		if ((*error = initializer_expression_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1)))
 			YYABORT;
 	} | '{' initializer_list '}' {
-		if ((*error = initializer_initializer_list_callback(&$$, $2)))
+		if ((*error = initializer_initializer_list_callback(&$$,
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$2)))
 			YYABORT;
 	} | '{' initializer_list ',' '}' {
-		if ((*error = initializer_initializer_list_callback(&$$, $2)))
+		if ((*error = initializer_initializer_list_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$2)))
 			YYABORT;
 	};
 
@@ -1132,13 +1163,13 @@ jump_statement
 		if ((*error = jump_statement_return_callback(&$$,
 			@$.first_line, @$.first_column,
 			@$.last_line, @$.last_column,
-			NULL, NULL, NULL, funcname)))
+			NULL, NULL, funcname)))
 			YYABORT;
 	} | RETURN expression ';' {
 		if ((*error = jump_statement_return_callback(&$$,
 			@$.first_line, @$.first_column,
 			@$.last_line, @$.last_column,
-			rettype, $2, types, funcname)))
+			rettype, $2, funcname)))
 			YYABORT;
 	};
 

@@ -8,5 +8,4 @@ int jump_statement_return_callback(
 	unsigned last_line, unsigned last_column,
 	struct type* rettype,
 	struct expression* expression,
-	struct types* types,
 	char* name);
