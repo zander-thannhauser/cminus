@@ -4,15 +4,19 @@ Test function calls as parameters
 Eric Johnson	ejohn
 */
 
-void read(int*);
-void write(int);
+void scanf(const char*, ...);
+void printf(const char*, ...);
+
+void read(int* x)
+{
+	scanf("%i", x);
+}
 
 int i ;
 
 void print (int x )
 {
-	write (x);
-	return 0;
+	printf("%i\n", x);
 }
 
 int inc (int x )

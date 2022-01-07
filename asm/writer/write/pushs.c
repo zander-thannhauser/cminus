@@ -15,7 +15,7 @@ int asm_writer_write_pushs(
 	int error = 0;
 	ENTER;
 	
-	asm_writer_write(this, "leaq .string_%zu(%%rip), %%r10", string_id);
+	asm_writer_write(this, "leaq string_%zu(%%rip), %%r10", string_id);
 	asm_writer_write(this, "movq %%r10, -8(%%rsp)");
 	asm_writer_write(this, "subq $8, %%rsp");
 	

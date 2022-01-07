@@ -14,12 +14,15 @@ int asm_writer_write_string(
 	unsigned i;
 	ENTER;
 	
-	
 	#ifdef VERBOSE_ASSEMBLY
 	assert(!this->indent_head);
 	#endif
 	
-	fprintf(this->stream, ".string_%lu: .ascii \"", string_id);
+	fprintf(this->stream, ".global string_%lu\n", string_id);
+	fprintf(this->stream, ".type   string_%lu, @object\n", string_id);
+	fprintf(this->stream, ".size   string_%lu, %lu\n", string_id, len);
+	
+	fprintf(this->stream, "string_%lu: .string \"", string_id);
 	
 	for (i = 0; i < len; i++)
 		fprintf(this->stream, "\\x%02hhX", data[i]);

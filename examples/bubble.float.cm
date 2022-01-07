@@ -1,5 +1,5 @@
 
-void write(float);
+void printf(const char*, ...);
 void exit();
 
 void main ()
@@ -49,7 +49,7 @@ void main ()
 	i = 0;
 	while (i < 15)
 	{
-		write(a[i]);
+		printf("a[%2i] == %g\n", i, a[i]);
 		i = i + 1;
 	}
 	

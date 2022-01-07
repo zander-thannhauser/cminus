@@ -1,12 +1,7 @@
 
 void printf(const char*, ...);
 
-#define write(x) \
-	printf("%s == %i\n", #x, (x));
-
-void exit();
-
-void main ()
+int main()
 {
 	int a[15] = {32, 11, 111, 88, 11, 44, 33, 33, 22, 77, 45, 65, 76, 87, 34};
 	int i, j, t, least;
@@ -37,11 +32,11 @@ void main ()
 	i = 0;
 	while (i < 15)
 	{
-		write(a[i]);
+		printf("a[%2i] == %i\n", i, a[i]);
 		i = i + 1;
 	}
 	
-	exit();
+	return 0;
 }
 
 

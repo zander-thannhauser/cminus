@@ -1,28 +1,48 @@
 
-void write(float);
+void printf(const char*, ...);
+
+#define writef(x) \
+	printf("%s == %lf\n", #x, (x));
+
+#define writei(x) \
+	printf("%s == %i\n", #x, (x));
+
 void exit();
 
 void main() {
- float a,b,c,d,i,j,k,l;
- int m;
-
-	a=1.1; b=2.2; c=3.3; d=4.4;
-	write(a+b+c+d);
-
-    i = 1.76; j = 2.97; k = 3.0; l = 4.22;
-	write((i+j+k*l) + (a+b/c-d));
-
-	m=a+b;
-	write(m);
+	float a,b,c,d,i,j,k,l;
+	int m;
 	
+	a = 1.1; b=2.2; c=3.3; d=4.4;
+	writef(a+b+c+d); // 11.0
+	
+	i = 1.76; j = 2.97; k = 3.0; l = 4.22;
+	writef((i+j+k*l) + (a+b/c-d)); // 14.756666666666668
+
+	m = a+b;
+	writei(m); // 3
+
 	l = m + c;
-	write(l);
-	
+	writef(l); // 6.3
+
 	a = 5;
-	write(a);
+	writef(a); // 5
+
+	writei(b < c);    // 1
+	writei(d > 10.0); // 0
+	writei(a != 3.3); // 1
 	
-	write(b < c);
-	write(d > 10.0);
-	write(a != 3.3);
 	exit();
 }
+
+
+
+
+
+
+
+
+
+
+
+

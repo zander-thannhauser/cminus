@@ -1,5 +1,5 @@
 
-void write(float);
+void printf(const char*, ...);
 void exit();
 
 int decls()
@@ -14,7 +14,7 @@ float foo()
 
 void main()
 {
-	write(decls());
-	write(foo());
+	printf("decls() == %i\n", decls());
+	printf("foo() == %lf\n", foo());
 	exit();
 }

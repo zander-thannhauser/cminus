@@ -68,6 +68,7 @@ int function_call_expression_write_rasm(
 	dpv(n_float_params);
 	
 	bool extra_push = false;
+	
 	if (((1 + this->arguments->n - n_int_params - n_float_params) % 2))
 	{
 		extra_push = true;
@@ -219,9 +220,7 @@ int function_call_expression_write_rasm(
 	{
 		struct float_type *type = (typeof(type)) super->type;
 		
-		asm_writer_write_movf_to(writer, fretval, 0, stackptr, type->kind);
-		
-		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+		asm_writer_write_movf_from(writer, fretval, -8, stackptr, type->kind);
 	}
 	else
 	{

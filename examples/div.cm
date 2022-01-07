@@ -1,15 +1,19 @@
 
-void write(int);
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
+
 void exit();
 
 void main ()
 {
 	int i, j, k, l;
 	
-	write(51 / 17);
+	write(51 / 17); // 3
 	i = 100; k = 2; l = 5;
 	
 	j = i / k / l ;
-	write(j);
+	write(j); // 10
 	exit();
 }

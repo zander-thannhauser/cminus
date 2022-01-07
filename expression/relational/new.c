@@ -42,7 +42,7 @@ int new_relational_expression(
 	{
 		this->kind = kind;
 		
-		this->comparing_floats = left->type->kind == tk_float;
+		this->comparing_floats = (left->type->kind == tk_float);
 		
 		this->left = tinc(left);
 		this->right = tinc(right);

@@ -64,12 +64,9 @@ int return_statement_write_asm(struct statement* super, struct asm_writer* write
 		
 		if (this->is_float_result)
 		{
-			TODO;
-			#if 0
 			struct float_type* ftype = (typeof(ftype)) this->return_value->type;
 			
 			asm_writer_write_movf_to(writer, 0, stackptr, fretval, ftype->kind);
-			#endif
 		}
 		else
 		{

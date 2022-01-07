@@ -13,6 +13,8 @@ static const char* lookup[number_of_relational_expressions] =
 	[rek_greater_than] = ">",
 	[rek_less_than_equal_to] = "<=",
 	[rek_greater_than_equal_to] = ">=",
+	[rek_equal_to] = "==",
+	[rek_not_equal_to] = "!=",
 };
 
 int relational_expression_print(

@@ -21,6 +21,9 @@
 #include <asm/writer/write/rdivi.h>
 /*#include <asm/writer/write/mov.h>*/
 #include <asm/writer/write/addf.h>
+#include <asm/writer/write/subf.h>
+#include <asm/writer/write/mulf.h>
+#include <asm/writer/write/divf.h>
 #include <asm/writer/write/movf.h>
 #include <asm/writer/write/movi.h>
 
@@ -70,6 +73,18 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 		{
 			case aek_add:
 				asm_writer_write_addf(writer, working_f1, working_f2, type->kind);
+				break;
+			
+			case aek_subtract:
+				asm_writer_write_subf(writer, working_f1, working_f2, working_f2, type->kind);
+				break;
+			
+			case aek_multiply:
+				asm_writer_write_mulf(writer, working_f1, working_f2, type->kind);
+				break;
+			
+			case aek_divide:
+				asm_writer_write_divf(writer, working_f1, working_f2, working_f2, type->kind);
 				break;
 			
 			default:

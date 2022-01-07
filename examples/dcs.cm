@@ -1,6 +1,14 @@
 
-void read(int*);
-void write(int);
+void scanf(const char*, ...);
+void printf(const char*, ...);
+
+void read(int* x)
+{
+	scanf(" %i ", x);
+}
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
 
 int x, y, temp;
 
@@ -21,9 +29,13 @@ void main()
 	read(&x);
 	read(&y);
 	
+	// if x = 3, y = 4: temp = 118
 	temp = y + fact(5) - fact(x);
 	
 	write(temp);
 	write(x);
 	write(y);
 }
+
+
+

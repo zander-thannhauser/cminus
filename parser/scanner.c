@@ -2672,6 +2672,10 @@ static int process_string_literal(int* error)
 				*write++ = '\n', read++;
 				break;
 			
+			case '\"':
+				*write++ = '\"', read++;
+				break;
+			
 			default:
 				TODO;
 				*error = e_bad_input_file;

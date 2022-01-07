@@ -4,7 +4,7 @@
 /*#include <error.h>*/
 #include <debug.h>
 
-/*#include <defines/argv0.h>*/
+#include <defines/argv0.h>
 
 #include <memory/tinc.h>
 #include <memory/tfree.h>
@@ -12,6 +12,7 @@
 /*#include <memory/tfree.h>*/
 
 #include <type/struct.h>
+#include <type/print.h>
 #include <type/array/struct.h>
 #include <type/pointer/struct.h>
 
@@ -65,8 +66,10 @@ int postfix_expression_array_index_callback(
 		}
 		
 		default:
-			TODO;
-			error = 1;
+			fprintf(stderr, "%s: type `", argv0);
+			type_print(array->type, NULL, stderr);
+			fprintf(stderr, "` cannot be used as array in array index!\n");
+			error = e_bad_input_file;
 			break;
 	}
 	

@@ -35,6 +35,11 @@ int new_logical_and_expression(
 		TODO;
 		error = 1;
 	}
+	else if (left->type->kind == tk_array || right->type->kind == tk_array)
+	{
+		TODO;
+		error = 1;
+	}
 	else if (left->type->kind == tk_struct || right->type->kind == tk_struct)
 	{
 		TODO;

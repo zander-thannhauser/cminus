@@ -600,10 +600,16 @@ equality_expression
 	: relational_expression {
 		$$ = $1;
 	} | equality_expression EQ_OP relational_expression {
-		if ((*error = equality_expression_equal_to_callback(&$$, $1, $3, types)))
+		if ((*error = equality_expression_equal_to_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | equality_expression NE_OP relational_expression {
-		if ((*error = equality_expression_not_equal_to_callback(&$$, $1, $3, types)))
+		if ((*error = equality_expression_not_equal_to_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 
@@ -646,7 +652,10 @@ logical_or_expression
 	: logical_and_expression {
 		$$ = $1;
 	} | logical_or_expression OR_OP logical_and_expression {
-		if ((*error = logical_or_expression_or_callback(&$$, $1, $3, types)))
+		if ((*error = logical_or_expression_or_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 

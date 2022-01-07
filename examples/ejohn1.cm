@@ -5,8 +5,18 @@ Use small numbers.
 Eric Johnson,  ejohn
 */
 
-void write(int);
-void read(int*);
+void puts(char* s);
+void printf(const char*, ...);
+void scanf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
+
+void read(int* x)
+{
+	scanf("%i", x);
+}
+
 void exit();
 
 int globalCount, input, i, loop ;
@@ -22,23 +32,28 @@ int fib1 (int x) {
 
 void main()
 {
-	write ("Enter number of fib numbers to find:");
+	puts ("Enter number of fib numbers to find:");
 	read (&i);
 	loop = 1;
 	while (loop <= i)
 	{
 		globalCount = 0;
-		write ("");
-		write ("Enter fib number to find:");
+		puts ("");
+		
+		puts ("Enter fib number to find:");
 		read (&input);
 		input = fib1 (input);
-		write ("Result:");
+		
+		puts ("Result:");
 		write (input);
-		write ("Number of fib1s executed:");
+		
+		puts ("Number of fib1s executed:");
 		write (globalCount);
+		
 		loop = loop + 1;
 	}
-	write ("Bye");
+	
+	puts ("Bye");
 }
 
 

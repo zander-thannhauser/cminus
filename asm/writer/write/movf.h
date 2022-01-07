@@ -9,6 +9,12 @@
 struct asm_writer;
 struct asm_location;
 
+int asm_writer_write_movf_between(
+	struct asm_writer* this,
+	/* from: */ enum float_register_id src,
+	/* to:   */ enum float_register_id dst,
+	enum float_kind fkind);
+
 int asm_writer_write_movf_to(
 	struct asm_writer* this,
 	/* from: */ ssize_t offset, enum integer_register_id iid,

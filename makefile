@@ -78,7 +78,7 @@ gen/srclist.mk: | gen/
 srcs += ./parser/scanner.c ./parser/parser.c
 include gen/srclist.mk
 
-ARGS += -p ./test.cm
+#ARGS += -p ./test.cm
 #ARGS +=    ./test.im
 #ARGS +=    ./examples/system/helloworld.im
 #ARGS += -p ./examples/system/helloworld.cm
@@ -86,6 +86,7 @@ ARGS += -p ./test.cm
 #ARGS += ./examples/more/hard-stuff.cm
 #ARGS += ./examples/more/struct-initializers.cm
 #ARGS += -p ./examples/more/typecasts1.cm
+ARGS += examples/more/busy-printf.cm
 
 #ARGS += ./examples/system/unistd.cm # has enums in it
 #ARGS += ./examples/system/stdio.cm
@@ -99,26 +100,28 @@ ARGS += -p ./test.cm
 #ARGS += ./examples/arith2.cm
 #ARGS += -p ./examples/array.cm
 #ARGS += -p ./examples/array.float.cm
-#ARGS += -p ./examples/bubble.cm
-
+#ARGS += ./examples/bubble.cm
 #ARGS += ./examples/bubble.float.cm
 #ARGS += ./examples/call.cm
-#ARGS += ./examples/constdim.cm
-#ARGS += ./examples/dcs.cm
-#ARGS += ./examples/decl1.cm
-#ARGS += ./examples/decl2.cm
-#ARGS += ./examples/decl3.cm
-#ARGS += ./examples/dim.cm
+#ARGS += -p ./examples/constdim.cm # cannot cast from `signed int` to `signed int* const`!
+#ARGS += -p ./examples/dcs.cm
+#ARGS += -p ./examples/decl1.cm # use of undeclared variable 'C'!
+#ARGS += -p ./examples/decl2.cm # variable 'b' redeclared in same scope with as different type!
+#ARGS += -p ./examples/decl3.cm
+#ARGS += -p ./examples/dim.cm
 #ARGS += ./examples/dimen.cm
-#ARGS += ./examples/div.cm
-#ARGS += ./examples/div.float.cm
-#ARGS += ./examples/dynamic.cm
-#ARGS += ./examples/ecall.cm
-#ARGS += ./examples/ejohn1.cm
-#ARGS += ./examples/ejohn2.cm
-#ARGS += ./examples/eq.cm
+#ARGS += -p ./examples/div.cm
+#ARGS += -p ./examples/div.float.cm
+#ARGS += -p ./examples/dynamic.cm # valgrind errors: bug in source
+#ARGS += -p ./examples/ecall.cm # cannot cast from `void` to `signed int`!
+#ARGS += -p ./examples/ejohn1.cm
+#ARGS += -p ./examples/ejohn2.cm
+# ARGS += -p ./examples/eq.cm
 #ARGS += ./examples/expr.cm
-#ARGS += ./examples/expr.float.cm
+#ARGS += -p ./examples/expr.float.cm
+
+# half way
+
 #ARGS += ./examples/farray.cm
 #ARGS += ./examples/func.cm
 #ARGS += ./examples/func2.cm

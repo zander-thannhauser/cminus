@@ -1,48 +1,20 @@
 
 void printf(const char*, ...);
+void exit();
+
+int decls()
+{
+	return 7;
+}
+
+float foo()
+{
+	return 7.3;
+}
 
 int main()
 {
-	int a[15] = {32, 11, 111, 88, 11, 44, 33, 33, 22, 77, 45, 65, 76, 87, 34};
-	int i, j, t, least;
-	
-	i = 0;
-	
-	while (i < 14)
-	{
-		least = i;
-		j = i + 1;
-		
-		while (j < 15)
-		{
-			if (a[j] < a[least])
-			{
-				least = j;
-			}
-			
-			j = j + 1;
-		}
-		
-		t = a[i];
-		a[i] = a[least];
-		a[least] = t;
-		i = i + 1;
-	}
-	
-	i = 0;
-	while (i < 15)
-	{
-		printf("a[%2i] == %i\n", i, a[i]);
-		i = i + 1;
-	}
-	
+	printf("decls() == %i\n", decls());
+	printf("foo() == %lf\n", foo());
 	return 0;
 }
-
-
-
-
-
-
-
-

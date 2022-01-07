@@ -5,12 +5,13 @@
 #include <error.h>
 #include <debug.h>
 
-/*#include <defines/argv0.h>*/
+#include <defines/argv0.h>
 
 #include <memory/tinc.h>
 
 #include <type/integer/struct.h>
 #include <type/compare.h>
+#include <type/print.h>
 
 #include <expression/literal/struct.h>
 #include <expression/literal/new.h>
@@ -124,8 +125,12 @@ int new_cast_expression(
 	}
 	else
 	{
-		error = 1;
-		TODO;
+		fprintf(stderr, "%s: cannot cast from `", argv0);
+		type_print(before, NULL, stderr);
+		fprintf(stderr, "` to `");
+		type_print(after, NULL, stderr);
+		fprintf(stderr, "`!\n");
+		error = e_bad_input_file;
 	}
 	
 	EXIT;

@@ -1,13 +1,17 @@
 
-void write(float);
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %f\n", #x, (x));
+
 void exit();
 
 void main ()
 {
 	float i, j, k, l;
-	write(51.0 / 17.0);
+	write(51.0 / 17.0); // 3.0
 	i = 100.5; k = 2.1; l = 5.1;
 	j = i / k / l;
-	write(j);
+	write(j); // 9.38375350140056
 	exit();
 }

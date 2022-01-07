@@ -15,6 +15,7 @@ enum expression_kind
 	ek_function_call,
 	ek_initializer,
 	ek_logical_and,
+	ek_logical_or,
 	ek_literal,
 	ek_unary,
 	ek_parentheses,

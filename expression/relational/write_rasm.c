@@ -2,10 +2,12 @@
 #include <debug.h>
 
 /*#include <asm/tables/instrs.h>*/
+#include <asm/tables/floatregs.h>
 #include <asm/tables/intregs.h>
 #include <asm/tables/iktors.h>
+#include <asm/tables/fktors.h>
 
-/*#include <type/float/struct.h>*/
+#include <type/float/struct.h>
 #include <type/integer/struct.h>
 
 /*#include <asm/writer/comment.h>*/
@@ -19,6 +21,7 @@
 /*#include <asm/writer/write/mov.h>*/
 /*#include <asm/writer/write/addf.h>*/
 /*#include <asm/writer/write/movf.h>*/
+#include <asm/writer/write/movf.h>
 #include <asm/writer/write/movi.h>
 #include <asm/writer/write/jmp.h>
 #include <asm/writer/write/label.h>
@@ -70,12 +73,13 @@ int relational_expression_write_rasm(struct expression* super, struct asm_writer
 	
 	if (this->comparing_floats)
 	{
-		TODO;
-		#if 0
-		struct float_type *type = (typeof(type)) super->type;
+		struct float_type *type = (typeof(type)) this->left->type;
+		
+		dpv(type->kind);
 		
 		asm_writer_write_movf_to(writer, 0, stackptr, working_f2, type->kind);
 		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		
 		#ifdef VERBOSE_ASSEMBLY
 		asm_writer_unindent(writer);
 		#endif
@@ -87,21 +91,26 @@ int relational_expression_write_rasm(struct expression* super, struct asm_writer
 		asm_writer_unindent(writer);
 		#endif
 		
-		switch (this->kind)
+		switch (type->kind)
 		{
-			case bek_add:
-				asm_writer_write_addf(writer, working_f1, working_f2, type->kind);
-				break;
+			case fk_float:
+				error = asm_writer_write(writer, "comiss %s, %s",
+					floatregs[working_f2], floatregs[working_f1]);
+					break;
+			
+			case fk_double:
+				error = asm_writer_write(writer, "comisd %s, %s",
+					floatregs[working_f2], floatregs[working_f1]);
+					break;
 			
 			default:
 				TODO;
 				break;
 		}
-		#endif
 	}
 	else
 	{
-		struct integer_type *type = (typeof(type)) super->type;
+		struct integer_type *type = (typeof(type)) this->left->type;
 		
 		rs = iktors[type->kind];
 		
@@ -122,28 +131,37 @@ int relational_expression_write_rasm(struct expression* super, struct asm_writer
 		error = asm_writer_write(writer, "cmp %s, %s",
 			intregs[working_2][rs], intregs[working_1][rs]);
 		
-		switch (this->kind)
-		{
-			case rek_less_than:
-				error = asm_writer_write(writer, "jl .%s", true_case_label);
-				break;
-			
-			case rek_less_than_equal_to:
-				error = asm_writer_write(writer, "jle .%s", true_case_label);
-				break;
-			
-			case rek_greater_than:
-				error = asm_writer_write(writer, "jg .%s", true_case_label);
-				break;
-			
-			case rek_greater_than_equal_to:
-				error = asm_writer_write(writer, "jge .%s", true_case_label);
-				break;
-			
-			default:
-				TODO;
-				break;
-		}
+	}
+	
+	switch (this->kind)
+	{
+		case rek_less_than:
+			error = asm_writer_write(writer, "jb .%s", true_case_label);
+			break;
+		
+		case rek_less_than_equal_to:
+			error = asm_writer_write(writer, "jbe .%s", true_case_label);
+			break;
+		
+		case rek_greater_than:
+			error = asm_writer_write(writer, "ja .%s", true_case_label);
+			break;
+		
+		case rek_greater_than_equal_to:
+			error = asm_writer_write(writer, "jae .%s", true_case_label);
+			break;
+		
+		case rek_equal_to:
+			error = asm_writer_write(writer, "je .%s", true_case_label);
+			break;
+		
+		case rek_not_equal_to:
+			error = asm_writer_write(writer, "jne .%s", true_case_label);
+			break;
+		
+		default:
+			TODO;
+			break;
 	}
 	
 	rs = iktors[ik_signed_int];

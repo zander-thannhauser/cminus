@@ -37,11 +37,23 @@ int postfix_expression_initializer_callback(
 		?: new_initializer_expression(out, loc, initializer, offset, type);
 	
 	tfree(initializer);
+	tfree(loc);
 	tfree(initializer_ll);
 	tfree(type);
-	tfree(loc);
 	
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

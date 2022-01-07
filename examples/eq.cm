@@ -1,5 +1,9 @@
 
-void write(int);
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
+
 void exit();
 
 void main ()
@@ -13,5 +17,4 @@ void main ()
 	write(k == k);
 	write(k != l);
 	exit();
-
 }
