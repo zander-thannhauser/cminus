@@ -32,6 +32,8 @@ int new_parentheses_expression(
 	
 	if (!error)
 	{
+		dpv(inner);
+		
 		this->inner = tinc(inner);
 		
 		*new = (struct expression*) this;

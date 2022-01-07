@@ -1,10 +1,11 @@
 
+#include <stddef.h>
+
 #include <debug.h>
 
 #include <memory/tfree.h>
 
 #include <expression/parentheses/new.h>
-#include <expression/free.h>
 
 #include <parser/yylloc/new.h>
 
@@ -23,13 +24,10 @@ int primary_expression_parentheses_callback(
 	ENTER;
 	
 	error = 0
-		?: new_yyloc(&loc,
-			first_line, first_column,
-			last_line, last_column)
-		?: new_parentheses_expression(
-			(struct expression**) retval, loc, inner);
+		?: new_yyloc(&loc, first_line, first_column, last_line, last_column)
+		?: new_parentheses_expression((struct expression**) retval, loc, inner);
 	
-	free_expression(inner);
+	tfree(inner);
 	tfree(loc);
 	
 	EXIT;

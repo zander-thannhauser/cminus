@@ -1,5 +1,9 @@
 
+#include <string.h>
+
 #include <debug.h>
+
+#include <memory/tinc.h>
 
 #include "field/struct.h"
 #include "field_ll/struct.h"

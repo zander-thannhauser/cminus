@@ -9,6 +9,7 @@ enum statement_kind
 	sk_return,
 	sk_if,
 	sk_while,
+	
 	number_of_kinds_of_statements,
 };
 

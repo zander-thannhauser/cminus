@@ -1,49 +1,43 @@
 
 void printf(const char*, ...);
 
-/*static struct {*/
-/*	float f;*/
-/*	struct { int i, j; } subs[4];*/
-/*} a = {3.14f, {{1, 2}, {3, 4}, {5, 6}}}, b;*/
-
-int main ()
+int main()
 {
-	struct c {
-		float f1, f2, f3;
-	} c = {1, 2, 3};
+	int a[15] = {32, 11, 111, 88, 11, 44, 33, 33, 22, 77, 45, 65, 76, 87, 34};
+	int i, j, t, least;
 	
-/*	printf("hello!\n");*/
-/*	*/
-/*	b.f = a.f + c.f2;*/
-/*	*/
-/*	printf("b.f == %f\n", b.f);*/
+	i = 0;
 	
-/*	printf("a.f == %f\n", a.f);*/
-/*	printf("a.subs[0].i == %i\n", a.subs[0].i);*/
-/*	printf("a.subs[0].j == %i\n", a.subs[0].j);*/
-/*	printf("a.subs[1].i == %i\n", a.subs[1].i);*/
-/*	printf("a.subs[1].j == %i\n", a.subs[1].j);*/
+	while (i < 14)
+	{
+		least = i;
+		j = i + 1;
+		
+		while (j < 15)
+		{
+			if (a[j] < a[least])
+			{
+				least = j;
+			}
+			
+			j = j + 1;
+		}
+		
+		t = a[i];
+		a[i] = a[least];
+		a[least] = t;
+		i = i + 1;
+	}
 	
-/*	b.subs[2] = a.subs[0];*/
+	i = 0;
+	while (i < 15)
+	{
+		printf("a[%2i] == %i\n", i, a[i]);
+		i = i + 1;
+	}
 	
-	c = (struct c) {1};
-	
-/*	c = (struct c) {c.f3, c.f2, c.f1};*/
-	
-/*	b.f += c.f1;*/
-/*	*/
-/*	printf("b.f == %lf\n", b.f);*/
-/*	printf("b.subs[2] == {%i, %i}\n", b.subs[2].i, b.subs[2].j); // {1, 2}*/
-/*	*/
 	return 0;
 }
-
-
-
-
-
-
-
 
 
 

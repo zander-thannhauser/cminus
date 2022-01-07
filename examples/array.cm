@@ -1,5 +1,9 @@
 
-void write(int);
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
+
 void exit();
 
 void main ()
@@ -7,16 +11,16 @@ void main ()
 	int a[10];
 	int i;
 	
-	3[a] = 4;
-	write(a[3]);
+	a[3] = 4;
+	write(a[3]); // 4
 	
 	i = 3;
 	a[i] = 7;
-	write(a[i]);
+	write(a[i]); // 3
 	
 	i = i + 2;
 	a[i] = 22;
-	write(a[5]);
+	write(a[5]); // 22
 	
 	exit();
 }

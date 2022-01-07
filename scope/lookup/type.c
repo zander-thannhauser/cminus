@@ -26,8 +26,8 @@ struct type* scope_lookup_type(
 	{
 		if ((node = avl_search(i->local.types, &name)))
 		{
-			// retval = tinc();
-			TODO;
+			namedtype = node->item;
+			retval = tinc(namedtype->type);
 		}
 	}
 	

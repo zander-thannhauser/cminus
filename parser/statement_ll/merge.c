@@ -17,7 +17,15 @@ int statement_ll_merge(
 	dpv(this);
 	dpv(that);
 	
-	if (this->tail)
+	dpv(this->head);
+	dpv(that->head);
+	
+	if (!that->head)
+	{
+		// empty 'that'
+		HERE;
+	}
+	else if (this->tail)
 	{
 		this->tail->next = tinc(that->head);
 		tfree(this->tail), this->tail = tinc(that->tail);

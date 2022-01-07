@@ -70,7 +70,7 @@ default: gen/$(buildprefix)/cminus
 
 .PRECIOUS: %/
 %/:
-	mkdir -p $@
+	@ mkdir -p $@
 
 gen/srclist.mk: | gen/
 	find -name '*.c' | sed 's/^/srcs += /' > $@
@@ -85,23 +85,22 @@ ARGS += -p ./test.cm
 
 #ARGS += ./examples/more/hard-stuff.cm
 #ARGS += ./examples/more/struct-initializers.cm
-#ARGS += ./examples/more/enums.cm
-#ARGS += ./examples/more/typ3.cm
-#ARGS += ./examples/more/typecasts1.cm
+#ARGS += -p ./examples/more/typecasts1.cm
 
-#ARGS += ./examples/system/unistd.cm
+#ARGS += ./examples/system/unistd.cm # has enums in it
 #ARGS += ./examples/system/stdio.cm
 #ARGS += ./examples/system/inttypes.cm
 
 #ARGS += -p ./examples/add.cm
 #ARGS += -p ./examples/add.float.cm
-#ARGS += ./examples/and.cm
+#ARGS += -p ./examples/and.cm
 #ARGS += ./examples/and.float.cm
 #ARGS += -p ./examples/arith.cm
 #ARGS += ./examples/arith2.cm
-#ARGS += ./examples/array.cm
-#ARGS += ./examples/array.float.cm
-#ARGS += ./examples/bubble.cm
+#ARGS += -p ./examples/array.cm
+#ARGS += -p ./examples/array.float.cm
+#ARGS += -p ./examples/bubble.cm
+
 #ARGS += ./examples/bubble.float.cm
 #ARGS += ./examples/call.cm
 #ARGS += ./examples/constdim.cm
@@ -172,7 +171,6 @@ ARGS += -p ./test.cm
 #ARGS += ./examples/while3.cm
 #ARGS += ./examples/while_array.cm
 
-
 ARGS += -o /tmp/test.s
 
 rrun: gen/$(buildprefix)/cminus
@@ -188,22 +186,27 @@ valrun-leak: gen/$(buildprefix)/cminus
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -- $< ${ARGS}
 
 gen/$(buildprefix)/cminus: $(patsubst %.c,gen/$(buildprefix)/%.o,$(srcs))
-	$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
+	@ echo "linking $@"
+	@ $(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
 gen/$(buildprefix)/%.d: %.c | gen/$(buildprefix)/%/
-	$(CPP) $(CPPFLAGS) $< -MM -MT $@ -MF $@ || (gedit $<; false)
+	@ echo "$(buildprefix): calculating dependencies for $<"
+	@ $(CPP) $(CPPFLAGS) $< -MM -MT $@ -MF $@ || (gedit $<; false)
 
-gen/$(buildprefix)/%.o: %.c gen/$(buildprefix)/%.d | gen/$(buildprefix)/%/
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@ || (gedit $<; false)
+gen/$(buildprefix)/%.o: %.c gen/$(buildprefix)/%.d
+	@ echo "$(buildprefix): compiling $<"
+	@ $(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@ || (gedit $<; false)
 
 %.c %.h: %.y
+	@ echo "$(buildprefix): yacc-ing $<"
 	$(YACC) $(YFLAGS) --output=$*.c --defines=$*.h $< 
 
 %.c %.h: %.l
+	@ echo "$(buildprefix): lex-ing $<"
 	$(LEX) $(LFLAGS) --outfile=$*.c --header-file=$*.h $< 
 
-%.im: %.cm
-	$(CPP) -x c $< -o $@
+#%.im: %.cm
+#	$(CPP) -x c $< -o $@
 
 #test: gen/$(buildprefix)/cminus
 #	for f in $$(ls examples/*.cm | sort -V); \
@@ -221,11 +224,11 @@ gen/$(buildprefix)/%.o: %.c gen/$(buildprefix)/%.d | gen/$(buildprefix)/%/
 #	for f in $$(find examples -name '*.cm' | sort -V); \
 #	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
 
-CminusTypeChecker.tgz: \
-		.gitignore compile run *.c *.h makefile README.md \
-		avl/* cmdln/* defines/* enums/* examples/* expression/* macros/* \
-		memory/* misc/* parser/* scope/* statement/* type/* types/*
-	tar -cvzf $@ $^
+#CminusTypeChecker.tgz: \
+#		.gitignore compile run *.c *.h makefile README.md \
+#		avl/* cmdln/* defines/* enums/* examples/* expression/* macros/* \
+#		memory/* misc/* parser/* scope/* statement/* type/* types/*
+#	tar -cvzf $@ $^
 
 clean:
 	for l in $$(cat .gitignore); do rm -rvf $$l; done

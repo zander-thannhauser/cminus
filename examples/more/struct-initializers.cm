@@ -7,11 +7,13 @@ int main()
 		int x, y;
 	};
 	
-	struct point  a =  (struct point) {1, 2};
-	struct point *b = &(struct point) {2, 3};
-	struct point  c = *b;
+	struct point a = {1, 2}, c;
+
+	struct point *b; b = &((struct point) {2, 3});
+
+	c = *b;
 	
-	printf("a + c = {%i, %i}\n", a.x + c.x, a.y + c.y);
+	printf("a + c = {%i, %i}\n", a.x + c.x, a.y + c.y); // {3, 5}
 	
 	return 0;
 }

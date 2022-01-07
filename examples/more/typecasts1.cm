@@ -1,4 +1,9 @@
 
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %i\n", #x, (x));
+
 int main()
 {
 	typedef int x;

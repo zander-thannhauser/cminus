@@ -1,6 +1,8 @@
 
 #include <debug.h>
 
+#include <memory/tfree.h>
+
 #include <types/struct.h>
 
 #include <expression/literal/new.h>

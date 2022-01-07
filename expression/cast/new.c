@@ -54,6 +54,18 @@ int new_cast_expression(
 				val = (uintmax_t) spef->value._signed_int;
 				break;
 			
+			case ik_unsigned_int:
+				val = (uintmax_t) spef->value._unsigned_int;
+				break;
+			
+			case ik_signed_long:
+				val = (uintmax_t) spef->value._signed_long;
+				break;
+			
+			case ik_unsigned_long:
+				val = (uintmax_t) spef->value._unsigned_long;
+				break;
+			
 			default:
 				// fill out the rest
 				TODO;
@@ -64,6 +76,11 @@ int new_cast_expression(
 		
 		switch (aspef->kind)
 		{
+			case ik_signed_int:
+				error = new_literal_expression_as_signed_int(new,
+					inner->loc, after, val);
+				break;
+			
 			case ik_signed_long:
 				error = new_literal_expression_as_signed_long(new,
 					inner->loc, after, val);

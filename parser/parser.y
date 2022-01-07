@@ -55,7 +55,7 @@
 	#include <enums/type_qualifier.h>
 	
 	#include <expression/assign/kind.h>
-	#include <expression/unary/kind.h>
+	#include <enums/unary_kind.h>
 }
 
 %code top {
@@ -371,13 +371,22 @@ primary_expression
 			types, $1)))
 			YYABORT;
 	} | UINT_LITERAL {
-		if ((*error = primary_expression_uinteger_callback(&$$, types, $1)))
+		if ((*error = primary_expression_uinteger_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | SLONG_LITERAL {
-		if ((*error = primary_expression_slong_callback(&$$, types, $1)))
+		if ((*error = primary_expression_slong_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | ULONG_LITERAL {
-		if ((*error = primary_expression_ulong_callback(&$$, types, $1)))
+		if ((*error = primary_expression_ulong_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			types, $1)))
 			YYABORT;
 	} | FLOAT_LITERAL {
 		if ((*error = primary_expression_float_callback(&$$, 
@@ -472,7 +481,9 @@ unary_expression
 		if ((*error = unary_expression_decrement_callback(&$$, $2)))
 			YYABORT;
 	} | unary_operator cast_expression {
-		if ((*error = unary_expression_operator(&$$, $1, $2, types)))
+		if ((*error = unary_expression_operator(&$$, $1, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column, $2)))
 			YYABORT;
 	} | SIZEOF unary_expression {
 		if ((*error = unary_expression_sizeof_expression_callback(&$$, $2)))
@@ -486,7 +497,7 @@ unary_expression
 	} ;
 
 unary_operator
-	: '&' { $$ = uek_address_of; }
+	: '&' { $$ = uek_addressof; }
 	| '*' { $$ = uek_dereference; }
 	| '+' { $$ = uek_numeric_plus; }
 	| '-' { $$ = uek_numeric_negate; }
@@ -498,7 +509,10 @@ cast_expression
 	: unary_expression {
 		$$ = $1;
 	} | '(' type_name ')' cast_expression {
-		if ((*error = cast_expression_cast_callback(&$$, $2, $4)))
+		if ((*error = cast_expression_cast_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$2, $4)))
 			YYABORT;
 	} ;
 
@@ -557,16 +571,28 @@ relational_expression
 	: shift_expression {
 		$$ = $1;
 	} | relational_expression '<' shift_expression {
-		if ((*error = relational_expression_less_than_callback(&$$, $1, $3, types)))
+		if ((*error = relational_expression_less_than_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | relational_expression '>' shift_expression {
-		if ((*error = relational_expression_greater_than_callback(&$$, $1, $3, types)))
+		if ((*error = relational_expression_greater_than_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | relational_expression LE_OP shift_expression {
-		if ((*error = relational_expression_less_than_equal_to_callback(&$$, $1, $3, types)))
+		if ((*error = relational_expression_less_than_equal_to_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} | relational_expression GE_OP shift_expression {
-		if ((*error = relational_expression_greater_than_equal_to_callback(&$$, $1, $3, types)))
+		if ((*error = relational_expression_greater_than_equal_to_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	};
 
@@ -664,7 +690,10 @@ expression
 	: assignment_expression {
 		$$ = $1;
 	} | expression ',' assignment_expression {
-		if ((*error = expression_comma_callback(&$$, $1, $3, types)))
+		if ((*error = expression_comma_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$1, $3, types)))
 			YYABORT;
 	} ;
 
@@ -1124,10 +1153,16 @@ expression_statement
 
 selection_statement
 	: IF '(' expression ')' statement %prec "then" {
-		if ((*error = selection_statement_if_callback(&$$, $3, $5, NULL, types)))
+		if ((*error = selection_statement_if_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$3, $5, NULL)))
 			YYABORT;
 	} | IF '(' expression ')' statement ELSE statement {
-		if ((*error = selection_statement_if_callback(&$$, $3, $5, $7, types)))
+		if ((*error = selection_statement_if_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$3, $5, $7)))
 			YYABORT;
 	} | SWITCH '(' expression ')' statement {
 		if ((*error = selection_statement_switch_callback(&$$, $3, $5)))
@@ -1136,7 +1171,10 @@ selection_statement
 
 iteration_statement
 	: WHILE '(' expression ')' statement {
-		if ((*error = iteration_statement_while_callback(&$$, $3, $5, types)))
+		if ((*error = iteration_statement_while_callback(&$$, 
+			@$.first_line, @$.first_column,
+			@$.last_line, @$.last_column,
+			$3, $5)))
 			YYABORT;
 	} | DO statement WHILE '(' expression ')' ';' {
 		if ((*error = iteration_statement_dowhile_callback(&$$, $2, $5)))

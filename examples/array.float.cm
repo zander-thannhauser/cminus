@@ -1,5 +1,9 @@
 
-void write(float);
+void printf(const char*, ...);
+
+#define write(x) \
+	printf("%s == %f\n", #x, (x));
+
 void exit();
 
 void main ()
@@ -8,16 +12,16 @@ void main ()
 	int i;
 	
 	a[3] = 4.0;
-	write(a[3]);
+	write(a[3]); // 4.0
 	
 	i = 3.0;
 	a[i] = 7.0;
+	write(a[i]); // 7
 	
-	write(a[i]);
 	i = i + 2;
 	a[i] = 22.0;
 	
-	write(a[5]);
+	write(a[5]); // 22
 	
 	exit();
 }

@@ -1,6 +1,9 @@
 
 #include <debug.h>
 
+#include <memory/tinc.h>
+#include <memory/tfree.h>
+
 #include <type/struct.h>
 #include <type/struct/field_ll/struct.h>
 #include <type/struct/field/struct.h>
@@ -18,6 +21,7 @@ int initializer_traverse(
 	int (*on_zero)(size_t),
 	int (*on_integer)(struct integer_type*, struct expression**),
 	int (*on_float)(struct float_type*, struct expression**),
+	int (*on_pointer)(struct pointer_type*, struct expression**),
 	int (*on_struct)(struct struct_type*, struct expression**),
 	int (*ef)(struct type*, const char*),
 	int (*xf)(struct type* t),
@@ -31,7 +35,8 @@ int initializer_traverse(
 	
 	if (!this) {
 		error = on_zero(type->size);
-	} else switch (type->kind)
+	}
+	else switch (type->kind)
 	{
 		case tk_integer:
 		{
@@ -87,6 +92,33 @@ int initializer_traverse(
 			break;
 		}
 		
+		case tk_pointer:
+		{
+			struct pointer_type* spef = (typeof(spef)) type;
+			
+			if (this->kind != ik_expression)
+			{
+				TODO;
+				error = 1;
+			}
+			
+			struct expression* before = NULL, *after = NULL;
+			
+			if (!error)
+			{
+				after = before = this->expression;
+				error = on_pointer(spef, &after);
+			}
+			
+			if (!error && before != after)
+			{
+				this->expression = tinc(after);
+				tfree(before);
+			}
+			
+			break;
+		}
+		
 		case tk_array:
 		{
 			struct array_type* spef = (typeof(spef)) type;
@@ -114,7 +146,7 @@ int initializer_traverse(
 				error = 0
 					?: ei(i)
 					?: initializer_traverse(ill ? ill->element : NULL, element,
-						on_zero, on_integer, on_float, on_struct,
+						on_zero, on_integer, on_float, on_pointer, on_struct,
 						ef, xf, ei, xi)
 					?: xi(i);
 				
@@ -131,7 +163,7 @@ int initializer_traverse(
 			
 			if (this->kind != ik_initializer_list)
 			{
-				TODO;
+				TODO; // then call on_struct()
 				error = 1;
 			}
 			
@@ -154,7 +186,7 @@ int initializer_traverse(
 				error = 0
 					?: ef(sf->type, sf->name)
 					?: initializer_traverse(ill ? ill->element : NULL, sf->type,
-						on_zero, on_integer, on_float, on_struct,
+						on_zero, on_integer, on_float, on_pointer, on_struct,
 						ef, xf, ei, xi)
 					?: xf(sf->type);
 				

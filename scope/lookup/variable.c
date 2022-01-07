@@ -21,17 +21,11 @@ struct variable* scope_lookup_variable(
 	ENTER;
 	
 	for (i = this->stackhead; !retval && i; i = i->prev)
-	{
 		if ((node = avl_search(i->local.variables, &name)))
-		{
 			retval = tinc(node->item);
-		}
-	}
 	
 	if (!retval && (node = avl_search(this->global.variables, &name)))
-	{
 		retval = tinc(node->item);
-	}
 	
 	EXIT;
 	return retval;

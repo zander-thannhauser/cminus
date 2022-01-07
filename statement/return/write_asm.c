@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+
 #include <debug.h>
 
 #include <enums/error.h>
@@ -93,9 +95,7 @@ int return_statement_write_asm(struct statement* super, struct asm_writer* write
 	
 	if (!error)
 	{
-		asprintf(&return_label, "%s_return", this->funcname);
-		
-		if (!return_label)
+		if (asprintf(&return_label, "%s_return", this->funcname) < 0 || !return_label)
 		{
 			fprintf(stderr, "%s: asprintf(): %m\n", argv0);
 			error = e_out_of_memory;

@@ -1,4 +1,10 @@
 
+#include <stddef.h>
+
+#include <memory/tinc.h>
+
+#include <memory/tfree.h>
+
 #include <debug.h>
 
 #include <parser/initializer_ll/new.h>

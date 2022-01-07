@@ -1,4 +1,6 @@
 
+#include <stdint.h>
+
 #include <debug.h>
 
 #include <type/struct.h>
@@ -104,10 +106,13 @@ int asm_writer_write_global(
 			{
 				case fk_float:
 				{
+					#pragma GCC diagnostic push
+					#pragma GCC diagnostic ignored "-Wstrict-aliasing"
 					uint32_t value;
 					value = *((uint32_t*) &literal->value._float);
 					dpv(value);
 					error = asm_writer_write(this, ".long %u", value);
+					#pragma GCC diagnostic pop
 					break;
 				}
 				
@@ -119,6 +124,11 @@ int asm_writer_write_global(
 		
 		EXIT;
 		return error;
+	}
+	
+	int on_pointer(struct pointer_type* pt, struct expression** e)
+	{
+		TODO;
 	}
 	
 	int on_struct(struct struct_type* st, struct expression** e)
@@ -205,7 +215,7 @@ int asm_writer_write_global(
 				?: asm_writer_write(this, ".size %s, %lu", identifier, type->size)
 				?: asm_writer_write(this, "%s:", identifier)
 				?: initializer_traverse(value, type,
-					on_zero, on_integer, on_float, on_struct,
+					on_zero, on_integer, on_float, on_pointer, on_struct,
 					ef, xf, ei, xi);
 		}
 		else

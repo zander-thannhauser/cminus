@@ -26,6 +26,19 @@ int compound_statement_write_asm(
 	return error;
 }
 
+int inheritance_compound_statement_write_asm(
+	struct statement* super, struct asm_writer* writer)
+{
+	int error = 0;
+	struct compound_statement* const this = (typeof(this)) super;
+	ENTER;
+	
+	error = compound_statement_write_asm(this, writer);
+	
+	EXIT;
+	return error;
+}
+
 
 
 

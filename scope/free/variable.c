@@ -14,6 +14,8 @@ void free_variable(void* ptr)
 	
 	dpv(this);
 	
+	dpvs(this->name);
+	
 	tfree(this->name);
 	tfree(this->type);
 	

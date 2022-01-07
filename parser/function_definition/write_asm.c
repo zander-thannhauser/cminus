@@ -160,9 +160,7 @@ int function_definition_write_asm(
 	
 	if (!error)
 	{
-		asprintf(&return_label, "%s_return", this->name);
-		
-		if (!return_label)
+		if (asprintf(&return_label, "%s_return", this->name) < 0 || !return_label)
 		{
 			TODO;
 			error = 1;

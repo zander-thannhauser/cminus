@@ -3,7 +3,7 @@
 
 #include <debug.h>
 
-/*#include <memory/tinc.h>*/
+#include <memory/tinc.h>
 /*#include <memory/tfree.h>*/
 
 #include <type/struct.h>
@@ -16,7 +16,6 @@
 #include "inheritance.h"
 #include "struct.h"
 #include "new.h"
-
 
 int new_initializer_expression(
 	struct expression** new,

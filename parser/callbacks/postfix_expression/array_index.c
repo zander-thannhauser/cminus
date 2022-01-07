@@ -6,6 +6,9 @@
 
 /*#include <defines/argv0.h>*/
 
+#include <memory/tinc.h>
+#include <memory/tfree.h>
+
 /*#include <memory/tfree.h>*/
 
 #include <type/struct.h>

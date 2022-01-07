@@ -1,2 +1,0 @@
-
-extern struct expression_inheritance unary_expression_inheritance;

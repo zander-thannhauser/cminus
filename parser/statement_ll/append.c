@@ -16,6 +16,8 @@ int statement_ll_append(
 	int error = 0;
 	ENTER;
 	
+	dpv(element);
+	
 	struct statement_link* link = NULL;
 	
 	error = tmalloc(

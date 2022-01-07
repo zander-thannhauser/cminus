@@ -1,0 +1,2 @@
+
+extern struct expression_inheritance dereference_expression_inheritance;

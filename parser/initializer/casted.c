@@ -1,6 +1,9 @@
 
 #include <debug.h>
 
+#include <memory/tinc.h>
+#include <memory/tfree.h>
+
 /*#include <type/struct.h>*/
 /*#include <type/struct/field/struct.h>*/
 /*#include <type/struct/field_ll/struct.h>*/
@@ -85,7 +88,8 @@ int cast_initializer(
 	}
 	
 	error = initializer_traverse(initializer, type,
-		on_zero, (void*) on_primitive, (void*) on_primitive, on_struct,
+		on_zero, (void*) on_primitive, (void*) on_primitive,
+			(void*) on_primitive, on_struct,
 		enter_field, exit_field,
 		enter_index, exit_index);
 	

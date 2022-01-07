@@ -30,8 +30,6 @@ int type_name_qualifier_list_and_abstract_declarator(
 		?: declarator_build_type(
 			&identifier, retval, base_type, declarator);
 	
-	CHECK;
-	
 	assert(!identifier);
 	
 	tfree(sq);

@@ -19,6 +19,7 @@
 
 int new_comma_expression(
 	struct expression** new,
+	struct yylloc* loc,
 	struct expression* left,
 	struct expression* right,
 	struct types* types)
@@ -26,14 +27,12 @@ int new_comma_expression(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	struct comma_expression* this = NULL;
 		
 	error = new_expression(
 		(struct expression**) &this,
-		ek_binary, &comma_expression_inheritance,
-		right->type, sizeof(*this));
+		ek_comma, &comma_expression_inheritance,
+		loc, right->type, sizeof(*this));
 	
 	if (!error)
 	{
@@ -42,7 +41,6 @@ int new_comma_expression(
 		
 		*new = (struct expression*) this;
 	}
-	#endif
 	
 	EXIT;
 	return error;

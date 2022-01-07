@@ -3,7 +3,7 @@
 
 #include <debug.h>
 
-/*#include <memory/tinc.h>*/
+#include <memory/tinc.h>
 /*#include <memory/tfree.h>*/
 
 /*#include <scope/variable.h>*/

@@ -43,7 +43,7 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 		
 		if ((ibt->kind & ~1) == (iat->kind & ~1))
 		{
-			// same-sized integers: nothing to do
+			HERE; // same-sized integers: nothing to do
 		}
 		else if ((ibt->kind & 1) && (iat->kind & 1))
 		{
@@ -103,10 +103,7 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 			}
 		}
 		
-		TODO;
-		#if 0
-		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
-		#endif
+		asm_writer_write_movi_from_v2(writer, working_1, 0, stackptr, iktors[iat->kind]);
 	}
 	else if (bt->kind == tk_integer && at->kind == tk_float)
 	{
@@ -124,10 +121,7 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 		
 		asm_writer_write_ftoi(writer, 0, stackptr, fbt->kind, working_1, iat->kind);
 		
-		TODO;
-		#if 0
-		asm_writer_write_movi_from(writer, working_1, 0, stackptr, iat->kind);
-		#endif
+		asm_writer_write_movi_from_v2(writer, working_1, 0, stackptr, iktors[iat->kind]);
 	}
 	else if (bt->kind == tk_float && at->kind == tk_float)
 	{

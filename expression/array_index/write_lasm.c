@@ -43,7 +43,6 @@ int array_index_expression_write_lasm(
 {
 	int error = 0;
 	struct array_index_expression* const this = (typeof(this)) super;
-/*	struct struct_field* const struct_field = this->struct_field;*/
 	ENTER;
 	
 	error = 0

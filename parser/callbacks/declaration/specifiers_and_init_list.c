@@ -34,6 +34,10 @@
 #include <parser/ptree/init_declarator/struct.h>
 #include <parser/ptree/init_declarator_ll/struct.h>
 
+#ifdef DEBUGGING
+#include <parser/statement_ll/struct.h>
+#endif
+
 #include "specifiers_and_init_list.h"
 
 int declaration_specifiers_and_init_list_callback(
@@ -101,6 +105,8 @@ int declaration_specifiers_and_init_list_callback(
 				
 				if (!error)
 				{
+					dpv(variable);
+					
 					if (!variable->is_global)
 					{
 						if (init->initializer)
@@ -134,7 +140,6 @@ int declaration_specifiers_and_init_list_callback(
 					}
 				}
 				
-				
 				tfree(variable);
 			}
 		}
@@ -145,7 +150,11 @@ int declaration_specifiers_and_init_list_callback(
 	}
 	
 	if (!error)
+	{
+		dpv(statements);
+		dpv(statements->head);
 		*retval = tinc(statements);
+	}
 	
 	tfree(specifiers);
 	tfree(init_list);

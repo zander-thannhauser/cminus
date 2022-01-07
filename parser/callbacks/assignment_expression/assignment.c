@@ -11,7 +11,6 @@
 #include <type/struct.h>
 
 #include <expression/struct.h>
-#include <expression/unary/new.h>
 #include <expression/assign/new.h>
 #include <expression/cast/new.h>
 

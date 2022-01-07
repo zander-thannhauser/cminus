@@ -24,6 +24,8 @@
 #include <asm/writer/write/movi.h>
 /*#include <asm/writer/write/addf.h>*/
 #include <asm/writer/write/movf.h>
+#include <asm/writer/write/addf.h>
+#include <asm/writer/write/memcpy.h>
 #include <asm/writer/write.h>
 
 #include <type/get_rs.h>
@@ -49,55 +51,42 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 	
 	if (this->kind == aek_regular_assign)
 	{
+		enum register_size rs = type_get_rs(super->type);
+		
+		asm_writer_write_movi_to_v2(writer, 0, stackptr, working_2, rs);
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
+		
+		asm_writer_write_movi_to_v2(writer, 0, stackptr, working_1, quadword);
+		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_unindent(writer);
+		#endif
+		
 		switch (super->type->kind)
 		{
 			case tk_float:
 			case tk_integer:
+			case tk_pointer:
 			{
-				enum register_size rs = type_get_rs(super->type);
-				
-				asm_writer_write_movi_to_v2(writer, 0, stackptr, working_2, rs);
-				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
-				#ifdef VERBOSE_ASSEMBLY
-				asm_writer_unindent(writer);
-				#endif
-				
-				asm_writer_write_movi_to_v2(writer, 0, stackptr, working_1, quadword);
-				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
-				
-				#ifdef VERBOSE_ASSEMBLY
-				asm_writer_unindent(writer);
-				#endif
-				
 				asm_writer_write_movi_from_v2(writer, working_2,  0, working_1, rs);
 				asm_writer_write_movi_from_v2(writer, working_2, -8, stackptr, rs);
-				asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 				break;
 			}
 			
 			case tk_struct:
 			{
-				enum register_size rs = type_get_rs(super->type);
+				// memcpy call
 				
-				asm_writer_write_movi_to_v2(writer, 0, stackptr, rsi, quadword);
-				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
-				#ifdef VERBOSE_ASSEMBLY
-				asm_writer_unindent(writer);
-				#endif
+				asm_writer_write_memcpy(writer,
+					working_2,
+					working_1,
+					super->type->size);
 				
-				asm_writer_write_movi_to_v2(writer, 0, stackptr, rdi, quadword);
-				asm_writer_write_addi_const(writer, 8, stackptr, quadword);
-				
-				#ifdef VERBOSE_ASSEMBLY
-				asm_writer_unindent(writer);
-				#endif
-				
-				asm_writer_write_movi_const_v2(writer, super->type->size, rcx, quadword);
-				
-				asm_writer_write(writer, "rep movsb");
-				
-				asm_writer_write_movi_from_v2(writer, rsi, -8, stackptr, rs);
-				asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+				asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, rs);
 				break;
 			}
 			
@@ -105,6 +94,8 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 				TODO;
 				break;
 		}
+		
+		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	}
 	else switch (super->type->kind)
 	{
@@ -125,8 +116,14 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			asm_writer_unindent(writer);
 			#endif
 			
+			asm_writer_write_movf_to(writer, 0, working_1, working_f1, ftype->kind);
+			
 			switch (this->kind)
 			{
+				case aek_add_assign:
+					asm_writer_write_addf(writer, working_f1, working_f2, ftype->kind);
+					break;
+				
 				default:
 					TODO;
 					break;

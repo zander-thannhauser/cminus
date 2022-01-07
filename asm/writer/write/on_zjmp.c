@@ -7,17 +7,19 @@
 
 #include "on_zjmp.h"
 
-void asm_writer_write_on_zjmp(
+int asm_writer_write_on_zjmp(
 	struct asm_writer* this,
 	enum integer_register_id rid, enum register_size rs,
 	const char* label)
 {
+	int error = 0;
 	ENTER;
 	
-	asm_writer_write(this, "cmp $0, %s", intregs[rid][rs]);
-	
-	asm_writer_write(this, "je .%s", label);
+	error = 0
+		?: asm_writer_write(this, "cmp $0, %s", intregs[rid][rs])
+		?: asm_writer_write(this, "je .%s", label);
 	
 	EXIT;
+	return error;
 }
 

@@ -10,6 +10,7 @@
 static const char* lookup[number_of_assign_expressions] = 
 {
 	[aek_regular_assign] = "=",
+	[aek_add_assign] = "+=",
 };
 
 int assign_expression_print(

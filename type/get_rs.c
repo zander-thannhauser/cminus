@@ -36,9 +36,6 @@ enum register_size type_get_rs(struct type* const this)
 		}
 		
 		case tk_pointer:
-			TODO;
-			break;
-		
 		case tk_array:
 		case tk_struct:
 		{

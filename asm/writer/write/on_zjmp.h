@@ -4,7 +4,7 @@
 
 struct asm_writer;
 
-void asm_writer_write_on_zjmp(
+int asm_writer_write_on_zjmp(
 	struct asm_writer* this,
 	enum integer_register_id rid, enum register_size rs,
 	const char* label);

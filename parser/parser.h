@@ -58,7 +58,7 @@ extern int yydebug;
 	#include <enums/type_qualifier.h>
 	
 	#include <expression/assign/kind.h>
-	#include <expression/unary/kind.h>
+	#include <enums/unary_kind.h>
 
 #line 64 "parser/parser.h"
 

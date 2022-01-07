@@ -1,6 +1,8 @@
 
 #include <debug.h>
 
+#include <enums/error.h>
+
 #include <defines/argv0.h>
 
 #ifdef VERBOSE_ASSEMBLY

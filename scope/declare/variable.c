@@ -86,6 +86,9 @@ int scope_declare_variable(
 					"with as different type!\n", argv0, identifier);
 				error = e_bad_input_file;
 			}
+			
+			if (!error && outgoing)
+				*outgoing = tinc(oldvar);
 		}
 		else
 		{

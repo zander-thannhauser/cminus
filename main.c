@@ -1,4 +1,5 @@
 
+#include <sys/wait.h>
 #include <stdio.h>
 
 #include <debug.h>

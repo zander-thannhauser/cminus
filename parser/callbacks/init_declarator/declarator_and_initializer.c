@@ -1,6 +1,8 @@
 
 #include <debug.h>
 
+#include <memory/tfree.h>
+
 #include <parser/ptree/init_declarator/new.h>
 
 #include "declarator_and_initializer.h"

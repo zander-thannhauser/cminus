@@ -22,6 +22,8 @@ int specifier_qualifiers_set_type(
 	int error = 0;
 	ENTER;
 	
+	dpv(type);
+	
 	if (!this->type)
 		this->type = tinc(type);
 	else

@@ -44,12 +44,8 @@ int primary_expression_identifier_callback(
 	if (!error)
 	{
 		error = 0
-			?: new_yyloc(&loc,
-				first_line, first_column,
-				last_line, last_column)
-			?: new_variable_expression((struct variable_expression**) retval,
-				loc,
-				variable);
+			?: new_yyloc(&loc, first_line, first_column, last_line, last_column)
+			?: new_variable_expression((struct variable_expression**) retval, loc, variable);
 	}
 	
 	tfree(loc);

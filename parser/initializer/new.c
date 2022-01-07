@@ -1,6 +1,11 @@
 
+
+#include <stddef.h>
+
 #include <debug.h>
 
+#include <memory/tmalloc.h>
+#include <memory/tinc.h>
 #include <memory/tfree.h>
 
 #include "struct.h"

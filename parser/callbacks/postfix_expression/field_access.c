@@ -1,6 +1,8 @@
 
 #include <debug.h>
 
+#include <memory/tfree.h>
+
 #include <type/struct.h>
 #include <type/struct/get_field.h>
 
