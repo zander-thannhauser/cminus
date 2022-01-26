@@ -10,10 +10,10 @@ enum integer_register_id
 	
 	rdi,
 	rsi,
-	third_parameter,
+	rdx,
 	rcx,
-	fifth_parameter,
-	sixth_parameter,
+	r8,
+	r9,
 	
 	working_1,
 	working_2,
@@ -31,7 +31,10 @@ enum integer_register_id
 
 #define first_parameter (rdi)
 #define second_parameter (rsi)
+#define third_parameter (rdx)
 #define fourth_parameter (rcx)
+#define fifth_parameter (r8)
+#define sixth_parameter (r9)
 
 #define divn_reg (retval)
 #define divq_reg (retval)

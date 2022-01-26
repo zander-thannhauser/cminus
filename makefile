@@ -8,17 +8,36 @@ CPPFLAGS += -D _GNU_SOURCE
 CPPFLAGS += -I .
 CPPFLAGS += -isystem ./extern
 
+YACC = bison
+YFLAGS += --warnings=error=all
+
+LEX = flex
+
 buildtype ?= release
 
 ifeq ($(buildtype), release)
 CPPFLAGS += -D RELEASE
 CPPFLAGS += -D FORTIFY_SOURCE=2
 
+CPPFLAGS += -D ENTER=
+CPPFLAGS += -D HERE=
+CPPFLAGS += -D EXIT=
+CPPFLAGS += -D 'dpv(_)='
+CPPFLAGS += -D 'dpvc(_)='
+CPPFLAGS += -D 'dpvb(_)='
+CPPFLAGS += -D 'dpvs(_)='
+CPPFLAGS += -D 'dpvo(_)='
+CPPFLAGS += -D 'dpvsn(_, __)='
+CPPFLAGS += -D 'ddprintf(...)='
+CPPFLAGS += -D TODO='assert(!"TODO")'
+CPPFLAGS += -D CHECK='assert(!"CHECK")'
+
 CFLAGS += -O2
 CFLAGS += -flto
 else ifeq ($(buildtype), testing)
 CPPFLAGS += -D TESTING
 
+CFLAGS += -include debug.h
 CFLAGS += -g
 CFLAGS += -Wno-unused-variable
 CFLAGS += -Wno-unused-function
@@ -27,28 +46,21 @@ CFLAGS += -Wno-unused-but-set-variable
 else
 CPPFLAGS += -D DEBUGGING
 
+CFLAGS += -include debug.h
 CFLAGS += -g
 CFLAGS += -Wno-unused-variable
 CFLAGS += -Wno-unused-function
 CFLAGS += -Wno-unused-but-set-variable
 CFLAGS += -Wno-unused-value
 CFLAGS += -Wno-maybe-uninitialized
+endif
 
-#LDLIBS += -Wl,--wrap,fopen
-#LDLIBS += -Wl,--wrap,fdopen
-#LDLIBS += -Wl,--wrap,fclose
-#LDLIBS += -Wl,--wrap,malloc
-#LDLIBS += -Wl,--wrap,realloc
-#LDLIBS += -Wl,--wrap,free
-#LDLIBS += -Wl,--wrap,getline
-#LDLIBS += -Wl,--wrap,open
-#LDLIBS += -Wl,--wrap,openat
-#LDLIBS += -Wl,--wrap,openat2
-#LDLIBS += -Wl,--wrap,close
-#LDLIBS += -Wl,--wrap,pipe2
-#LDLIBS += -Wl,--wrap,creat
+target ?= x64
 
-#LDLIBS += -lunwind
+ifeq ($(target), x64)
+CPPFLAGS += -D X64_TARGET
+else ifeq ($(target), iloc)
+CPPFLAGS += -D ILOC_TARGET
 endif
 
 asm ?= quiet
@@ -59,14 +71,19 @@ else ifeq ($(asm), verbose)
 CPPFLAGS += -D VERBOSE_ASSEMBLY
 endif
 
-YACC = bison
-YFLAGS += --warnings=error=all
+on_error ?= do_nothing
 
-LEX = flex
+ifeq ($(on_error), do_nothing)
+ON_ERROR =
+else ifeq ($(on_error), open_editor)
+ON_ERROR += || ($$EDITOR $<; false)
+else
+$(error "invalid on_error option!");
+endif
 
-buildprefix = $(buildtype)/$(asm)
+buildprefix = gen/$(buildtype)-build/target-$(target)/$(asm)-asm
 
-default: gen/$(buildprefix)/cminus
+default: $(buildprefix)/cminus
 
 .PRECIOUS: %/
 %/:
@@ -76,6 +93,7 @@ gen/srclist.mk: | gen/
 	find -name '*.c' | sed 's/^/srcs += /' > $@
 
 srcs += ./parser/scanner.c ./parser/parser.c
+
 include gen/srclist.mk
 
 #ARGS += -p ./test.cm
@@ -86,13 +104,13 @@ include gen/srclist.mk
 #ARGS += ./examples/more/hard-stuff.cm
 #ARGS += ./examples/more/struct-initializers.cm
 #ARGS += -p ./examples/more/typecasts1.cm
-ARGS += examples/more/busy-printf.cm
+#ARGS += examples/more/busy-printf.cm
 
 #ARGS += ./examples/system/unistd.cm # has enums in it
 #ARGS += ./examples/system/stdio.cm
 #ARGS += ./examples/system/inttypes.cm
 
-#ARGS += -p ./examples/add.cm
+ARGS += -p ./examples/add.cm
 #ARGS += -p ./examples/add.float.cm
 #ARGS += -p ./examples/and.cm
 #ARGS += ./examples/and.float.cm
@@ -176,54 +194,50 @@ ARGS += examples/more/busy-printf.cm
 
 ARGS += -o /tmp/test.s
 
-rrun: gen/$(buildprefix)/cminus
+rrun: $(buildprefix)/cminus
 	$< ${ARGS}
 
-valrun: gen/$(buildprefix)/cminus
+valrun: $(buildprefix)/cminus
 	valgrind -- $< ${ARGS}
 
-valrun-stop: gen/$(buildprefix)/cminus
+valrun-stop: $(buildprefix)/cminus
 	valgrind --gen-suppressions=yes -- $< ${ARGS}
 
-valrun-leak: gen/$(buildprefix)/cminus
+valrun-leak: $(buildprefix)/cminus
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -- $< ${ARGS}
 
-gen/$(buildprefix)/cminus: $(patsubst %.c,gen/$(buildprefix)/%.o,$(srcs))
+$(buildprefix)/cminus: $(patsubst %.c,$(buildprefix)/%.o,$(srcs))
 	@ echo "linking $@"
 	@ $(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
-gen/$(buildprefix)/%.d: %.c | gen/$(buildprefix)/%/
-	@ echo "$(buildprefix): calculating dependencies for $<"
-	@ $(CPP) $(CPPFLAGS) $< -MM -MT $@ -MF $@ || (gedit $<; false)
-
-gen/$(buildprefix)/%.o: %.c gen/$(buildprefix)/%.d
-	@ echo "$(buildprefix): compiling $<"
-	@ $(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@ || (gedit $<; false)
+$(buildprefix)/%.o $(buildprefix)/%.d: %.c | $(buildprefix)/%/
+	@ echo "compiling $<"
+	@ $(CC) -c $(CPPFLAGS) $(CFLAGS) $< -MD -o $(buildprefix)/$*.o $(ON_ERROR)
 
 %.c %.h: %.y
 	@ echo "$(buildprefix): yacc-ing $<"
-	$(YACC) $(YFLAGS) --output=$*.c --defines=$*.h $< 
+	$(YACC) $(YFLAGS) --output=$*.c --defines=$*.h $< $(ON_ERROR)
 
 %.c %.h: %.l
 	@ echo "$(buildprefix): lex-ing $<"
-	$(LEX) $(LFLAGS) --outfile=$*.c --header-file=$*.h $< 
+	$(LEX) $(LFLAGS) --outfile=$*.c --header-file=$*.h $< $(ON_ERROR)
 
 #%.im: %.cm
 #	$(CPP) -x c $< -o $@
 
-#test: gen/$(buildprefix)/cminus
+#test: $(buildprefix)/cminus
 #	for f in $$(ls examples/*.cm | sort -V); \
 #	do echo "testing '$$f'..."; $< $$f || exit 1; done
 
-#valtest: gen/$(buildprefix)/cminus
+#valtest: $(buildprefix)/cminus
 #	for f in $$(ls examples/*.cm | sort -V); \
 #	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
 
-#full-test: gen/$(buildprefix)/cminus
+#full-test: $(buildprefix)/cminus
 #	for f in $$(find examples -name '*.cm' | sort -V); \
 #	do echo "testing '$$f'..."; $< $$f || exit 1; done
 
-#full-valtest: gen/$(buildprefix)/cminus
+#full-valtest: $(buildprefix)/cminus
 #	for f in $$(find examples -name '*.cm' | sort -V); \
 #	do echo "testing '$$f'..."; valgrind --error-exitcode=42 -- $< $$f || exit 1; done
 
@@ -237,7 +251,7 @@ clean:
 	for l in $$(cat .gitignore); do rm -rvf $$l; done
 
 ifneq "$(MAKECMDGOALS)" "clean"
-include $(patsubst %.c,gen/$(buildprefix)/%.d,$(srcs))
+include $(patsubst %.c,$(buildprefix)/%.d,$(srcs))
 endif
 
 

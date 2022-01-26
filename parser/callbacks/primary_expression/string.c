@@ -44,7 +44,7 @@ int primary_expression_string_callback(
 			(struct string_expression**) out,
 			loc,
 			(*string_counter)++,
-			tinc(string_data), string_strlen,
+			string_data, string_strlen,
 			types->charptr_type);
 	
 	tfree(string_data);

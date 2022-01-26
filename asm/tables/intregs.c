@@ -1,5 +1,4 @@
 
-
 #include "intregs.h"
 
 const char* intregs[number_of_integer_registers][number_of_register_sizes] =
@@ -9,13 +8,13 @@ const char* intregs[number_of_integer_registers][number_of_register_sizes] =
 	[ baseptr] = {"%bpl", "%bp", "%ebp", "%rbp"},
 	[stackptr] = {"%spl", "%sp", "%esp", "%rsp"},
 	
-	//                      byte,   word,  long,   quad
-	[ rdi] = {"%dil",  "%di", "%edi", "%rdi"},
+	//         byte,   word,  long,   quad
+	[rdi] = {"%dil",  "%di", "%edi", "%rdi"},
 	[rsi] = {"%sil",  "%si", "%esi", "%rsi"},
-	[ third_parameter] = { "%dl",  "%di", "%edx", "%rdx"},
+	[rdx] = { "%dl",  "%di", "%edx", "%rdx"},
 	[rcx] = { "%cl",  "%ci", "%ecx", "%rcx"},
-	[ fifth_parameter] = {"%r8b", "%r8w", "%r8d",  "%r8"},
-	[ sixth_parameter] = {"%r9b", "%r9w", "%r9d",  "%r9"},
+	[r8]  = {"%r8b", "%r8w", "%r8d",  "%r8"},
+	[r9]  = {"%r9b", "%r9w", "%r9d",  "%r9"},
 	
 	//                byte,    word,    long,    quad
 	[ working_1] = {"%r10b", "%r10w", "%r10d", "%r10"},
