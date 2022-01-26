@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../enums/register_size.h"
@@ -18,7 +19,11 @@ int asm_writer_write_leag(
 	
 	// same size: just copy:
 	asm_writer_write(this,
+		#ifdef X64_TARGET
 		"movq %s@GOTPCREL(%%rip), %s",
+		#else
+		"loadI %s, %s",
+		#endif
 		name,
 		intregs[rid][quadword]);
 	
@@ -38,4 +43,4 @@ int asm_writer_write_leag(
 
 
 
-
+#endif

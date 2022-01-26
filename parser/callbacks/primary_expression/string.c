@@ -31,6 +31,8 @@ int primary_expression_string_callback(
 	struct yylloc* loc = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	asm_writer_write_string(writer,
 		*string_counter,
 		string_data,
@@ -49,6 +51,7 @@ int primary_expression_string_callback(
 	
 	tfree(string_data);
 	tfree(loc);
+	#endif
 	
 	EXIT;
 	return error;

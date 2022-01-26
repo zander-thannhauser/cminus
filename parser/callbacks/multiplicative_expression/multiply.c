@@ -58,6 +58,8 @@ int multiplicative_expression_multiply_callback(
 		error = 1;
 	}
 	
+	tfree(left), tfree(right);
+	
 	EXIT;
 	return error;
 }

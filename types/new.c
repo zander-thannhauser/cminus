@@ -24,12 +24,16 @@ int new_types(struct types** new)
 {
 	int error = 0;
 	int i;
+	#if 0
 	struct type* integers[number_of_integer_kinds] = {};
 	struct type* floats[number_of_float_kinds] = {};
 	struct type* void_type = NULL;
 	struct type* charptr_type = NULL;
+	#endif
 	ENTER;
 	
+	TODO;
+	#if 0
 	for (i = 0; !error && i < number_of_integer_kinds; i++)
 		error = new_integer_type((struct integer_type**) &integers[i], i);
 	
@@ -72,6 +76,7 @@ int new_types(struct types** new)
 	
 	tfree(void_type);
 	tfree(charptr_type);
+	#endif
 	
 	EXIT;
 	return error;

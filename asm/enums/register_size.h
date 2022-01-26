@@ -1,4 +1,5 @@
 
+#ifdef X64_TARGET
 #ifndef ENUM_REGISTER_SIZE
 #define ENUM_REGISTER_SIZE
 
@@ -12,4 +13,5 @@ enum register_size
 	number_of_register_sizes,
 };
 
+#endif
 #endif

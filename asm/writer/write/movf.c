@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../tables/fktors.h"
@@ -80,4 +81,4 @@ int asm_writer_write_movf_from(
 
 
 
-
+#endif

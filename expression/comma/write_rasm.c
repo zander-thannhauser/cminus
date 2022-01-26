@@ -42,6 +42,8 @@ int comma_expression_write_rasm(struct expression* super, struct asm_writer* wri
 	struct comma_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	expression_write_rasm(this->left, writer);
 	
 	asm_writer_write_addi_const(writer, 8, stackptr, quadword);
@@ -54,6 +56,7 @@ int comma_expression_write_rasm(struct expression* super, struct asm_writer* wri
 	
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_unindent(writer);
+	#endif
 	#endif
 	
 	EXIT;

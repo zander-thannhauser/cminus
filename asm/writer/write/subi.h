@@ -1,4 +1,5 @@
 
+#if 0
 
 /*#include <type/integer/kind.h>*/
 
@@ -21,3 +22,6 @@ int asm_writer_write_subi(
 	enum integer_register_id a,
 	enum integer_register_id b,
 	enum register_size rsize);
+
+
+#endif

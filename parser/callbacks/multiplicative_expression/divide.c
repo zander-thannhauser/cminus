@@ -56,6 +56,8 @@ int multiplicative_expression_divide_callback(
 		error = 1;
 	}
 	
+	tfree(left), tfree(right);
+	
 	EXIT;
 	return error;
 }

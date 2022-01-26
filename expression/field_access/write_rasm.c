@@ -42,6 +42,8 @@ int field_access_expression_write_rasm(
 	struct field_access_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = 0
 		?: expression_write_rasm(this->inner, writer)
 		?: asm_writer_write_movi_to_v2(writer, 0, stackptr, working_1, quadword)
@@ -65,6 +67,7 @@ int field_access_expression_write_rasm(
 		
 		asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	}
+	#endif
 	
 	EXIT;
 	return error;

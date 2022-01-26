@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -37,3 +38,5 @@ int asm_writer_write_movi_from_v2(
 	/* from: */ enum integer_register_id srcid,
 	/* to:   */ ssize_t offset, enum integer_register_id dstid,
 	enum register_size rs);
+
+#endif

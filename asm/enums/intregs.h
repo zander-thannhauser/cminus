@@ -1,4 +1,5 @@
 
+#ifdef X64_TARGET
 #ifndef ENUM_IREGISTER_ID
 #define ENUM_IREGISTER_ID
 
@@ -41,4 +42,5 @@ enum integer_register_id
 
 #define number_of_integer_parameters (6)
 
+#endif
 #endif

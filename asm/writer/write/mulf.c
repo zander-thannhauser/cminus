@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../tables/floatregs.h"
@@ -43,4 +44,4 @@ int asm_writer_write_mulf(
 
 
 
-
+#endif

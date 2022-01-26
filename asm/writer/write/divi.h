@@ -1,4 +1,5 @@
 
+#if 0
 #include <type/integer/kind.h>
 
 #include <asm/enums/intregs.h>
@@ -10,3 +11,4 @@ int asm_writer_write_divi(
 	enum integer_register_id numerator_reg,
 	enum integer_register_id denominator_reg,
 	enum integer_kind ikind);
+#endif

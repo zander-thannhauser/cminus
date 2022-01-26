@@ -28,6 +28,8 @@ int direct_declarator_array_callback(
 	struct expression* casted = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (size_expression->kind != ek_literal)
 		fprintf(stderr, "%s: array size not constant!\n", argv0),
 		error = e_bad_input_file;
@@ -48,6 +50,7 @@ int direct_declarator_array_callback(
 		error = new_array_declarator(
 			(struct array_declarator**) new, inner, size);
 	}
+	#endif
 	
 	tfree(inner);
 	tfree(size_expression);

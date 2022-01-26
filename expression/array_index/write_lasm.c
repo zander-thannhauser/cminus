@@ -45,6 +45,8 @@ int array_index_expression_write_lasm(
 	struct array_index_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = 0
 		?: expression_write_rasm(this->array, writer)
 		?: expression_write_rasm(this->index, writer)
@@ -62,6 +64,7 @@ int array_index_expression_write_lasm(
 			"leaq (%%r10, %%r11, %lu), %%r12", super->type->size)
 		?: asm_writer_write_movi_from_v2(writer, working_3, -8, stackptr, quadword)
 		?: asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

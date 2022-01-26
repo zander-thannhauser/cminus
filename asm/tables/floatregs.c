@@ -1,4 +1,5 @@
 
+#ifdef X64_TARGET
 
 #include "floatregs.h"
 
@@ -24,3 +25,4 @@ const char* floatregs[number_of_float_registers] =
 	
 };
 
+#endif

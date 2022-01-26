@@ -24,6 +24,8 @@ int primary_expression_float_callback(
 	
 	dpv(floatlit);
 	
+	TODO;
+	#if 0
 	error = 0
 		?: new_yyloc(&loc,
 			first_line, first_column,
@@ -33,6 +35,7 @@ int primary_expression_float_callback(
 			loc,
 			types->floats[fk_float],
 			floatlit);
+	#endif
 	
 	tfree(loc);
 	

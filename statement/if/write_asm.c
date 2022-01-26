@@ -32,6 +32,8 @@ int if_statement_write_asm(struct statement* super, struct asm_writer* writer)
 	struct if_statement* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_comment(writer, "lines %u-%u, col %u-%u: if (%E) { ... }",
 		super->loc->first_line,
@@ -80,6 +82,7 @@ int if_statement_write_asm(struct statement* super, struct asm_writer* writer)
 	free(label_prefix);
 	free(false_case_label);
 	free(done_label);
+	#endif
 	
 	EXIT;
 	return error;

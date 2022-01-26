@@ -48,40 +48,56 @@ int function_definition_write_asm(
 	int error = 0;
 	ENTER;
 	
-	if (this->storage_class != sc_static)
-		asm_writer_write(writer, ".global %s", this->name);
+	TODO;
+	#if 0
 	
-	asm_writer_write(writer, ".type %s @function", this->name);
+	#ifdef X64_TARGET
+	{
+		if (this->storage_class != sc_static)
+			asm_writer_write(writer, ".global %s", this->name);
+		
+		asm_writer_write(writer, ".type %s @function", this->name);
+	}
+	#endif
 	
 	#ifdef VERBOSE_ASSEMBLY
-	struct function_type *const ftype = this->ftype;
-	asm_writer_comment(writer, "function %T", this->name, ftype);
+	{
+		struct function_type *const ftype = this->ftype;
+		asm_writer_comment(writer, "function %T", this->name, ftype);
+	}
 	#endif
 	
 	asm_writer_write(writer, "%s:", this->name);
 	
-	asm_writer_write(writer, "endbr64");
-	
-	#ifdef VERBOSE_ASSEMBLY
-	asm_writer_comment(writer, "save old stack info:");
+	#ifdef X64_TARGET
+	{
+		asm_writer_write(writer, "endbr64");
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_comment(writer, "save old stack info:");
+		#endif
+		
+		asm_writer_write_push(writer, baseptr);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_indent2(writer, "%s", "<old-rbp>");
+		#endif
+		
+		asm_writer_write_movi_between_v2(writer, stackptr, baseptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_comment(writer, "allocate new stack space:");
+		#endif
+		
+		asm_writer_write_subi_const(writer, this->frame_size, stackptr, quadword);
+		
+		#ifdef VERBOSE_ASSEMBLY
+		asm_writer_indent2(writer, "%s", "<stack-frame>");
+		#endif
+	}
 	#endif
 	
-	asm_writer_write_push(writer, baseptr);
-	
 	#ifdef VERBOSE_ASSEMBLY
-	asm_writer_indent2(writer, "%s", "<old-rbp>");
-	#endif
-	
-	asm_writer_write_movi_between_v2(writer, stackptr, baseptr, quadword);
-	
-	#ifdef VERBOSE_ASSEMBLY
-	asm_writer_comment(writer, "allocate new stack space:");
-	#endif
-	asm_writer_write_subi_const(writer, this->frame_size, stackptr, quadword);
-	
-	#ifdef VERBOSE_ASSEMBLY
-	asm_writer_indent2(writer, "%s", "<stack-frame>");
-	
 	asm_writer_comment(writer, "move parameters into stack:");
 	#endif
 	
@@ -170,6 +186,7 @@ int function_definition_write_asm(
 	if (!error)
 		asm_writer_write_label(writer, return_label);
 	
+	#ifdef X64_TARGET
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_comment(writer, "deallocate stack space:");
 	#endif
@@ -186,10 +203,13 @@ int function_definition_write_asm(
 	if (!error)
 		asm_writer_unindent(writer);
 	#endif
+	#endif
 	
 	asm_writer_write(writer, "ret");
 	
 	free(return_label);
+	
+	#endif
 	
 	EXIT;
 	return error;

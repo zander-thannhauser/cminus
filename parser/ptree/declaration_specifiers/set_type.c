@@ -22,6 +22,8 @@ int declaration_specifiers_set_type(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (!this->type)
 		this->type = tinc(type);
 	else
@@ -39,6 +41,7 @@ int declaration_specifiers_set_type(
 		
 		tfree(combined);
 	}
+	#endif
 	
 	EXIT;
 	return error;

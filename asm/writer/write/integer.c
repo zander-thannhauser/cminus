@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../tables/intregs.h"
@@ -23,3 +24,4 @@ void asm_writer_write_integer(
 	EXIT
 }
 
+#endif

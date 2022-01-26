@@ -38,6 +38,8 @@ int postfix_expression_function_call_callback(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (fe->type->kind != tk_function)
 	{
 		TODO;
@@ -127,6 +129,7 @@ int postfix_expression_function_call_callback(
 	tfree(fe);
 	tfree(ae_ll);
 	tfree(casted_args);
+	#endif
 	
 	EXIT;
 	return error;

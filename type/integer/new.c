@@ -9,6 +9,7 @@
 #include "inheritance.h"
 #include "new.h"
 
+#ifdef X64_TARGET
 static size_t lookup[] =
 {
 	[ik_signed_char] = sizeof(char),
@@ -21,6 +22,7 @@ static size_t lookup[] =
 	[ik_unsigned_int] = sizeof(int),
 	[ik_unsigned_long] = sizeof(long),
 };
+#endif
 
 int new_integer_type(
 	struct integer_type** new,
@@ -33,14 +35,20 @@ int new_integer_type(
 	
 	struct integer_type* this = NULL;
 	
+	#ifdef X64_TARGET
 	assert(lookup[kind]);
+	#endif
 	
 	error = new_type(
 		(struct type**) &this,
 		/* kind: */ tk_integer,
 		/* inheritance: */ &integer_type_inheritance,
 		/* is_complete: */ true,
+		#ifdef X64_TARGET
 		/* size: */ lookup[kind],
+		#else
+		/* size: */ 4,
+		#endif
 		sizeof(*this));
 	
 	if (!error)

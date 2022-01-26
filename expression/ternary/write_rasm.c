@@ -52,9 +52,11 @@ int ternary_expression_write_rasm(
 {
 	struct ternary_expression* const this = (typeof(this)) super;
 	int error = 0;
-	enum register_size rs;
+/*	enum register_size rs;*/
 	ENTER;
 	
+	TODO;
+	#if 0
 	char* prefix_label = NULL;
 	char* false_label = NULL;
 	char* after_label = NULL;
@@ -104,6 +106,7 @@ int ternary_expression_write_rasm(
 	free(prefix_label);
 	free(false_label);
 	free(after_label);
+	#endif
 	
 	EXIT;
 	return error;

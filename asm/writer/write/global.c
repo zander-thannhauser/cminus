@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdint.h>
 
 #include <debug.h>
@@ -244,4 +245,4 @@ int asm_writer_write_global(
 
 
 
-
+#endif

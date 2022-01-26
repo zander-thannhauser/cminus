@@ -7,6 +7,8 @@
 
 #include <defines/argv0.h>
 
+#include <macros/str.h>
+
 #include <memory/tfree.h>
 
 #include <cmdln/flags.h>
@@ -62,6 +64,7 @@ int main(int argc, char* const* argv)
 				"-D", "__asm__(...)=",
 				"-D", "__builtin_va_list=int",
 				"-D", "__restrict=",
+				"-D", "TARGET=" str(TARGET),
 				flags->input_path, NULL);
 		else if (!(fin = fopen(flags->input_path, "r")))
 			fprintf(stderr, "%s: fopen(\"%s\"): %m\n", argv0, flags->input_path),

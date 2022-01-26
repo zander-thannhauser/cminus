@@ -1,4 +1,5 @@
 
+#ifdef X64_TARGET
 #ifndef ENUM_FREGISTER_ID
 #define ENUM_FREGISTER_ID
 
@@ -29,4 +30,5 @@ enum float_register_id
 
 #define number_of_float_parameters (8)
 
+#endif
 #endif

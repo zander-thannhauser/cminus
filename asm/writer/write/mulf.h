@@ -1,4 +1,5 @@
 
+#if 0
 #include <type/float/kind.h>
 
 #include "../../enums/floatregs.h"
@@ -11,3 +12,4 @@ int asm_writer_write_mulf(
 	enum float_register_id fid1,
 	enum float_register_id fid2,
 	enum float_kind result_kind);
+#endif

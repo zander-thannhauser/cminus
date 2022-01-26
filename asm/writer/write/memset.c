@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../write.h"
@@ -24,4 +25,4 @@ int asm_writer_write_memset(
 	EXIT;
 	return error;
 }
-
+#endif

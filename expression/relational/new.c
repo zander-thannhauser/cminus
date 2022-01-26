@@ -28,6 +28,8 @@ int new_relational_expression(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct relational_expression* this = NULL;
 	
 	error = new_expression(
@@ -49,6 +51,7 @@ int new_relational_expression(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;

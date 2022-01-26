@@ -44,6 +44,8 @@ int postfix_expression_array_index_callback(
 	struct yylloc* loc = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (index->type->kind != tk_integer)
 	{
 		TODO;
@@ -86,6 +88,7 @@ int postfix_expression_array_index_callback(
 	tfree(casted_index);
 	tfree(array);
 	tfree(index);
+	#endif
 	
 	EXIT;
 	return error;

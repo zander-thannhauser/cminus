@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <type/float/kind.h>
 
 #include "../../enums/floatregs.h"
@@ -12,3 +14,5 @@ int asm_writer_write_subf(
 	enum float_register_id b,
 	enum float_register_id q,
 	enum float_kind result_kind);
+
+#endif

@@ -1,4 +1,5 @@
 
+#if 0
 #include <sys/types.h>
 /*#include <stdlib.h>*/
 
@@ -14,3 +15,4 @@ void asm_writer_write_ftoi(
 	struct asm_writer* this,
 	ssize_t src_offset, enum integer_register_id src_relto, enum float_kind src_kind,
 	enum integer_register_id dst, enum integer_kind dst_kind);
+#endif

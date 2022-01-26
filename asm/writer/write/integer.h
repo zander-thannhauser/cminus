@@ -1,4 +1,5 @@
 
+#if 0
 #include <inttypes.h>
 
 #include <asm/enums/intregs.h>
@@ -11,3 +12,5 @@ void asm_writer_write_integer(
 	uintmax_t literal,
 	enum integer_register_id where,
 	enum register_size rsize);
+
+#endif

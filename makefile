@@ -8,6 +8,8 @@ CPPFLAGS += -D _GNU_SOURCE
 CPPFLAGS += -I .
 CPPFLAGS += -isystem ./extern
 
+FINDFLAGS ?= -name '*.c'
+
 YACC = bison
 YFLAGS += --warnings=error=all
 
@@ -81,7 +83,7 @@ else
 $(error "invalid on_error option!");
 endif
 
-buildprefix = gen/$(buildtype)-build/target-$(target)/$(asm)-asm
+buildprefix = gen/$(buildtype)-build/$(target)-target/$(asm)-asm
 
 default: $(buildprefix)/cminus
 
@@ -89,12 +91,15 @@ default: $(buildprefix)/cminus
 %/:
 	@ mkdir -p $@
 
-gen/srclist.mk: | gen/
-	find -name '*.c' | sed 's/^/srcs += /' > $@
+gen/%/srclist.mk: | gen/%/
+	@ echo "searching for source files..."
+	@ find $(FINDFLAGS) | sort -Vr | sed 's/^/srcs += /' > $@
 
 srcs += ./parser/scanner.c ./parser/parser.c
 
-include gen/srclist.mk
+ifneq "$(MAKECMDGOALS)" "clean"
+include $(buildprefix)/srclist.mk
+endif
 
 #ARGS += -p ./test.cm
 #ARGS +=    ./test.im
@@ -137,16 +142,13 @@ ARGS += -p ./examples/add.cm
 # ARGS += -p ./examples/eq.cm
 #ARGS += ./examples/expr.cm
 #ARGS += -p ./examples/expr.float.cm
-
-# half way
-
 #ARGS += ./examples/farray.cm
 #ARGS += ./examples/func.cm
 #ARGS += ./examples/func2.cm
 #ARGS += ./examples/funcproc.cm
 #ARGS += ./examples/func_no.cm
 #ARGS += ./examples/f_noparams.cm
-#ARGS += ./examples/gcd.cm
+#ARGS += -p ./examples/gcd.cm
 #ARGS += ./examples/gt.cm
 #ARGS += ./examples/hello.cm
 #ARGS += ./examples/if.cm

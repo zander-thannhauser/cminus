@@ -1,4 +1,5 @@
 
+#if 0
 
 #include <debug.h>
 
@@ -23,3 +24,4 @@ int asm_writer_write_pushs(
 	return error;
 }
 
+#endif

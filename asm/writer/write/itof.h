@@ -1,4 +1,5 @@
 
+#if 0
 #include <sys/types.h>
 
 /*#include <stdlib.h>*/
@@ -15,3 +16,5 @@ void asm_writer_write_itof(
 	struct asm_writer* this,
 	ssize_t src_offset, enum integer_register_id src_relto, enum integer_kind src_kind,
 	enum float_register_id dest, enum float_kind dest_kind);
+
+#endif

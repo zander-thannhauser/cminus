@@ -1,28 +1,35 @@
 
-void read(int*), write(int), exit();
-
-int x, y;
+#ifdef X64_TARGET
+#else
+void iread(int*), iwrite(int);
+#endif
 
 int gcd(int x, int y) {
-      int t;
-         if (y==0) {
-            return x;
-	 }
-         else {
-	      t = x;
-	      x = y;
-	      y = t - y * (t / y);
-	      return gcd(x,y);
-	 }
+	int t;
+	
+	if (y == 0) {
+		return x;
+	} else {
+		t = x;
+		x = y;
+		y = t - y * (t / y);
+		return gcd(x, y);
+	}
 }
 
 void main() {
-         read (&x);
-         read (&y);
-         while ((x != 0) || (y != 0)) {
-	       write (gcd(x,y));
-               read (&x);
-               read (&y);
-         }
+	int x, y;
+	
+	iread (&x);
+	iread (&y);
+	
+	while ((x != 0) || (y != 0)) {
+		iwrite (gcd(x, y));
+		iread (&x);
+		iread (&y);
+	}
+	
+	#ifdef X64_TARGET
 	exit();
+	#endif
 }

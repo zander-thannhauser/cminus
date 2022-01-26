@@ -6,8 +6,6 @@
 #include <type/integer/struct.h>
 #include <type/float/struct.h>
 
-#include <asm/location/struct.h>
-
 #include <asm/writer/write/pushi.h>
 /*#include <asm/writer/write/pushd.h>*/
 /*#include <asm/writer/write/pushf.h>*/
@@ -24,6 +22,8 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 	struct literal_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct type* type = super->type;
 	
 	assert(type->kind == tk_integer || type->kind == tk_float);
@@ -74,6 +74,7 @@ int literal_expression_write_rasm(struct expression* super, struct asm_writer* w
 	}
 	
 	asm_writer_write_pushi(writer, literal);
+	#endif
 	
 	EXIT;
 	return error;

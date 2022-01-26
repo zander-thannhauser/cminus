@@ -13,8 +13,6 @@
 #include <type/float/struct.h>
 #include <type/integer/struct.h>
 
-#include <asm/location/struct.h>
-
 #ifdef VERBOSE_ASSEMBLY
 #include <asm/writer/comment.h>
 /*#include <asm/writer/indent.h>*/
@@ -43,6 +41,8 @@ int return_statement_write_asm(struct statement* super, struct asm_writer* write
 	struct return_statement* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (this->return_value)
 	{
 		#ifdef VERBOSE_ASSEMBLY
@@ -103,6 +103,7 @@ int return_statement_write_asm(struct statement* super, struct asm_writer* write
 		asm_writer_write_jmp(writer, return_label);
 	
 	free(return_label);
+	#endif
 	
 	EXIT;
 	return error;

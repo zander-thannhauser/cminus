@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include <asm/tables/intregs.h>
@@ -34,3 +35,4 @@ int asm_writer_write_rdivi(
 	return 0;
 }
 
+#endif

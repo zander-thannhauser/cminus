@@ -54,6 +54,8 @@ int relational_expression_write_rasm(struct expression* super, struct asm_writer
 	char* true_case_label = NULL;
 	char* done_label = NULL;
 	
+	TODO
+	#if 0
 	if (false
 		|| asprintf(&label_prefix, "%uto%u_%uto%u",
 			super->loc->first_line, super->loc->last_line,
@@ -179,6 +181,7 @@ int relational_expression_write_rasm(struct expression* super, struct asm_writer
 	free(label_prefix);
 	free(true_case_label);
 	free(done_label);
+	#endif
 	
 	EXIT;
 	return error;

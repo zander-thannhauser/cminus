@@ -22,6 +22,8 @@ int specifier_qualifiers_set_type(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpv(type);
 	
 	if (!this->type)
@@ -41,6 +43,7 @@ int specifier_qualifiers_set_type(
 		
 		tfree(combined);
 	}
+	#endif
 	
 	EXIT;
 	return error;

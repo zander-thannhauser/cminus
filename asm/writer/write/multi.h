@@ -1,4 +1,5 @@
 
+#if 0
 #include <asm/enums/intregs.h>
 #include <asm/enums/register_size.h>
 
@@ -11,3 +12,4 @@ int asm_writer_write_multi_v2(
 	enum integer_register_id a,
 	enum integer_register_id b,
 	enum integer_kind ikind);
+#endif

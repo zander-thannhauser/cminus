@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include <type/integer/struct.h>
@@ -88,3 +89,4 @@ int (*arithmetic_constfolders[N])(
 
 
 
+#endif

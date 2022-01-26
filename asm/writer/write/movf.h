@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdlib.h>
 
 #include <type/float/kind.h>
@@ -26,3 +27,6 @@ int asm_writer_write_movf_from(
 	/* from: */ enum float_register_id fid,
 	/* to:   */ ssize_t offset, enum integer_register_id iid,
 	enum float_kind fkind);
+
+
+#endif

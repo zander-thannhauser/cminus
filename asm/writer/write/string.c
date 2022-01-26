@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../struct.h"
@@ -32,3 +33,5 @@ int asm_writer_write_string(
 	EXIT;
 	return error;
 }
+
+#endif

@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include <asm/tables/intregs.h>
@@ -22,4 +23,4 @@ int asm_writer_write_movsx(
 	EXIT;
 	return 0;
 }
-
+#endif

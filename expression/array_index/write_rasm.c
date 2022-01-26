@@ -44,6 +44,8 @@ int array_index_expression_write_rasm(
 	struct array_index_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	enum register_size rs = type_get_rs(super->type);
 	
 	error = 0
@@ -66,6 +68,7 @@ int array_index_expression_write_rasm(
 			intregs[working_3][rs])
 		?: asm_writer_write_movi_from_v2(writer, working_3, -8, stackptr, rs)
 		?: asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

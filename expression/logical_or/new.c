@@ -30,6 +30,8 @@ int new_logical_or_expression(
 /*	struct type* const ltype = left->type;*/
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (!left->type->is_complete || !right->type->is_complete)
 	{
 		TODO;
@@ -73,6 +75,7 @@ int new_logical_or_expression(
 			*new = (struct expression*) this;
 		}
 	}
+	#endif
 	
 	EXIT;
 	return error;

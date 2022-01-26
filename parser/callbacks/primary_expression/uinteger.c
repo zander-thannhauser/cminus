@@ -20,12 +20,15 @@ int primary_expression_uinteger_callback(
 	struct yylloc* loc = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = 0
 		?: new_yyloc(&loc, first_line, first_column, last_line, last_column)
 		?: new_literal_expression_as_unsigned_long(
 			(struct expression**) retval, loc,
 			types->integers[ik_unsigned_int],
 			uintegerlit);
+	#endif
 	
 	tfree(loc);
 	

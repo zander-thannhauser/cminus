@@ -24,6 +24,8 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 	struct expression_statement* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (this->expression)
 	{
 		#ifdef VERBOSE_ASSEMBLY
@@ -52,6 +54,7 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 		#endif
 		
 	}
+	#endif
 	
 	EXIT;
 	return error;

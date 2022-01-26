@@ -1,4 +1,6 @@
 
+#if 0
+
 /*#include <stdbool.h>*/
 
 #include <asm/enums/intregs.h>
@@ -12,3 +14,5 @@ struct asm_writer;
 int asm_writer_write_call(
 	struct asm_writer* this,
 	enum integer_register_id rid);
+
+#endif

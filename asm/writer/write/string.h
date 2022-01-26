@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <stdlib.h>
 #include <inttypes.h>
 
@@ -9,3 +11,5 @@ int asm_writer_write_string(
 	size_t string_id,
 	char* data,
 	size_t len);
+
+#endif

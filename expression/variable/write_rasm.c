@@ -43,10 +43,12 @@ int variable_expression_write_rasm(
 	struct variable_expression* const this = (typeof(this)) super;
 	struct variable* const variable = this->variable;
 	struct type* const type = variable->type;
-	enum register_size rs = type_get_rs(type);
+/*	enum register_size rs = type_get_rs(type);*/
 	
 	dpvs(variable->name);
 	
+	TODO;
+	#if 0
 	assert(variable->type->is_complete);
 	
 	if (variable->is_global)
@@ -74,6 +76,7 @@ int variable_expression_write_rasm(
 	}
 	
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

@@ -32,6 +32,8 @@ int while_statement_write_asm(struct statement* super, struct asm_writer* writer
 	struct while_statement* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_comment(writer, "lines %u-%u, col %u-%u: while (%E) { ... }",
 		super->loc->first_line,
@@ -77,6 +79,7 @@ int while_statement_write_asm(struct statement* super, struct asm_writer* writer
 	free(label_prefix);
 	free(conditional_label);
 	free(done_label);
+	#endif
 	
 	EXIT;
 	return error;

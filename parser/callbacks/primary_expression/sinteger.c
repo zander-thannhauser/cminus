@@ -22,6 +22,8 @@ int primary_expression_sinteger_callback(
 	struct yylloc* location = NULL;
 	ENTER;
 	
+	TODO
+	#if 0
 	error = 0
 		?: new_yyloc(&location,
 			first_line, first_column,
@@ -31,6 +33,7 @@ int primary_expression_sinteger_callback(
 			location,
 			types->integers[ik_signed_int],
 			sintegerlit);
+	#endif
 	
 	tfree(location);
 	

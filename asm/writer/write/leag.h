@@ -1,4 +1,5 @@
 
+#if 0
 #include <sys/types.h>
 
 /*#include <stdbool.h>*/
@@ -15,3 +16,4 @@ int asm_writer_write_leag(
 	struct asm_writer* this,
 	char* name,
 	enum integer_register_id rid);
+#endif

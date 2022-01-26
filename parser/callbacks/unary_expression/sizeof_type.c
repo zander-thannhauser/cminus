@@ -23,6 +23,8 @@ int unary_expression_sizeof_type_callback(
 	struct yylloc* loc = NULL;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpv(type->size);
 	
 	if (!type->is_complete)
@@ -41,6 +43,7 @@ int unary_expression_sizeof_type_callback(
 				/* location: */ loc,
 				/* type: */ types->integers[ik_unsigned_long],
 				/* value: */ type->size);
+	#endif
 	
 	tfree(loc);
 	tfree(type);

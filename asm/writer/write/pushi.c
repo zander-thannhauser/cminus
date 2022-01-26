@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../write.h"
@@ -23,4 +24,4 @@ void asm_writer_write_pushi(struct asm_writer* this, uint64_t val)
 	
 	EXIT;
 }
-
+#endif

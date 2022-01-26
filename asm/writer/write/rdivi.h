@@ -1,4 +1,6 @@
 
+#if 0
+
 #include <asm/enums/intregs.h>
 #include <type/integer/kind.h>
 
@@ -11,4 +13,4 @@ int asm_writer_write_rdivi(
 	enum integer_kind ikind);
 
 
-
+#endif

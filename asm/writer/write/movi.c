@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../enums/register_size.h"
@@ -92,4 +93,4 @@ int asm_writer_write_movi_from_v2(
 	EXIT;
 	return error;
 }
-
+#endif

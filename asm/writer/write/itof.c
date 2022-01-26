@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../tables/iktors.h"
@@ -85,4 +86,4 @@ void asm_writer_write_itof(
 
 
 
-
+#endif

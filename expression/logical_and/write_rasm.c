@@ -56,10 +56,14 @@ int logical_and_expression_write_rasm(struct expression* super, struct asm_write
 	char* prefix_label = NULL;
 	char* false_label = NULL;
 	char* after_label = NULL;
+	#if 0
 	struct logical_and_expression* const this = (typeof(this)) super;
 	enum register_size rs;
+	#endif
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (false
 		|| asprintf(&prefix_label, "%uto%u_%uto%u",
 			super->loc->first_line, super->loc->last_line,
@@ -112,6 +116,7 @@ int logical_and_expression_write_rasm(struct expression* super, struct asm_write
 	free(prefix_label);
 	free(false_label);
 	free(after_label);
+	#endif
 	
 	EXIT;
 	return error;

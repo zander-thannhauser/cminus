@@ -32,6 +32,8 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 	struct type* const at = this->type;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = expression_write_rasm(this->inner, writer);
 	
 	if (bt->kind == tk_integer && at->kind == tk_integer)
@@ -145,6 +147,7 @@ int cast_expression_write_rasm(struct expression* super, struct asm_writer* writ
 	
 	#ifdef VERBOSE_ASSEMBLY
 	asm_writer_unindent(writer);
+	#endif
 	#endif
 	
 	EXIT;

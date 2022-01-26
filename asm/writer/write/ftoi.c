@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include <type/float/kind.h>
@@ -47,3 +48,4 @@ void asm_writer_write_ftoi(
 
 
 
+#endif

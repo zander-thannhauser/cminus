@@ -48,6 +48,8 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 	struct arithmetic_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (this->is_float_result)
 	{
 		struct float_type *type = (typeof(type)) super->type;
@@ -153,6 +155,7 @@ int arithmetic_expression_write_rasm(struct expression* super, struct asm_writer
 	}
 	
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

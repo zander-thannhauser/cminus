@@ -1,4 +1,5 @@
 
+#if 0
 #include <debug.h>
 
 #include "../../tables/intregs.h"
@@ -19,4 +20,4 @@ int asm_writer_write_push(
 	EXIT;
 	return error;
 }
-
+#endif

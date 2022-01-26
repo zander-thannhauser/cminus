@@ -53,6 +53,8 @@ int declaration_specifiers_and_init_list_callback(
 	bool is_typedef;
 	ENTER;
 	
+	TODO;
+	#if 0
 	// "not only could I be building types,
 	// not only could I be declaring variables,
 	// I could also be allocating assignment statements.
@@ -161,6 +163,7 @@ int declaration_specifiers_and_init_list_callback(
 	
 	tfree(base_type);
 	tfree(statements);
+	#endif
 	
 	
 	EXIT;

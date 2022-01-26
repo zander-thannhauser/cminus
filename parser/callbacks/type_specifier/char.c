@@ -9,6 +9,9 @@
 
 struct type* type_specifier_char_callback(struct types* types)
 {
+	TODO;
+	#if 0
 	return tinc(types->integers[ik_signed_char]);
+	#endif
 }
 

@@ -1,4 +1,5 @@
 
+#if 0
 #include <sys/types.h>
 
 #include "../../enums/register_size.h"
@@ -11,3 +12,5 @@ int asm_writer_write_mov(
 	ssize_t src_offset, enum integer_register_id src_rel,
 	ssize_t dst_offset, enum integer_register_id dst_rel,
 	enum register_size rsize);
+
+#endif

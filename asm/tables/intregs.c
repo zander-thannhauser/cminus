@@ -1,4 +1,6 @@
 
+#ifdef X64_TARGET
+
 #include "intregs.h"
 
 const char* intregs[number_of_integer_registers][number_of_register_sizes] =
@@ -28,3 +30,4 @@ const char* intregs[number_of_integer_registers][number_of_register_sizes] =
 	
 };
 
+#endif

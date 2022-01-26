@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdlib.h>
 
 #include <debug.h>
@@ -55,3 +56,4 @@ int asm_writer_write_mov(
 
 
 
+#endif

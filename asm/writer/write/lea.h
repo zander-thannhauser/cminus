@@ -1,4 +1,5 @@
 
+#if 0
 #include <sys/types.h>
 
 /*#include <stdbool.h>*/
@@ -15,3 +16,5 @@ int asm_writer_write_lea(
 	struct asm_writer* this,
 	ssize_t offset, enum integer_register_id relto,
 	enum integer_register_id rid);
+
+#endif

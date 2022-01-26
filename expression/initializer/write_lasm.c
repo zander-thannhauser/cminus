@@ -51,6 +51,8 @@ int initializer_expression_write_lasm(
 	struct initializer_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	size_t offset = this->stack_offset;
 	
 	int on_zero(size_t size)
@@ -141,6 +143,7 @@ int initializer_expression_write_lasm(
 	asm_writer_write_lea(writer, -this->stack_offset, baseptr, working_1);
 	asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, quadword);
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

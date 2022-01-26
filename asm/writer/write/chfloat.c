@@ -1,4 +1,5 @@
 
+#if 0
 
 #include <assert.h>
 
@@ -34,4 +35,4 @@ void asm_writer_write_chfloat(
 	EXIT;
 }
 
-
+#endif

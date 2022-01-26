@@ -45,6 +45,8 @@ int function_call_expression_write_rasm(
 	struct function_call_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	// first to last: when do we stop doing integers from behind?
 	unsigned n_int_params = 0;
 	struct expression_link* ilink = this->arguments->head;
@@ -67,6 +69,7 @@ int function_call_expression_write_rasm(
 	
 	dpv(n_float_params);
 	
+	#ifdef X64_TARGET
 	bool extra_push = false;
 	
 	if (((1 + this->arguments->n - n_int_params - n_float_params) % 2))
@@ -82,6 +85,7 @@ int function_call_expression_write_rasm(
 		asm_writer_indent2(writer, "<stack-align>");
 		#endif
 	}
+	#endif
 	
 	// evaluate function pointer
 	error = expression_write_rasm(this->function, writer);
@@ -202,6 +206,7 @@ int function_call_expression_write_rasm(
 	asm_writer_unindent(writer);
 	#endif
 	
+	#ifdef X64_TARGET
 	if (extra_push)
 	{
 		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
@@ -210,6 +215,7 @@ int function_call_expression_write_rasm(
 		asm_writer_unindent(writer);
 		#endif
 	}
+	#endif
 	
 	// push retval register
 	if (super->type->kind == tk_void)
@@ -231,6 +237,7 @@ int function_call_expression_write_rasm(
 	}
 	
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

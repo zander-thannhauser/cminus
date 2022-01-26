@@ -1,16 +1,31 @@
 
+#ifdef X64_TARGET
 extern void printf(char*, ...), exit(int);
+#else
+extern void iwrite(int);
+#endif
 
 void main ()
 {
 	int i, j, k, l, m;
 	
+	#ifdef X64_TARGET
 	printf("%i\n", 10 + 20); // 30
+	#else
+	iwrite(10 + 20);
+	#endif
 	
 	i = 1; j = 2L, k = 3U; l = 4UL; // added suffixes for fun
 	m = i + j + k + l;
-	printf("%i\n", m); // 10
 	
+	#ifdef X64_TARGET
+	printf("%i\n", m); // 10
+	#else
+	iwrite(m);
+	#endif
+	
+	#ifdef X64_TARGET
 	exit(0);
+	#endif
 }
 

@@ -6,7 +6,6 @@
 /*#include <asm/tables/intregs.h>*/
 /*#include <asm/tables/pktors.h>*/
 
-#include <asm/location/struct.h>
 #include <asm/writer/comment.h>
 /*#include <asm/writer/write/mov.h>*/
 /*#include <asm/writer/write/pushag.h>*/
@@ -34,6 +33,8 @@ int variable_expression_write_lasm(
 	struct variable* const variable = this->variable;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpvs(variable->name);
 	
 	if (!variable->is_global)
@@ -48,6 +49,7 @@ int variable_expression_write_lasm(
 	
 	asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, quadword);
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
+	#endif
 	
 	EXIT;
 	return error;

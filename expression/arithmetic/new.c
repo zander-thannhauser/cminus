@@ -33,6 +33,8 @@ int new_arithmetic_expression(
 	struct type* const rtype = right->type;
 	ENTER;
 	
+	TODO;
+	#if 0
 	// it's assumed that at this point left and right have the same types.
 	assert(!compare_types(ltype, rtype));
 	
@@ -69,6 +71,7 @@ int new_arithmetic_expression(
 			*new = (struct expression*) this;
 		}
 	}
+	#endif
 	
 	EXIT;
 	return error;

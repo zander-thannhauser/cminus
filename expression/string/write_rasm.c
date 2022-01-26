@@ -19,7 +19,10 @@ int string_expression_write_rasm(
 	struct string_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	asm_writer_write_pushs(writer, this->string_id);
+	#endif
 	
 	EXIT;
 	return error;

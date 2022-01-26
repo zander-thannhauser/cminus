@@ -1,4 +1,6 @@
 
+#ifdef X64_TARGET
+
 #include <stdlib.h>
 
 #include <debug.h>
@@ -70,3 +72,4 @@ enum register_size type_get_rs(struct type* const this)
 
 
 
+#endif

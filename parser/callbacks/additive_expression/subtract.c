@@ -58,6 +58,8 @@ int additive_expression_subtract_callback(
 		error = 1;
 	}
 	
+	tfree(left), tfree(right);
+	
 	EXIT;
 	return error;
 }

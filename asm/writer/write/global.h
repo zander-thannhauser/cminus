@@ -1,4 +1,5 @@
 
+#if 0
 #include <stdbool.h>
 
 struct asm_writer;
@@ -11,3 +12,4 @@ int asm_writer_write_global(
 	bool is_static,
 	struct initializer* value,
 	struct type* type);
+#endif

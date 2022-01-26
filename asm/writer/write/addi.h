@@ -1,7 +1,6 @@
 
+#if 0
 #include <inttypes.h>
-
-/*#include <type/integer/kind.h>*/
 
 #include "../../enums/intregs.h"
 #include "../../enums/register_size.h"
@@ -20,3 +19,5 @@ int asm_writer_write_addi(
 	enum integer_register_id src,
 	enum integer_register_id dst,
 	enum register_size rs);
+
+#endif

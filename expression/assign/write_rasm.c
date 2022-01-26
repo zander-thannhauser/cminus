@@ -45,6 +45,8 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 	struct assign_expression* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	error = 0
 		?: expression_write_lasm(this->left, writer)
 		?: expression_write_rasm(this->right, writer);
@@ -170,6 +172,7 @@ int assign_expression_write_rasm(struct expression* super, struct asm_writer* wr
 			TODO;
 			break;
 	}
+	#endif
 	
 	EXIT;
 	return error;

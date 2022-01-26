@@ -24,6 +24,8 @@ int primary_expression_double_callback(
 	
 	dpv(doublelit);
 	
+	TODO;
+	#if 0
 	error = 0
 		?: new_yyloc(&loc,
 			first_line, first_column,
@@ -31,6 +33,7 @@ int primary_expression_double_callback(
 		?: new_literal_expression_as_double(
 			(struct expression**) retval,
 			loc, types->floats[fk_double], doublelit);
+	#endif
 	
 	tfree(loc);
 	
