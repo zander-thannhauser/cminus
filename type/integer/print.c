@@ -8,6 +8,7 @@
 #include "struct.h"
 #include "print.h"
 
+#if 0
 static const char* lookup[number_of_integer_kinds] = 
 {
 	[ik_signed_char] = "signed char",
@@ -22,6 +23,7 @@ static const char* lookup[number_of_integer_kinds] =
 	[ik_signed_long] = "signed long",
 	[ik_unsigned_long] = "unsigned long",
 };
+#endif
 
 int integer_type_print(
 	const struct type* super,
@@ -32,6 +34,8 @@ int integer_type_print(
 	const struct integer_type* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (!error && super->qualifiers[tq_constant])
 		error = sfprintf(stream, "const ");
 	
@@ -48,6 +52,7 @@ int integer_type_print(
 	
 	if (!error && name)
 		error = sfprintf(stream, " %s", name);
+	#endif
 	
 	
 	EXIT;

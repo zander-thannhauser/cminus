@@ -38,8 +38,6 @@ int postfix_expression_function_call_callback(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (fe->type->kind != tk_function)
 	{
 		TODO;
@@ -86,6 +84,8 @@ int postfix_expression_function_call_callback(
 	}
 	else if (parameters->ellipsis)
 	{
+		TODO;
+		#if 0
 		// while loop appending the rest:
 		for (; !error && alink; alink = alink->next)
 		{
@@ -104,6 +104,7 @@ int postfix_expression_function_call_callback(
 			else
 				error = expression_ll_append(casted_args, alink->element);
 		}
+		#endif
 	}
 	else if (!!plink < !!alink)
 	{
@@ -121,15 +122,13 @@ int postfix_expression_function_call_callback(
 				last_line, last_column)
 			?: new_function_call_expression(
 				(struct function_call_expression**) retval,
-				loc,
-				fe, casted_args);
+				loc, fe, casted_args);
 	}
 	
 	tfree(loc);
 	tfree(fe);
 	tfree(ae_ll);
 	tfree(casted_args);
-	#endif
 	
 	EXIT;
 	return error;

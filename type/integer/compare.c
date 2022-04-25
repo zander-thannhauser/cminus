@@ -14,6 +14,8 @@ int compare_integer_types(
 	const struct integer_type* b = (typeof(b)) _b;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpv(a->kind);
 	dpv(b->kind);
 	
@@ -21,6 +23,7 @@ int compare_integer_types(
 		retval = -1;
 	else if (a->kind > b->kind)
 		retval = +1;
+	#endif
 	
 	EXIT;
 	return retval;

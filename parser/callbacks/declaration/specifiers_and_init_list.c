@@ -53,8 +53,6 @@ int declaration_specifiers_and_init_list_callback(
 	bool is_typedef;
 	ENTER;
 	
-	TODO;
-	#if 0
 	// "not only could I be building types,
 	// not only could I be declaring variables,
 	// I could also be allocating assignment statements.
@@ -71,6 +69,7 @@ int declaration_specifiers_and_init_list_callback(
 		?: new_statement_ll(&statements);
 	
 	struct init_declarator_ll_link* link;
+
 	for (link = init_list->head; !error && link; link = link->next)
 	{
 		struct statement* statement = NULL;
@@ -82,9 +81,9 @@ int declaration_specifiers_and_init_list_callback(
 			&identifier, &type,
 			base_type, init->declarator);
 		
-		if (!error)
+		if (is_typedef)
 		{
-			if (is_typedef)
+			if (!error)
 			{
 				if (init->initializer)
 				{
@@ -95,55 +94,62 @@ int declaration_specifiers_and_init_list_callback(
 				if (!error)
 					error = scope_declare_type(scope, identifier, type);
 			}
-			else
-			{
-				struct variable* variable = NULL;
-				
+		}
+		else
+		{
+			struct variable* variable = NULL;
+			
+			if (!error)
 				error = scope_declare_variable(scope,
 					identifier, type, specifiers->storage_class, &variable);
+			
+			if (!error && init->initializer)
+				error = cast_initializer(init->initializer, type);
+			
+			if (!error)
+			{
+				dpv(variable);
 				
-				if (!error && init->initializer)
-					error = cast_initializer(init->initializer, type);
-				
-				if (!error)
+				if (!variable->is_global)
 				{
-					dpv(variable);
-					
-					if (!variable->is_global)
+					if (init->initializer)
 					{
-						if (init->initializer)
-						{
-							struct expression* e = NULL;
-							struct statement* statement = NULL;
-							
-							error = 0
-								?: new_initializer_expression(&e,
-									/* location:    */ init->initializer->loc,
-									/* initializer: */ init->initializer,
-									/* offset:      */ variable->offset,
-									/* type:        */ type)
-								?: new_expression_statement(&statement, e->loc, e)
-								?: statement_ll_append(statements, statement);
-							
-							tfree(statement);
-							tfree(e);
-						}
-					}
-					else if (true
-						&& specifiers->storage_class != sc_extern
-						&& type->kind != tk_function)
-					{
-						asm_writer_write_global(
-							/* writer: */ writer,
-							/* name: */ identifier,
-							/* is_static: */ specifiers->storage_class == sc_static,
-							/* value: */ init->initializer,
-							/* type: */ type);
+						TODO;
+						#if 0
+						struct expression* e = NULL;
+						struct statement* statement = NULL;
+						
+						error = 0
+							?: new_initializer_expression(&e,
+								/* location:    */ init->initializer->loc,
+								/* initializer: */ init->initializer,
+								/* offset:      */ variable->offset,
+								/* type:        */ type)
+							?: new_expression_statement(&statement, e->loc, e)
+							?: statement_ll_append(statements, statement);
+						
+						tfree(statement);
+						tfree(e);
+						#endif
 					}
 				}
-				
-				tfree(variable);
+				else if (true
+					&& specifiers->storage_class != sc_extern
+					&& type->kind != tk_function)
+				{
+					TODO;
+					#if 0
+					asm_writer_write_global(
+						/* writer: */ writer,
+						/* name: */ identifier,
+						/* is_static: */ specifiers->storage_class == sc_static,
+						/* value: */ init->initializer,
+						/* type: */ type);
+					#endif
+				}
 			}
+			
+			tfree(variable);
 		}
 		
 		tfree(statement);
@@ -163,8 +169,6 @@ int declaration_specifiers_and_init_list_callback(
 	
 	tfree(base_type);
 	tfree(statements);
-	#endif
-	
 	
 	EXIT;
 	return error;

@@ -2,6 +2,8 @@
 #ifndef FLOAT_KIND_H
 #define FLOAT_KIND_H
 
+#ifdef X64_TARGET
+
 enum float_kind
 {
 	fk_float,
@@ -9,5 +11,6 @@ enum float_kind
 	
 	number_of_float_kinds,
 };
+#endif
 
 #endif

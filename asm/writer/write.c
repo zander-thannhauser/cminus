@@ -1,6 +1,5 @@
 
 #include <stdarg.h>
-#include <debug.h>
 
 #include "struct.h"
 #include "vfprintf.h"
@@ -33,13 +32,30 @@ int asm_writer_write(struct asm_writer* this, const char* fmt, ...)
 	}
 	#endif
 	
-	asm_writer_vfprintf(this->stream, fmt, args);
+	asm_writer_vfprintf(this->stream, fmt, args), fputc('\n', this->stream);
 	
-	fputc('\n', this->stream);
+	#ifdef DEBUGGING
+	va_list dargs;
+	va_start(dargs, fmt);
+	asm_writer_vfprintf(stdout, fmt, dargs), fputc('\n', stdout);
+	va_end(dargs);
+	#endif
 	
 	va_end(args);
 	
 	EXIT;
 	return error;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

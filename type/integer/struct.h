@@ -8,6 +8,8 @@ struct integer_type
 {
 	struct type super;
 	
+	#ifdef X64_TARGET
 	enum integer_kind kind;
+	#endif
 };
 

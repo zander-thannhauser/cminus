@@ -16,6 +16,8 @@ int float_type_clone_with_qualifiers(
 	const struct float_type* this = (typeof(this)) tthis;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct float_type* that = NULL;
 	
 	error = new_type(
@@ -37,6 +39,7 @@ int float_type_clone_with_qualifiers(
 		
 		*new = that;
 	}
+	#endif
 	
 	EXIT;
 	return error;

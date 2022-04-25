@@ -24,12 +24,13 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 	struct expression_statement* const this = (typeof(this)) super;
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (this->expression)
 	{
 		#ifdef VERBOSE_ASSEMBLY
-		if (!super->loc);
+		if (!super->loc)
+		{
+			
+		}
 		else if (super->loc->first_line == super->loc->last_line)
 			asm_writer_comment(writer, "line %u, col %u-%u: %E;",
 				super->loc->first_line,
@@ -47,14 +48,16 @@ int expression_statement_write_asm(struct statement* super, struct asm_writer* w
 		
 		error = expression_write_rasm(this->expression, writer);
 		
+		TODO;
+		#if 0
 		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
+		
+		#endif
 		
 		#ifdef VERBOSE_ASSEMBLY
 		asm_writer_unindent(writer);
 		#endif
-		
 	}
-	#endif
 	
 	EXIT;
 	return error;

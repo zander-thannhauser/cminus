@@ -9,43 +9,7 @@
 #include "struct.h"
 #include "new.h"
 
-#if 0
-int new_literal_expression_as__Bool(
-	struct expression** new,
-	struct yylloc* loc,
-	struct type* bool_type,
-	bool boollit)
-{
-	int error = 0;
-	ENTER;
-	
-	dpvb(boollit);
-	
-	TODO;
-	#if 0
-	struct literal_expression* this = NULL;
-	
-	error = new_expression(
-		/* return value: */ (struct expression**) &this,
-		/* expression kind: */ ek_literal,
-		/* inheritance*/ &literal_expression_inheritance,
-		/* type: */ bool_type,
-		/* alloc_size: */ sizeof(*this));
-	
-	if (!error)
-	{
-		this->kind = pk_bool,
-		this->value._bool = boollit;
-		
-		*new = (struct expression*) this;
-	}
-	#endif
-	
-	EXIT;
-	return error;
-}
-#endif
-
+#ifdef X64_TARGET
 int new_literal_expression_as_signed_char(
 	struct expression** new,
 	struct yylloc* loc,
@@ -107,6 +71,7 @@ int new_literal_expression_as_unsigned_short(
 {
 	TODO;
 }
+#endif
 
 int new_literal_expression_as_signed_int(
 	struct expression** new,
@@ -140,6 +105,7 @@ int new_literal_expression_as_signed_int(
 	return error;
 }
 
+#ifdef X64_TARGET
 int new_literal_expression_as_unsigned_int(
 	struct expression** new,
 	struct yylloc* loc,
@@ -158,6 +124,8 @@ int new_literal_expression_as_signed_long(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpv(slong_value);
 	
 	struct literal_expression* this = NULL;
@@ -176,6 +144,7 @@ int new_literal_expression_as_signed_long(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;
@@ -192,6 +161,8 @@ int new_literal_expression_as_unsigned_long(
 	
 	dpv(ulong_value);
 	
+	TODO;
+	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
@@ -208,10 +179,12 @@ int new_literal_expression_as_unsigned_long(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;
 }
+#endif
 
 int new_literal_expression_as_float(
 	struct expression** new,
@@ -222,6 +195,8 @@ int new_literal_expression_as_float(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
@@ -238,12 +213,13 @@ int new_literal_expression_as_float(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;
 }
 
-
+#ifdef X64_TARGET
 int new_literal_expression_as_double(
 	struct expression** new,
 	struct yylloc* loc,
@@ -253,6 +229,8 @@ int new_literal_expression_as_double(
 	int error = 0;
 	ENTER;
 	
+	TODO;
+	#if 0
 	struct literal_expression* this = NULL;
 	
 	error = new_expression(
@@ -271,11 +249,13 @@ int new_literal_expression_as_double(
 		
 		*new = (struct expression*) this;
 	}
+	#endif
 	
 	EXIT;
 	return error;
 }
 
+#endif
 
 
 

@@ -1,9 +1,7 @@
 
-#if 0
 #include <debug.h>
 
 #include <type/integer/struct.h>
-/*#include <type/float/struct.h>*/
 
 #include <types/struct.h>
 
@@ -16,9 +14,12 @@
 
 typedef struct literal_expression exp;
 
+#ifdef X64_TARGET
+
+typedef   signed int     signed_int;
+
 typedef   signed char    signed_char;
 typedef   signed short   signed_short;
-typedef   signed int     signed_int;
 typedef   signed long    signed_long;
 typedef unsigned char  unsigned_char;
 typedef unsigned short unsigned_short;
@@ -39,8 +40,8 @@ typedef unsigned long  unsigned_long;
 	C(signed_char, o)  C(unsigned_char, o) \
 	C(signed_short, o) C(unsigned_short, o) \
 	C(signed_int, o)   C(unsigned_int, o) \
-	C(signed_long, o)  C(unsigned_long, o) \
-	
+	C(signed_long, o)  C(unsigned_long, o)
+
 #define A(funcname, operation) \
 	static int funcname( \
 		exp** out, exp* l, exp* r, \
@@ -54,6 +55,25 @@ typedef unsigned long  unsigned_long;
 		}\
 		return error; \
 	}
+
+#else
+
+#define A(funcname, operation) \
+	static int funcname( \
+		exp** out, exp* l, exp* r, \
+		struct yylloc* loc, \
+		struct types* types) \
+	{ \
+		int error = 0; \
+		int x = l->value._signed_int, y = r->value._signed_int; \
+		dpv(x); dpv(y); \
+		error = new_literal_expression_as_signed_int(\
+			(struct expression**) out, loc, \
+			types->int_type, (operation)); \
+		return error; \
+	}
+
+#endif
 
 A(fold_add, (x + y));
 A(fold_subtract, (x - y));
@@ -89,4 +109,3 @@ int (*arithmetic_constfolders[N])(
 
 
 
-#endif

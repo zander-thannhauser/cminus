@@ -11,8 +11,7 @@ IS			(u|U|l|L)*
 
 #include <stdio.h>
 #include <limits.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 
@@ -281,67 +280,84 @@ static int process_integer_literal(int* error)
 	
 	dpv(value);
 	
-	// check for suffix? maybe limit the type?
-	// literals could then have various-sized types,
-	// not just {unsigned,} long
-	
-	bool is_unsigned = 0;
-	int long_level = 0;
-	
-	for (; *m; m++)
+	#ifdef X64_TARGET
 	{
-		switch (*m)
+		// check for suffix? maybe limit the type?
+		// literals could then have various-sized types,
+		// not just {unsigned,} long
+		
+		bool is_unsigned = 0;
+		int long_level = 0;
+		
+		for (; *m; m++)
 		{
-			case 'u':
-			case 'U':
-				is_unsigned = 1;
-				break;
+			switch (*m)
+			{
+				case 'u':
+				case 'U':
+					is_unsigned = 1;
+					break;
+					
+				case 'l':
+				case 'L':
+					if (long_level++ == 1)
+					{
+						TODO; // "too many 'L's!"
+						*error = 1;
+					}
+					break;
 				
-			case 'l':
-			case 'L':
-				if (long_level++ == 1)
+				default:
 				{
-					TODO; // "too many 'L's!"
+					TODO; // "unknown integer suffix!"
 					*error = 1;
 				}
-				break;
-			
-			default:
-			{
-				TODO; // "unknown integer suffix!"
-				*error = 1;
 			}
 		}
-	}
-	
-	if (errno)
-	{
-		fprintf(stderr, "%s: strtoumax(\"%s\"): %m\n", argv0, yytext),
-		*error = e_bad_input_file;
-	}
-	
-	static const int lookup[2][3] = {
-		[0][0] = SINT_LITERAL,
-		[0][1] = SLONG_LITERAL,
-		[1][0] = UINT_LITERAL,
-		[1][1] = ULONG_LITERAL,
-	};
-	
-	if (!*error)
-	{
-		switch (retval = lookup[is_unsigned][long_level])
+		
+		if (errno)
 		{
-			case  SINT_LITERAL: yylval.sintlit  = value; break;
-			case  UINT_LITERAL: yylval.uintlit  = value; break;
-			case SLONG_LITERAL: yylval.slonglit = value; break;
-			case ULONG_LITERAL: yylval.ulonglit = value; break;
-			
-			default:
-				TODO;
-				break;
+			fprintf(stderr, "%s: strtoumax(\"%s\"): %m\n", argv0, yytext),
+			*error = e_bad_input_file;
 		}
-	
+		
+		static const int lookup[2][3] = {
+			[0][0] = SINT_LITERAL,
+			[0][1] = SLONG_LITERAL,
+			[1][0] = UINT_LITERAL,
+			[1][1] = ULONG_LITERAL,
+		};
+		
+		if (!*error)
+		{
+			switch (retval = lookup[is_unsigned][long_level])
+			{
+				case  SINT_LITERAL: yylval.sintlit  = value; break;
+				case  UINT_LITERAL: yylval.uintlit  = value; break;
+				case SLONG_LITERAL: yylval.slonglit = value; break;
+				case ULONG_LITERAL: yylval.ulonglit = value; break;
+				
+				default:
+					TODO;
+					break;
+			}
+		
+		}
 	}
+	#else
+	{
+		if (errno)
+		{
+			fprintf(stderr, "%s: strtoumax(\"%s\"): %m\n", argv0, yytext),
+			*error = e_bad_input_file;
+		}
+		else
+		{
+			retval = SINT_LITERAL;
+			yylval.sintlit = value;
+		}
+	}
+	#endif
 	
 	EXIT;
 	return *error ? 0 : retval;

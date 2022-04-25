@@ -138,8 +138,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include "yyerror.h"
 

@@ -8,11 +8,13 @@
 #include "struct.h"
 #include "print.h"
 
+#if 0
 static const char* lookup[number_of_float_kinds] = 
 {
 	[fk_float] = "float",
 	[fk_double] = "double",
 };
+#endif
 
 int float_type_print(
 	const struct type* super,
@@ -23,6 +25,8 @@ int float_type_print(
 	const struct float_type* const this = (typeof(this)) super;
 	ENTER;
 	
+	TODO;
+	#if 0
 	if (!error && super->qualifiers[tq_constant])
 		error = sfprintf(stream, "const ");
 	
@@ -39,6 +43,7 @@ int float_type_print(
 	
 	if (!error && name)
 		error = sfprintf(stream, " %s", name);
+	#endif
 	
 	EXIT;
 	return error;

@@ -45,8 +45,7 @@ int function_call_expression_write_rasm(
 	struct function_call_expression* const this = (typeof(this)) super;
 	ENTER;
 	
-	TODO;
-	#if 0
+	#ifdef X64_TARGET
 	// first to last: when do we stop doing integers from behind?
 	unsigned n_int_params = 0;
 	struct expression_link* ilink = this->arguments->head;
@@ -69,7 +68,6 @@ int function_call_expression_write_rasm(
 	
 	dpv(n_float_params);
 	
-	#ifdef X64_TARGET
 	bool extra_push = false;
 	
 	if (((1 + this->arguments->n - n_int_params - n_float_params) % 2))
@@ -90,6 +88,8 @@ int function_call_expression_write_rasm(
 	// evaluate function pointer
 	error = expression_write_rasm(this->function, writer);
 	
+	TODO;
+	#if 0
 	struct expression_link* elink;
 	bool more_integers = ilink, more_floats = flink;
 	unsigned n_overflow_params = 0;
@@ -157,10 +157,7 @@ int function_call_expression_write_rasm(
 	// pop floats off the stack, assigning them registers:
 	for (i = 0, n = n_float_params, reg = first_fparameter; !error && i < n; i++)
 	{
-		asm_writer_write_movf_to(writer,
-			0, stackptr,
-			reg++,
-			fk_double);
+		asm_writer_write_movf_to(writer, 0, stackptr, reg++, fk_double);
 		
 		asm_writer_write_addi_const(writer, 8, stackptr, quadword);
 		#ifdef VERBOSE_ASSEMBLY
@@ -183,10 +180,7 @@ int function_call_expression_write_rasm(
 		8 * n_overflow_params, stackptr, reg, quadword);
 	
 	// set rax indicating how many floats.
-	asm_writer_write_integer(writer,
-		n_float_params,
-		retval,
-		quadword);
+	asm_writer_write_integer(writer, n_float_params, retval, quadword);
 	
 	asm_writer_write_call(writer, reg);
 	

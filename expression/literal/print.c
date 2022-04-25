@@ -30,6 +30,7 @@ int literal_expression_print(
 	
 	if (type->kind == tk_integer)
 	{
+		#ifdef X64_TARGET
 		struct integer_type* itype = (typeof(itype)) type;
 		
 		switch (itype->kind)
@@ -67,9 +68,16 @@ int literal_expression_print(
 			
 			case number_of_integer_kinds: abort();
 		}
+		#else
+		{
+			error = sfprintf(stream, "%i", this->value._signed_int);
+		}
+		#endif
 	}
 	else
 	{
+		TODO;
+		#if 0
 		struct float_type* ftype = (typeof(ftype)) type;
 		
 		switch (ftype->kind)
@@ -84,6 +92,7 @@ int literal_expression_print(
 			
 			case number_of_float_kinds: abort();
 		}
+		#endif
 	}
 	
 	EXIT;

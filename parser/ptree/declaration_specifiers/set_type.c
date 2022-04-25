@@ -22,12 +22,14 @@ int declaration_specifiers_set_type(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	if (!this->type)
+	{
 		this->type = tinc(type);
+	}
 	else
 	{
+		TODO;
+		#if 0
 		struct type* combined = NULL;
 		
 		error = types_combine(&combined, types, this->type, type);
@@ -40,8 +42,8 @@ int declaration_specifiers_set_type(
 		}
 		
 		tfree(combined);
+		#endif
 	}
-	#endif
 	
 	EXIT;
 	return error;

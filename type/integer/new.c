@@ -25,13 +25,13 @@ static size_t lookup[] =
 #endif
 
 int new_integer_type(
-	struct integer_type** new,
-	enum integer_kind kind)
-{
+	struct integer_type** new
+	#ifdef X64_TARGET
+	, enum integer_kind kind
+	#endif
+) {
 	int error = 0;
 	ENTER;
-	
-	dpv(kind);
 	
 	struct integer_type* this = NULL;
 	
@@ -53,7 +53,9 @@ int new_integer_type(
 	
 	if (!error)
 	{
+		#ifdef X64_TARGET
 		this->kind = kind;
+		#endif
 		
 		*new = this;
 	}

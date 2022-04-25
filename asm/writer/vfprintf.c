@@ -4,8 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 
@@ -30,9 +29,6 @@ int asm_writer_vfprintf(
 	enum length_modifier lm;
 	struct { bool pound, zero, minus, space, plus; } flags;
 	struct { bool is_set; unsigned int val; } field_width, digits_of_precision;
-	ENTER;
-	
-	dpvs(fmt);
 	
 	for (end = fmt + strlen(fmt); !error && fmt < end; fmt++)
 	{
@@ -526,6 +522,5 @@ int asm_writer_vfprintf(
 		}
 	}
 	
-	EXIT;
 	return error;
 }

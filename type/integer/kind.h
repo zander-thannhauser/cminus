@@ -2,6 +2,8 @@
 #ifndef integer_KIND_H
 #define integer_KIND_H
 
+#ifdef X64_TARGET
+
 // order defines type promotion
 // and coercsion, do not change!
 
@@ -26,5 +28,7 @@ enum integer_kind
 
 /*#define ik_bool (ik_signed_int)*/
 /*#define pk__Bool (ik_signed_int)*/
+
+#endif
 
 #endif

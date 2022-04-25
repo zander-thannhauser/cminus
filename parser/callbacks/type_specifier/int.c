@@ -9,9 +9,10 @@
 
 struct type* type_specifier_int_callback(struct types* types)
 {
-	TODO;
-	#if 0
+	#ifdef X64_TARGET
 	return tinc(types->integers[ik_signed_int]);
+	#else
+	return tinc(types->int_type);
 	#endif
 }
 

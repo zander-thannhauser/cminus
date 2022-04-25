@@ -44,6 +44,8 @@ int new_cast_expression(
 		&& after->kind == tk_integer
 		&& before->kind == tk_integer)
 	{
+		TODO;
+		#if 0
 		uintmax_t val;
 		struct literal_expression* spef = (typeof(spef)) inner;
 		struct integer_type* bspef = (typeof(bspef)) before;
@@ -97,6 +99,7 @@ int new_cast_expression(
 				TODO;
 				break;
 		}
+		#endif
 	}
 	else if (
 		false
@@ -105,6 +108,8 @@ int new_cast_expression(
 		|| (before->kind == tk_float && after->kind == tk_integer)
 		|| (before->kind == tk_float && after->kind == tk_float))
 	{
+		TODO;
+		#if 0
 		struct cast_expression* this = NULL;
 		
 		error = new_expression(
@@ -122,6 +127,7 @@ int new_cast_expression(
 			
 			*new = (struct expression*) this;
 		}
+		#endif
 	}
 	else
 	{

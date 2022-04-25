@@ -14,6 +14,8 @@ int compare_float_types(
 	const struct float_type* b = (typeof(b)) _b;
 	ENTER;
 	
+	TODO;
+	#if 0
 	dpv(a->kind);
 	dpv(b->kind);
 	
@@ -21,6 +23,7 @@ int compare_float_types(
 		cmp = +1;
 	else if (a->kind < b->kind)
 		cmp = -1;
+	#endif
 	
 	EXIT;
 	return cmp;

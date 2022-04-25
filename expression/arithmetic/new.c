@@ -1,7 +1,6 @@
 
 #include <stdlib.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <memory/tinc.h>
 #include <memory/tfree.h>
@@ -33,8 +32,6 @@ int new_arithmetic_expression(
 	struct type* const rtype = right->type;
 	ENTER;
 	
-	TODO;
-	#if 0
 	// it's assumed that at this point left and right have the same types.
 	assert(!compare_types(ltype, rtype));
 	
@@ -57,7 +54,8 @@ int new_arithmetic_expression(
 			ek_arithmetic,
 			&arithmetic_expression_inheritance,
 			loc,
-			ltype, sizeof(*this));
+			ltype,
+			sizeof(*this));
 		
 		if (!error)
 		{
@@ -71,7 +69,6 @@ int new_arithmetic_expression(
 			*new = (struct expression*) this;
 		}
 	}
-	#endif
 	
 	EXIT;
 	return error;

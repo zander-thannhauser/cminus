@@ -1,8 +1,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <expression/write_lasm.h>
 

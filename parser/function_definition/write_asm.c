@@ -48,8 +48,6 @@ int function_definition_write_asm(
 	int error = 0;
 	ENTER;
 	
-	TODO;
-	#if 0
 	
 	#ifdef X64_TARGET
 	{
@@ -103,11 +101,15 @@ int function_definition_write_asm(
 	
 	ssize_t regoff = 8;
 	struct variable_link* vlink;
+	#if 0
 	enum integer_register_id iparam = first_parameter;
 	enum float_register_id fparam = first_fparameter;
+	#endif
 	
 	for (vlink = this->parameters->head; vlink; vlink = vlink->next)
 	{
+		TODO;
+		#if 0
 		struct variable* const variable = vlink->element;
 		struct type* const type = variable->type;
 		
@@ -167,11 +169,14 @@ int function_definition_write_asm(
 				#endif
 			}
 		}
+		#endif
 	}
 	
 	if (!error)
 		error = compound_statement_write_asm(this->body, writer);
 	
+	TODO;
+	#if 0
 	char* return_label = NULL;
 	
 	if (!error)

@@ -33,21 +33,36 @@ int variable_expression_write_lasm(
 	struct variable* const variable = this->variable;
 	ENTER;
 	
-	TODO;
-	#if 0
 	dpvs(variable->name);
 	
-	if (!variable->is_global)
+	if (variable->is_global)
 	{
-		// load effective address
-		asm_writer_write_lea(writer, -variable->offset, baseptr, working_1);
+		#ifdef X64_TARGET
+		{
+			asm_writer_write_leag(writer, variable->name, working_1);
+		}
+		#else
+		{
+			asm_writer_write_leag(writer, variable->name, 4);
+		}
+		#endif
 	}
 	else
 	{
-		asm_writer_write_leag(writer, variable->name, working_1);
+		TODO;
+		#if 0
+		asm_writer_write_lea(writer, -variable->offset, baseptr, working_1);
+		#endif
 	}
 	
+	#ifdef X64_TARGET
 	asm_writer_write_movi_from_v2(writer, working_1, -8, stackptr, quadword);
+	#else
+	asm_writer_write_movi_from_v2(writer, 4, -8, stackptr, quadword);
+	#endif
+	
+	TODO;
+	#if 0
 	asm_writer_write_subi_const(writer, 8, stackptr, quadword);
 	#endif
 	
