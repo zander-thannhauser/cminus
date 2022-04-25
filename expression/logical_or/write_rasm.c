@@ -1,5 +1,9 @@
 
-#include <debug.h>
+
+#include <stdio.h>
+#include <assert.h>
+
+#include <enums/error.h>
 
 /*#include <asm/tables/instrs.h>*/
 /*#include <asm/tables/intregs.h>*/

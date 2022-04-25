@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include "prepend_qualifier.h"
 

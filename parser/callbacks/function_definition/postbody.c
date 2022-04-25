@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include <scope/struct.h>
 #include <scope/pop.h>

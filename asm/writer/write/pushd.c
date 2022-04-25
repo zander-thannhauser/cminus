@@ -2,7 +2,7 @@
 #if 0
 #include <inttypes.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include "../write.h"
 

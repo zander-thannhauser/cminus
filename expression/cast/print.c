@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 #include <enums/error.h>
 
 /*#include <char/printable.h>*/

@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include "declarator_and_bitfield.h"
 

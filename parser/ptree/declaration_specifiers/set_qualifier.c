@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include <parser/ptree/type_qualifiers/mark_qualifier.h>
 

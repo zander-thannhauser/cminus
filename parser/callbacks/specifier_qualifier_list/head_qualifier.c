@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include "head_qualifier.h"
 

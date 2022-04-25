@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 /*#include <asm/writer/write/subi.h>*/
 #ifdef VERBOSE_ASSEMBLY

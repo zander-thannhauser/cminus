@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 /*#include "../../enums/register_size.h"*/
 #include "../../tables/intregs.h"

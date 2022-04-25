@@ -1,7 +1,7 @@
 
 #include <stdint.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <type/struct.h>
 #include <type/integer/struct.h>

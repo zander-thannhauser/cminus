@@ -1,5 +1,8 @@
 
-#include <debug.h>
+#include <stddef.h>
+#include <assert.h>
+
+#include <memory/tfree.h>
 
 #include <expression/cast/new.h>
 

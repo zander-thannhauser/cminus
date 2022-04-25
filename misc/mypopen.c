@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 

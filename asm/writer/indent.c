@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <memory/tmalloc.h>
 /*#include <memory/tstrdup.h>*/

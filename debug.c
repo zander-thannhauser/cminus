@@ -5,7 +5,7 @@
 #define UNW_LOCAL_ONLY
 #include <libunwind.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #if 0
 

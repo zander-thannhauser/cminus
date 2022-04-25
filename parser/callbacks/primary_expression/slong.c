@@ -1,7 +1,9 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include <expression/literal/new.h>
+
+#include <memory/tfree.h>
 
 #include <types/struct.h>
 

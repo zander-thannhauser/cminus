@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include "../../tables/floatregs.h"
 /*#include "../../tables/fktors.h"*/

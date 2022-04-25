@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 

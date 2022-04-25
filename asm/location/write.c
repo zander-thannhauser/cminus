@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include "../tables/intregs.h"
 #include "../tables/floatregs.h"

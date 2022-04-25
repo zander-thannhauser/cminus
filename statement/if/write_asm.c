@@ -1,5 +1,7 @@
 
-#include <debug.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
 
 /*#include <asm/writer/write.h>*/
 #include <asm/writer/write/addi.h>

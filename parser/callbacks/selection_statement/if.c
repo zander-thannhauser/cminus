@@ -1,5 +1,6 @@
 
-#include <debug.h>
+#include <stddef.h>
+#include <assert.h>
 
 #include <memory/tfree.h>
 

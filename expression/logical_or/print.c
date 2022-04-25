@@ -1,7 +1,7 @@
 
-#include <debug.h>
+#include <assert.h>
 
-/*#include <enums/error.h>*/
+#include <enums/error.h>
 
 #include "../print.h"
 

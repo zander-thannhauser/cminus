@@ -1,10 +1,10 @@
 
-#include <debug.h>
+#include <assert.h>
 
 /*#include <macros/max.h>*/
 
 /*#include <memory/tinc.h>*/
-/*#include <memory/tfree.h>*/
+#include <memory/tfree.h>
 
 #include <type/struct.h>
 #include <type/compare.h>

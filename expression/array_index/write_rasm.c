@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include <stdio.h>
-#include <debug.h>
+#include <assert.h>
 
 /*#include <asm/enums/intregs.h>*/
 /*#include <asm/tables/instrs.h>*/

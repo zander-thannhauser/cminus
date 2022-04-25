@@ -2,8 +2,9 @@
 #include <stdio.h>
 
 /*#include <error.h>*/
-#include <debug.h>
+#include <assert.h>
 
+#include <enums/error.h>
 #include <defines/argv0.h>
 
 #include <memory/tinc.h>

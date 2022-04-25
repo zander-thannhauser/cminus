@@ -110,7 +110,7 @@ include gen/srclist.mk
 #ARGS += ./examples/system/stdio.cm
 #ARGS += ./examples/system/inttypes.cm
 
-ARGS += -p ./examples/add.cm
+#ARGS += -p ./examples/add.cm
 #ARGS += -p ./examples/add.float.cm
 #ARGS += -p ./examples/and.cm
 #ARGS += ./examples/and.float.cm
@@ -119,7 +119,7 @@ ARGS += -p ./examples/add.cm
 #ARGS += -p ./examples/array.cm
 #ARGS += -p ./examples/array.float.cm
 #ARGS += ./examples/bubble.cm
-#ARGS += ./examples/bubble.float.cm
+ARGS += ./examples/bubble.float.cm
 #ARGS += ./examples/call.cm
 #ARGS += -p ./examples/constdim.cm # cannot cast from `signed int` to `signed int* const`!
 #ARGS += -p ./examples/dcs.cm

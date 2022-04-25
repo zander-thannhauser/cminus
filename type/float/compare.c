@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include "struct.h"
 /*#include "inheritance.h"*/

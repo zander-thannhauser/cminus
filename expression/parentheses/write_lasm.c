@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #ifdef VERBOSE_ASSEMBLY
 #include <asm/writer/unindent.h>

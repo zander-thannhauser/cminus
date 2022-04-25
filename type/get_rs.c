@@ -1,7 +1,6 @@
 
 #include <stdlib.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <asm/tables/iktors.h>
 #include <asm/tables/fktors.h>

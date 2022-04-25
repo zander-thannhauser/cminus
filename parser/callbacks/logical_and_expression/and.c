@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <memory/tfree.h>
 

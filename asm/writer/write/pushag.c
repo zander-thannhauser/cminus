@@ -1,7 +1,7 @@
 
 #if 0
 
-#include <debug.h>
+#include <assert.h>
 
 /*#include "../../tables/intregs.h"*/
 

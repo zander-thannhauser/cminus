@@ -1,5 +1,5 @@
 
-#include <debug.h>
+#include <assert.h>
 
 #include <parser/parameter/struct.h>
 #include <parser/parameter_ll/struct.h>

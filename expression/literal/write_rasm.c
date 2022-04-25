@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <type/integer/struct.h>
 #include <type/float/struct.h>

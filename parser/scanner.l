@@ -11,8 +11,7 @@ IS			(u|U|l|L)*
 
 #include <stdio.h>
 #include <limits.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 

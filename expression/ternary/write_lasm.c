@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include <debug.h>
+#include <assert.h>
 
 /*#include <asm/tables/instrs.h>*/
 /*#include <asm/tables/intregs.h>*/

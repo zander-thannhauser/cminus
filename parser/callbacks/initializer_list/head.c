@@ -5,7 +5,7 @@
 
 #include <memory/tfree.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include <parser/initializer_ll/new.h>
 #include <parser/initializer_ll/append.h>

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <debug.h>
+#include <assert.h>
 #include <enums/error.h>
 
 #include <defines/argv0.h>

@@ -1,9 +1,10 @@
 
+
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 
-/*#include <memory/tinc.h>*/
+#include <memory/tinc.h>
 /*#include <memory/tfree.h>*/
 
 #include <type/struct.h>

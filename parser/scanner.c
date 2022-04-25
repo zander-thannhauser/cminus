@@ -656,8 +656,7 @@ char *yytext;
 
 #include <stdio.h>
 #include <limits.h>
-
-#include <debug.h>
+#include <assert.h>
 
 #include <enums/error.h>
 
@@ -709,9 +708,9 @@ static int process_string_literal(int*);
 		} \
 	}
 
-#line 713 "parser/scanner.c"
+#line 712 "parser/scanner.c"
 #define YY_NO_INPUT 1
-#line 715 "parser/scanner.c"
+#line 714 "parser/scanner.c"
 
 #define INITIAL 0
 
@@ -926,15 +925,15 @@ YY_DECL
 		}
 
 	{
-#line 74 "parser/scanner.l"
+#line 73 "parser/scanner.l"
 
 
-#line 77 "parser/scanner.l"
+#line 76 "parser/scanner.l"
  // From http://westes.github.io/flex/manual/Start-Conditions.html: //
 
  /* https://www.lysator.liu.se/c/ANSI-C-grammar-l.html */
 
-#line 938 "parser/scanner.c"
+#line 937 "parser/scanner.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1003,445 +1002,445 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 81 "parser/scanner.l"
+#line 80 "parser/scanner.l"
 { return (AUTO); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 82 "parser/scanner.l"
+#line 81 "parser/scanner.l"
 { return (BREAK); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 83 "parser/scanner.l"
+#line 82 "parser/scanner.l"
 { return (CASE); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 84 "parser/scanner.l"
+#line 83 "parser/scanner.l"
 { return (CHAR); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 85 "parser/scanner.l"
+#line 84 "parser/scanner.l"
 { return (CONST); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 86 "parser/scanner.l"
+#line 85 "parser/scanner.l"
 { return (CONTINUE); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 87 "parser/scanner.l"
+#line 86 "parser/scanner.l"
 { return (DEFAULT); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 88 "parser/scanner.l"
+#line 87 "parser/scanner.l"
 { return (DO); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 89 "parser/scanner.l"
+#line 88 "parser/scanner.l"
 { return (DOUBLE); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 90 "parser/scanner.l"
+#line 89 "parser/scanner.l"
 { return (ELSE); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 91 "parser/scanner.l"
+#line 90 "parser/scanner.l"
 { return (ENUM); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 92 "parser/scanner.l"
+#line 91 "parser/scanner.l"
 { return (EXTERN); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 93 "parser/scanner.l"
+#line 92 "parser/scanner.l"
 { return (FLOAT); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 94 "parser/scanner.l"
+#line 93 "parser/scanner.l"
 { return (FOR); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 95 "parser/scanner.l"
+#line 94 "parser/scanner.l"
 { return (GOTO); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 96 "parser/scanner.l"
+#line 95 "parser/scanner.l"
 { return (IF); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 97 "parser/scanner.l"
+#line 96 "parser/scanner.l"
 { return (INT); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 98 "parser/scanner.l"
+#line 97 "parser/scanner.l"
 { return (LONG); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 99 "parser/scanner.l"
+#line 98 "parser/scanner.l"
 { return (REGISTER); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 100 "parser/scanner.l"
+#line 99 "parser/scanner.l"
 { return (RETURN); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 101 "parser/scanner.l"
+#line 100 "parser/scanner.l"
 { return (SHORT); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 102 "parser/scanner.l"
+#line 101 "parser/scanner.l"
 { return (SIGNED); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 103 "parser/scanner.l"
+#line 102 "parser/scanner.l"
 { return (SIZEOF); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 104 "parser/scanner.l"
+#line 103 "parser/scanner.l"
 { return (STATIC); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 105 "parser/scanner.l"
+#line 104 "parser/scanner.l"
 { return (STRUCT); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 106 "parser/scanner.l"
+#line 105 "parser/scanner.l"
 { return (SWITCH); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 107 "parser/scanner.l"
+#line 106 "parser/scanner.l"
 { return (TYPEDEF); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 108 "parser/scanner.l"
+#line 107 "parser/scanner.l"
 { return (UNION); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 109 "parser/scanner.l"
+#line 108 "parser/scanner.l"
 { return (UNSIGNED); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 110 "parser/scanner.l"
+#line 109 "parser/scanner.l"
 { return (VOID); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 111 "parser/scanner.l"
+#line 110 "parser/scanner.l"
 { return (VOLATILE); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 112 "parser/scanner.l"
+#line 111 "parser/scanner.l"
 { return (WHILE); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 114 "parser/scanner.l"
+#line 113 "parser/scanner.l"
 { return check_type(error, scope); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 116 "parser/scanner.l"
+#line 115 "parser/scanner.l"
 { return (process_integer_literal(error)); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 117 "parser/scanner.l"
+#line 116 "parser/scanner.l"
 { return (process_integer_literal(error)); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 118 "parser/scanner.l"
+#line 117 "parser/scanner.l"
 { return (process_integer_literal(error)); }
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
 YY_RULE_SETUP
-#line 119 "parser/scanner.l"
+#line 118 "parser/scanner.l"
 { return (process_character_literal(error)); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 121 "parser/scanner.l"
+#line 120 "parser/scanner.l"
 { return (process_float_literal(error)); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 122 "parser/scanner.l"
+#line 121 "parser/scanner.l"
 { return (process_float_literal(error)); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 123 "parser/scanner.l"
+#line 122 "parser/scanner.l"
 { return (process_float_literal(error)); }
 	YY_BREAK
 case 41:
 /* rule 41 can match eol */
 YY_RULE_SETUP
-#line 125 "parser/scanner.l"
+#line 124 "parser/scanner.l"
 { return (process_string_literal(error)); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 127 "parser/scanner.l"
+#line 126 "parser/scanner.l"
 { return (ELLIPSIS); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 128 "parser/scanner.l"
+#line 127 "parser/scanner.l"
 { return (RIGHT_ASSIGN); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 129 "parser/scanner.l"
+#line 128 "parser/scanner.l"
 { return (LEFT_ASSIGN); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 130 "parser/scanner.l"
+#line 129 "parser/scanner.l"
 { return (ADD_ASSIGN); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 131 "parser/scanner.l"
+#line 130 "parser/scanner.l"
 { return (SUB_ASSIGN); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 132 "parser/scanner.l"
+#line 131 "parser/scanner.l"
 { return (MUL_ASSIGN); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 133 "parser/scanner.l"
+#line 132 "parser/scanner.l"
 { return (DIV_ASSIGN); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 134 "parser/scanner.l"
+#line 133 "parser/scanner.l"
 { return (MOD_ASSIGN); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 135 "parser/scanner.l"
+#line 134 "parser/scanner.l"
 { return (AND_ASSIGN); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 136 "parser/scanner.l"
+#line 135 "parser/scanner.l"
 { return (XOR_ASSIGN); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 137 "parser/scanner.l"
+#line 136 "parser/scanner.l"
 { return (OR_ASSIGN); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 138 "parser/scanner.l"
+#line 137 "parser/scanner.l"
 { return (RIGHT_OP); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 139 "parser/scanner.l"
+#line 138 "parser/scanner.l"
 { return (LEFT_OP); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 140 "parser/scanner.l"
+#line 139 "parser/scanner.l"
 { return (INC_OP); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 141 "parser/scanner.l"
+#line 140 "parser/scanner.l"
 { return (DEC_OP); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 142 "parser/scanner.l"
+#line 141 "parser/scanner.l"
 { return (PTR_OP); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 143 "parser/scanner.l"
+#line 142 "parser/scanner.l"
 { return (AND_OP); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 144 "parser/scanner.l"
+#line 143 "parser/scanner.l"
 { return (OR_OP); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 145 "parser/scanner.l"
+#line 144 "parser/scanner.l"
 { return (LE_OP); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 146 "parser/scanner.l"
+#line 145 "parser/scanner.l"
 { return (GE_OP); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 147 "parser/scanner.l"
+#line 146 "parser/scanner.l"
 { return (EQ_OP); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 148 "parser/scanner.l"
+#line 147 "parser/scanner.l"
 { return (NE_OP); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 149 "parser/scanner.l"
+#line 148 "parser/scanner.l"
 { return (';'); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 150 "parser/scanner.l"
+#line 149 "parser/scanner.l"
 { return ('{'); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 151 "parser/scanner.l"
+#line 150 "parser/scanner.l"
 { return ('}'); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 152 "parser/scanner.l"
+#line 151 "parser/scanner.l"
 { return (','); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 153 "parser/scanner.l"
+#line 152 "parser/scanner.l"
 { return (':'); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 154 "parser/scanner.l"
+#line 153 "parser/scanner.l"
 { return ('='); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 155 "parser/scanner.l"
+#line 154 "parser/scanner.l"
 { return ('('); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 156 "parser/scanner.l"
+#line 155 "parser/scanner.l"
 { return (')'); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 157 "parser/scanner.l"
+#line 156 "parser/scanner.l"
 { return ('['); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 158 "parser/scanner.l"
+#line 157 "parser/scanner.l"
 { return (']'); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 159 "parser/scanner.l"
+#line 158 "parser/scanner.l"
 { return ('.'); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 160 "parser/scanner.l"
+#line 159 "parser/scanner.l"
 { return ('&'); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 161 "parser/scanner.l"
+#line 160 "parser/scanner.l"
 { return ('!'); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 162 "parser/scanner.l"
+#line 161 "parser/scanner.l"
 { return ('~'); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 163 "parser/scanner.l"
+#line 162 "parser/scanner.l"
 { return ('-'); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 164 "parser/scanner.l"
+#line 163 "parser/scanner.l"
 { return ('+'); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 165 "parser/scanner.l"
+#line 164 "parser/scanner.l"
 { return ('*'); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 166 "parser/scanner.l"
+#line 165 "parser/scanner.l"
 { return ('/'); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 167 "parser/scanner.l"
+#line 166 "parser/scanner.l"
 { return ('%'); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 168 "parser/scanner.l"
+#line 167 "parser/scanner.l"
 { return ('<'); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 169 "parser/scanner.l"
+#line 168 "parser/scanner.l"
 { return ('>'); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 170 "parser/scanner.l"
+#line 169 "parser/scanner.l"
 { return ('^'); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 171 "parser/scanner.l"
+#line 170 "parser/scanner.l"
 { return ('|'); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 172 "parser/scanner.l"
+#line 171 "parser/scanner.l"
 { return ('?'); }
 	YY_BREAK
 case 88:
 /* rule 88 can match eol */
 YY_RULE_SETUP
-#line 174 "parser/scanner.l"
+#line 173 "parser/scanner.l"
 {
 	if ((*error = handle_cpp_linemarkers(file)))
 		return 0;
@@ -1454,12 +1453,12 @@ YY_RULE_SETUP
 case 89:
 /* rule 89 can match eol */
 YY_RULE_SETUP
-#line 183 "parser/scanner.l"
+#line 182 "parser/scanner.l"
 {}
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 185 "parser/scanner.l"
+#line 184 "parser/scanner.l"
 {
 	fprintf(stderr, "%s: flex: unknown token starting with: '%s'!\n", argv0, yytext);
 	return 0;
@@ -1467,10 +1466,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 190 "parser/scanner.l"
+#line 189 "parser/scanner.l"
 ECHO;
 	YY_BREAK
-#line 1474 "parser/scanner.c"
+#line 1473 "parser/scanner.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2446,7 +2445,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 190 "parser/scanner.l"
+#line 189 "parser/scanner.l"
 
 
 int yywrap()

@@ -1,7 +1,7 @@
 
 /*#include <string.h>*/
 
-#include <debug.h>
+#include <assert.h>
 
 #include <misc/sfprintf.h>
 

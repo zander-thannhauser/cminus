@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include "../write_rasm.h"
 

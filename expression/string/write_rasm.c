@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include <debug.h>
+#include <assert.h>
 
 /*#include <asm/location/struct.h>*/
 /*#include <asm/writer/comment.h>*/

@@ -1,5 +1,6 @@
 
-#include <debug.h>
+#include <stdio.h>
+#include <assert.h>
 
 /*#include <asm/tables/instrs.h>*/
 #include <asm/tables/floatregs.h>

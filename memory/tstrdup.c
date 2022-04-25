@@ -1,7 +1,7 @@
 
 #include <string.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include "tmalloc.h"
 #include "tinc.h"

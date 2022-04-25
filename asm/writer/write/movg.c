@@ -2,7 +2,7 @@
 #if 0
 #include <stdlib.h>
 
-#include <debug.h>
+#include <assert.h>
 
 #include "../../tables/intregs.h"
 
